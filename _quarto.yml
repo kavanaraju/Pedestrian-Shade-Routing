@@ -1,0 +1,22 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "UCity Shade Routing"
+  navbar:
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Methodology"
+        href: methodology.qmd
+      - text: "Results"
+        href: results.qmd
+      - text: "GitHub"
+        href: https://github.com/kavanaraju/Pedestrian-Shade-Routing
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true

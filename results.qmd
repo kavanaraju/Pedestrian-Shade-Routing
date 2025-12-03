@@ -1,0 +1,16 @@
+---
+title: "Results"
+---
+
+## Route Comparison
+
+Our analysis found that shade-optimized routes are only **X% longer** 
+on average than shortest paths, while providing **Y% more shade coverage**.
+
+![Route Deviation by Distance](outputs/fig1_deviation.png)
+
+## Example Routes
+
+The figure below shows a typical route comparison...
+
+![Example Route](outputs/fig2_example_route.png)

@@ -1,0 +1,3 @@
+cd "C:\Users\kavan\OneDrive - PennO365\CPLN FALL 2025\CPLN 6720_Geospatial Data Science in Python"
+conda activate geospatial
+jupyter notebook

@@ -1,0 +1,246 @@
+<metadata>
+	<idinfo>
+		<citation>
+			<citeinfo>
+				<origin>University of Vermont Spatial Analysis Laboratory</origin>
+				<title>Philadelphia Land Cover 2018</title>
+				<geoform>remote-sensing image</geoform>
+				<pubdate>2018</pubdate><onlink>http://www.pasda.psu.edu</onlink></citeinfo>
+		</citation>
+		<descript>
+			<abstract>The City of Philadelphia has migrated metadata for this data set to the City-wide Metadata Catalog. For any questions about the migration and administration of the Metadata Catalog, please contact maps@phila.gov. To view the metadata for this layer, please visit: http://metadata.phila.gov/#home/datasetdetails/5e32fe6927a32c0018b07da1</abstract>
+			<purpose>This dataset was developed as part of the Philadelphia 2018 Tree Canopy Assessment. As such, it represents a 'top down' mapping perspective in which tree canopy over hanging other features is assigned to the tree canopy class. At the time of its creation this dataset represents the most detailed and accurate land cover dataset for the area.
+High resolution land cover dataset for Philadelphia,Pennsylvania. Seven land cover classes were mapped: (1) tree canopy, (2) grass/shrub, (3) bare earth, (4) water, (5) buildings, (6) roads, and (7) other paved surfaces. The primary sources used to derive this land cover layer were 2018 LiDAR data and 2017 NAIP imagery. Ancillary data sources included GIS data provided by Philadelphia,Pennsylvania or created by the UVM Spatial Analysis Laboratory. Object-based image analysis techniques (OBIA) were employed to extract land cover information using the best available remotely sensed and vector GIS datasets. OBIA systems work by grouping pixels into meaningful objects based on their spectral and spatial properties, while taking into account boundaries imposed by existing vector datasets. Within the OBIA environment a rule-based expert system was designed to effectively mimic the process of manual image analysis by incorporating the elements of image interpretation (color/tone, texture, pattern, location, size, and shape) into the classification process. A series of morphological procedures were employed to insure that the end product is both accurate and cartographically pleasing. Following the automated OBIA mapping a detailed manual review of the dataset was carried out at a scale of 1:3500 and all observable errors were corrected. The information was created by University of Vermont Spatial Analysis Laboratory in collaboration with Philadelphia 2018 Tree Canopy Assessment.
+</purpose>
+			<supplinf>This assessment was completed by the University of Vermont's Spatial Analysis Laboratory with funding the City of Philadelphia. The methods used were developed by the University of Vermont Spatial Analysis Laboratory with funding from the City of Philadelphia. Tree canopy assessments have been conducted for numerous communities throughout the U.S. where the results have been instrumental in helping to establishing tree canopy goals.</supplinf>
+		</descript>
+		<status>
+			<progress>Complete</progress>
+			<update>None planned</update>
+		</status>
+		<spdom>
+			<bounding>
+				<westbc>-75.340162</westbc>
+				<eastbc>-74.941280</eastbc>
+				<northbc>40.153055</northbc>
+				<southbc>39.811058</southbc>
+			</bounding>
+		</spdom>
+		<keywords>
+			<theme>
+				<themekt>None</themekt>
+				<themekey>tree canopy</themekey>
+				<themekey>Urban</themekey>
+				<themekey>UTC</themekey>
+				<themekey>Land cover</themekey>
+			</theme>
+			<theme>
+				<themekt>ISO 19115 Topic Categories</themekt>
+				<themekey>imageryBaseMapsEarthCover</themekey>
+			</theme>
+			<place>
+				<placekt>None</placekt>
+				<placekey>Philadelphia</placekey>
+				<placekey>Philadelphia</placekey>
+				<placekey>Pennsylvania</placekey>
+			</place>
+			<temporal>
+				<tempkt>None</tempkt>
+				<tempkey>2018</tempkey>
+			</temporal>
+		</keywords>
+		<accconst>None</accconst>
+		<useconst>The City of Philadelphia reserves all rights in the City's databases and any data contained therein, and the end user’s use of the data does not constitute a transfer of, nor does the end user receive, any title or interest in the database or any other City data. The City of Philadelphia makes no representation about the accuracy of any specific information in this data and is provided “as is” and without Warranty of any kind. The user of this data will assume complete responsibility for any and all occurrences resulting from its use or display and will hold the City of Philadelphia harmless from any and all claims, demands, liabilities, obligations, damages, suits, judgments or settlements, including reasonable costs and attorneys' fees, that arise from use of this data.</useconst>
+		<ptcontac>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>University of Vermont Spatial Analysis Laboratory</cntorg>
+					<cntper>Jarlath O'Neil-Dunne</cntper>
+				</cntorgp>
+				<cntpos>Director</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>Aiken Room 205</address>
+					<address>81 Carrigan Drive</address>
+					<city>Burlington</city>
+					<state>VT</state>
+					<postal>05405</postal>
+					<country>US</country>
+				</cntaddr>
+				<cntvoice>802-656-3324</cntvoice>
+				<cntfax>802-656-8683</cntfax>
+				<cntemail>joneildu@uvm.edu</cntemail>
+			</cntinfo>
+		</ptcontac>
+		<datacred>University of Vermont Spatial Analysis Laboratory in collaboration with Philadelphia 2018 Tree Canopy Assessment.</datacred>
+		<native>Microsoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.4.0.5524</native>
+		<timeperd><timeinfo><sngdate><caldate>2018</caldate></sngdate></timeinfo></timeperd></idinfo>
+	<dataqual>
+		<attracc>
+			<attraccr>No accuracy assessment was conducted, but the dataset was subject to a thorough manual quality control (QC). Accuracy assessments from previous UTC land cover datasets indicate that the use OBIA techniques in combination with a detailed QC yield an overall accuracy of 95% or better.</attraccr>
+		</attracc>
+		<logic>Valid raster dataset.</logic>
+		<complete>Complete coverage for the study area using the most recent boundary data.</complete>
+		<lineage>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<title>Planimetric data</title>
+					</citeinfo>
+				</srccite>
+				<typesrc>None</typesrc>
+				<srccitea>Planimetric data</srccitea>
+				<srccontr>Vector</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<title>National Agricultural Imagery Program 4-band data</title>
+					</citeinfo>
+				</srccite>
+				<srcscale>12000</srcscale>
+				<typesrc>None</typesrc>
+				<srccitea>NAIP</srccitea>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<title>LiDAR</title>
+					</citeinfo>
+				</srccite>
+				<typesrc>None</typesrc>
+				<srccitea>LiDAR</srccitea>
+			</srcinfo>
+			<procstep>
+				<procdesc>Object based image analysis (OBIA) using a rule-based expert system</procdesc>
+			</procstep>
+			<procstep>
+				<procdesc>Manual corrections to land cover classification</procdesc>
+			</procstep>
+		</lineage>
+	</dataqual>
+	<spdoinfo>
+		<direct>Raster</direct>
+		<rastinfo>
+			<rasttype>Pixel</rasttype>
+			<rowcount>0</rowcount>
+			<colcount>0</colcount>
+		</rastinfo>
+	</spdoinfo>
+	<spref>
+		<horizsys>
+			<planar>
+				<mapproj>
+					<lambertc>
+						<stdparll>39.93333333333333</stdparll>
+						<stdparll>40.96666666666667</stdparll>
+						<longcm>-77.75</longcm>
+						<latprjo>39.33333333333334</latprjo>
+						<feast>1968500.0</feast>
+						<fnorth>0.0</fnorth>
+					</lambertc>
+				</mapproj>
+				<planci>
+					<plance>coordinate pair</plance>
+					<coordrep>
+						<absres>0.000000026907964745248598</absres>
+						<ordres>0.000000026907964745248598</ordres>
+					</coordrep>
+					<plandu>foot_us</plandu>
+				</planci>
+			</planar>
+			<geodetic>
+				<horizdn>D North American 1983</horizdn>
+				<ellips>GRS 1980</ellips>
+				<semiaxis>6378137.0</semiaxis>
+				<denflat>298.257222101</denflat>
+			</geodetic>
+		</horizsys>
+	</spref>
+	<eainfo>
+		<detailed>
+			<enttyp>
+				<enttypl>landcover_2018_philadelphia</enttypl>
+				<enttypd>UTC</enttypd>
+			</enttyp>
+			<attr>
+				<attrlabl>OBJECTID</attrlabl>
+				<attrdef>Internal feature number.</attrdef>
+				<attrdefs>Esri</attrdefs>
+				<attrdomv>
+					<udom>Sequential unique whole numbers that are automatically generated.</udom>
+				</attrdomv>
+			</attr>
+			<attr>
+				<attrlabl>Count</attrlabl>
+				<attrdef># pixels per land cover class</attrdef>
+				<attrdefs>Internal</attrdefs>
+			</attr>
+			<attr>
+				<attrlabl>Value</attrlabl>
+				<attrdef>Land cover code</attrdef>
+				<attrdefs>UTC</attrdefs>
+				<attrdomv>
+					<edom>
+						<edomv>2</edomv>
+						<edomvd>Grass/Shrub</edomvd>
+					</edom>
+					<edom>
+						<edomv>6</edomv>
+						<edomvd>Road/Railroad</edomvd>
+					</edom>
+					<edom>
+						<edomv>5</edomv>
+						<edomvd>Building</edomvd>
+					</edom>
+					<edom>
+						<edomv>4</edomv>
+						<edomvd>Water</edomvd>
+					</edom>
+					<edom>
+						<edomv>7</edomv>
+						<edomvd>Other Paved Surfaces</edomvd>
+					</edom>
+					<edom>
+						<edomv>3</edomv>
+						<edomvd>Bare Soil</edomvd>
+					</edom>
+					<edom>
+						<edomv>1</edomv>
+						<edomvd>Tree Canopy</edomvd>
+					</edom>
+				</attrdomv>
+			</attr>
+		</detailed>
+		<overview>
+			<eaover>Seven land cover classes were mapped: (1) tree canopy, (2) grass/shrub, (3) bare earth, (4) water, (5) buildings, (6) roads/railroads, and (7) other paved surfaces.</eaover>
+		</overview>
+	</eainfo>
+	<metainfo>
+		<metd>20200204</metd>
+		<metc>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>University of Vermont Spatial Analysis Laboratory</cntorg>
+					<cntper>Jarlath O'Neil-Dunne</cntper>
+				</cntorgp>
+				<cntpos>Director</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>81 Carrigan Drive</address>
+					<address>Aiken Center Room 205</address>
+					<city>Burlington</city>
+					<state>VT</state>
+					<postal>05405</postal>
+					<country>US</country>
+				</cntaddr>
+				<cntvoice>802-656-3324</cntvoice>
+				<cntfax>802-656-8683</cntfax>
+				<cntemail>joneildu@uvm.edu</cntemail>
+			</cntinfo>
+		</metc>
+		<metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+		<metstdv>FGDC-STD-001-1998</metstdv>
+		<mettc>local time</mettc>
+	</metainfo>
+	<distinfo><distrib><cntinfo><cntorgp><cntorg>Pennsylvania Spatial Data Access (PASDA)</cntorg></cntorgp><cntaddr><addrtype>mailing and physical address</addrtype><address>115 Land and Water Building</address><city>University Park</city><state>Pennsylvania</state><postal>16802</postal><country>United States</country></cntaddr><cntvoice>(814) 865 8792</cntvoice><cntemail>pasda@psu.edu</cntemail></cntinfo></distrib><distliab>The USER shall indemnify, save harmless, and, if requested, defend those parties involved with the development and distribution of this data, their officers, agents, and employees from and against any suits, claims, or actions for injury, death, or property damage arising out of the use of or any defect in the FILES or any accompanying documentation. Those parties involved with the development and distribution excluded any and all implied warranties, including warranties or merchantability and fitness for a particular purpose and makes no warranty or representation, either express or implied, with respect to the FILES or accompanying documentation, including its quality, performance, merchantability, or fitness for a particular purpose. The FILES and documentation are provided "as is" and the USER assumes the entire risk as to its quality and performance. Those parties involved with the development and distribution of this data will not be liable for any direct, indirect, special, incidental, or consequential damages arising out of the use or inability to use the FILES or any accompanying documentation.</distliab></distinfo></metadata>
