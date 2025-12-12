@@ -1,0 +1,9 @@
+Scenario,Mean,Median,Std Dev,High Shade %
+Summer Morning,0.430,0.433,0.262,16.0%
+Summer Midday,0.332,0.400,0.226,3.0%
+Summer Evening,0.388,0.405,0.246,9.3%
+Winter Morning,0.453,0.453,0.268,18.5%
+Winter Midday,0.425,0.428,0.262,15.4%
+Winter Evening,0.252,0.400,0.193,0.0%
+Spring Midday,0.385,0.408,0.251,9.6%
+Fall Midday,0.380,0.405,0.249,9.2%

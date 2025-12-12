@@ -1,0 +1,11 @@
+,,shortest_shade,shortest_shade,shadiest_shade,shadiest_shade,shade_improvement,shade_improvement,length_increase_pct,length_increase_pct,efficiency
+,,mean,std,mean,std,mean,std,mean,std,mean
+season,time_of_day,,,,,,,,,
+Fall,Midday (12 PM),0.444,0.145,0.614,0.077,0.17,0.069,1.286,0.817,0.106
+Spring,Midday (12 PM),0.455,0.146,0.624,0.077,0.169,0.069,1.246,0.749,0.105
+Summer,Evening (5 PM),0.413,0.172,0.639,0.019,0.226,0.184,1.108,1.152,1.161
+Summer,Midday (12 PM),0.34,0.156,0.541,0.038,0.201,0.119,1.34,0.898,0.137
+Summer,Morning (8 AM),0.535,0.074,0.733,0.051,0.198,0.124,1.057,1.181,0.952
+Winter,Evening (5 PM),0.275,0.15,0.384,0.003,0.109,0.15,0.237,0.141,0.27
+Winter,Midday (12 PM),0.486,0.1,0.677,0.055,0.191,0.09,1.634,1.475,0.123
+Winter,Morning (8 AM),0.48,0.21,0.622,0.084,0.142,0.126,1.209,0.805,0.113
