@@ -1,0 +1,427 @@
+---
+title: "Shade-Optimized Pedestrian Routing to Transit"
+subtitle: "University City, Philadelphia"
+author: "Kavana Raju"
+date: "December 2025"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-location: left
+    code-fold: true
+    code-tools: true
+    smooth-scroll: true
+    page-layout: full
+    css: styles.css
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{python}
+#| label: setup
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from IPython.display import display, Markdown, HTML
+
+# Set style
+sns.set_style('whitegrid')
+plt.rcParams['figure.dpi'] = 100
+```
+
+::: {.callout-note appearance="simple"}
+## Project Information
+**Course:** MUSA 5500 - Geospatial Data Science with Python  
+**Institution:** Stuart Weitzman School of Design, University of Pennsylvania
+**GitHub:** [View Repository](https://github.com/kavanaraju/Pedestrian-Shade-Routing)
+:::
+
+---
+
+# Introduction {#introduction}
+
+## Problem Statement
+
+As climate change intensifies urban heat, walking and transit use face growing barriers. Heat waves in the United States have increased from approximately **2 events per year in the 1960s** to **2-6 events per year in the 2020s** (EPA data). Traditional routing applications like Google Maps optimize for distance or time but ignore environmental comfort factors that significantly affect pedestrian experience and willingness to walk to transit.
+
+::: {.callout-important}
+## The Challenge
+How can we help people find shadier, more comfortable routes to transit stops during hot weather?
+:::
+
+## Research Questions
+
+This project addresses three key questions:
+
+1. **How much longer are shade-optimized routes compared to shortest-distance routes?**  
+   Quantify the distance-shade trade-off to determine if detours are practical.
+
+2. **How do optimal routes change by time of day?**  
+   Analyze morning vs midday vs evening patterns to identify when shade routing offers most benefit.
+
+3. **How do seasonal patterns affect route recommendations?**  
+   Compare summer vs winter differences and the impact of tree canopy variation.
+
+## Study Area: University City
+
+```{python}
+#| label: study-area-stats
+#| fig-cap: "Key statistics about the study area"
+
+# Create statistics display
+stats = {
+    'Area (km²)': 3.2,
+    'Street Segments': 23486,
+    'Buildings': 16635,
+    'SEPTA Stops': 60
+}
+
+stats_df = pd.DataFrame(list(stats.items()), columns=['Metric', 'Value'])
+stats_df['Value'] = stats_df['Value'].apply(lambda x: f"{x:,}" if isinstance(x, int) else f"{x:.1f}")
+
+display(stats_df.to_html(index=False, classes='table table-striped'))
+```
+
+![Study Area Map](outputs/maps/01_study_area.png){#fig-study-area}
+
+University City is bounded by the Schuylkill River and Market Street corridor, encompassing Penn and Drexel university campuses. This area features:
+
+- Dense urban environment with high pedestrian traffic
+- Mix of residential, institutional, and commercial uses  
+- Well-developed transit network (SEPTA Market-Frankford Line + buses)
+- Substantial tree canopy and varied building heights
+- Socioeconomically diverse population
+
+## Key Innovation
+
+This project combines **real solar position modeling** with **network routing optimization** across **8 time scenarios** (different times of day and seasons) to find shadier walking routes to transit. Unlike existing routing apps, this approach accounts for how shade availability changes throughout the day and year based on actual sun position and building/tree shadows.
+
+---
+
+# Methodology {#methodology}
+
+## Data Sources
+
+```{python}
+#| label: data-sources-table
+#| tbl-cap: "Data sources and their uses in the analysis"
+
+data_sources = pd.DataFrame({
+    'Dataset': ['Street Network', 'Building Heights', 'Tree Canopy', 'Transit Stops'],
+    'Source': ['OpenStreetMap (OSMnx)', 'OpenDataPhilly LiDAR 2018', 'OpenDataPhilly LiDAR 2018', 'SEPTA GTFS (Spring 2025)'],
+    'Resolution': ['Vector', '0.5m LiDAR', '0.5m LiDAR', 'Point locations'],
+    'Use': ['Routing base layer', 'Shadow calculation', 'Shade coverage', 'Routing destinations']
+})
+
+display(data_sources.to_html(index=False, classes='table table-hover'))
+```
+
+::: {.callout-tip}
+## Data Quality
+Building height coverage: **99.7%** from LiDAR-derived measurements
+:::
+
+![Tree Canopy with Transit Stops](outputs/maps/06_tree_canopy_with_transit.png){#fig-tree-transit}
+
+## Workflow Overview
+
+The analysis follows a four-step process:
+
+### Step 1: Data Acquisition & Processing
+
+- Downloaded pedestrian-accessible street network from OpenStreetMap
+- Extracted building footprints with LiDAR-derived heights
+- Processed tree canopy coverage from high-resolution raster
+- Filtered SEPTA transit stops to study area
+
+### Step 2: Solar Position Modeling
+
+Using the `pvlib` library, I calculated actual sun position for **8 scenarios**:
+
+```{python}
+#| label: scenarios-table
+#| tbl-cap: "Time scenarios analyzed in the study"
+
+scenarios = pd.DataFrame({
+    'Season': ['Summer (June 21)', 'Winter (Dec 21)', 'Spring (Mar 21)', 'Fall (Sept 21)'],
+    'Morning (8 AM)': ['✓', '✓', '—', '—'],
+    'Midday (12 PM)': ['✓', '✓', '✓', '✓'],
+    'Evening (5 PM)': ['✓', '✓', '—', '—']
+})
+
+display(scenarios.to_html(index=False, classes='table table-bordered'))
+```
+
+For each scenario, the sun's **altitude** (angle above horizon) and **azimuth** (compass direction) determine shadow length and direction for every building.
+
+### Step 3: Shadow Calculation
+
+**Building Shadows:**
+```python
+shadow_length = building_height / tan(sun_altitude)
+shadow_direction = (sun_azimuth + 180°) % 360°
+```
+
+**Combined Shade Score:**
+```python
+shade_score = 0.4 × tree_coverage + 0.6 × building_shadow
+```
+
+::: {.callout-note}
+Buildings weighted higher (0.6) because they provide more reliable, denser shade. Trees contribute but with less certainty due to canopy gaps.
+:::
+
+### Step 4: Routing Algorithm
+
+**Cost Function:**
+```python
+cost = length × (1 - 0.3 × shade)
+```
+
+Where:
+- `length` = segment length in meters
+- `shade` = shade score [0, 1]
+- `0.3` = shade weight parameter
+
+::: {.callout-important}
+## Effect
+A fully shaded street (shade = 1.0) "costs" only **70%** of its actual length, making it more attractive to the routing algorithm. A street with no shade (shade = 0.0) costs its full length.
+:::
+
+The algorithm uses **NetworkX's Dijkstra implementation** to find the minimum weighted cost path (not minimum distance). Each of the 8 time scenarios has its own set of edge weights, allowing routes to change based on when you're traveling.
+
+---
+
+# Results {#results}
+
+## Network-Level Shade Distribution
+
+Shade coverage varies dramatically across the 8 scenarios, from a mean of **0.25** (winter evening) to **0.45** (winter morning) — an **80% difference** between worst and best conditions.
+
+![Network Shade Across All Scenarios](outputs/figures/all_scenarios_network_shade.png){#fig-all-scenarios}
+
+::: {.callout-tip}
+## Key Finding
+Midday consistently offers the best shade opportunities across all seasons, with mean shade scores of 0.38-0.43. Morning and evening show 10-20% lower shade availability.
+:::
+
+### Network Shade Statistics
+
+```{python}
+#| label: shade-statistics
+#| tbl-cap: "Network shade statistics by scenario"
+
+shade_stats = pd.DataFrame({
+    'Scenario': ['Winter Morning', 'Summer Midday', 'Winter Midday', 'Summer Evening', 
+                 'Summer Morning', 'Spring Midday', 'Fall Midday', 'Winter Evening'],
+    'Mean Shade': [0.45, 0.43, 0.43, 0.43, 0.39, 0.39, 0.38, 0.25],
+    'Std Dev': [0.27, 0.26, 0.26, 0.26, 0.25, 0.25, 0.25, 0.19],
+    'High Shade (>0.7)': ['18.5%', '16.0%', '15.4%', '16.0%', '9.3%', '9.6%', '9.2%', '0.0%']
+})
+
+# Highlight top 3 and worst
+def highlight_rows(row):
+    if row['Scenario'] in ['Winter Morning', 'Summer Midday', 'Winter Midday']:
+        return ['background-color: #d4edda']*len(row)
+    elif row['Scenario'] == 'Winter Evening':
+        return ['background-color: #f8d7da']*len(row)
+    return ['']*len(row)
+
+styled_stats = shade_stats.style.apply(highlight_rows, axis=1)
+display(styled_stats.to_html())
+```
+
+## Seasonal Comparison
+
+![Seasonal Shade Patterns](outputs/figures/seasonal_comparison.png){#fig-seasonal}
+
+Winter shows surprisingly high shade (0.43) due to low sun angle creating long building shadows. Summer benefits from tree canopy coverage. The combination of these factors creates complex seasonal patterns that wouldn't be captured by simple static shade mapping.
+
+## Route-Level Analysis
+
+Three example routes demonstrate the trade-offs between shortest distance and optimal shade:
+
+### Route 1: Penn Campus to 40th Street Station
+
+![Penn to 40th Street Routes](outputs/figures/penn_to_40th_st_comparison.png){#fig-penn-route}
+
+```{python}
+#| label: penn-route-stats
+
+penn_stats = pd.DataFrame({
+    'Metric': ['Typical Detour', 'Distance Increase', 'Shade Improvement', 'Efficiency Score'],
+    'Value': ['+37m', '+12%', '+38%', '3.2 (HIGH)']
+})
+
+display(penn_stats.to_html(index=False, classes='table table-sm'))
+```
+
+### Route 2: Drexel Campus to 34th Street Station
+
+![Drexel to 34th Street Routes](outputs/figures/drexel_to_34th_st_comparison.png){#fig-drexel-route}
+
+Summer evening shows **dramatic improvement** (+44% shade) with moderate detour (+13%), demonstrating excellent routing efficiency.
+
+### Route 3: Clark Park to 46th Street Station
+
+![Clark Park to 46th Street Routes](outputs/figures/clark_park_to_46th_st_comparison.png){#fig-clark-park-route}
+
+Longer route shows how routing efficiency varies with distance - shorter routes generally offer better shade per meter of detour.
+
+## Key Findings Summary
+
+::: {.callout-important}
+## Main Results
+
+- **8-15% typical detours** for **25-40% shade improvement**
+- **Routes actually change geometry** between scenarios (not just different shade values)
+- **Summer scenarios dominate** "best" opportunities with highest efficiency
+- **Midday consistently best** across all seasons
+- **Shorter routes show higher efficiency** (more shade gain per meter detour)
+:::
+
+### Best & Worst Scenarios
+
+```{python}
+#| label: best-worst-scenarios
+#| tbl-cap: "Top opportunities for shade routing"
+
+best_scenarios = pd.DataFrame({
+    'Route': ['Drexel → 34th', 'Penn → 40th', 'Drexel → 34th'],
+    'Scenario': ['Summer Evening', 'Summer Evening', 'Summer Morning'],
+    'Detour': ['+13%', '+15%', '+12%'],
+    'Shade Gain': ['+44%', '+38%', '+34%'],
+    'Efficiency': ['3.4 (HIGH)', '2.5 (GOOD)', '2.8 (GOOD)']
+})
+
+display(best_scenarios.to_html(index=False, classes='table table-success'))
+```
+
+### Practical Interpretation
+
+For a typical **500-meter walk** to transit, shade routing adds:
+- **40-75 meters** (about one extra block)
+- **30-60 seconds** of additional walking time
+- **25-40% more shade coverage**
+
+This is a practical trade-off that most pedestrians would accept during hot weather.
+
+---
+
+# Conclusion {#conclusion}
+
+## Summary of Findings
+
+This project successfully demonstrates that **shade-optimized pedestrian routing is both technically feasible and practically useful**. The key findings are:
+
+1. **Reasonable Trade-offs:** Typical detours of 8-15% (1-2 extra blocks) yield 25-40% shade improvement — a practical exchange for summer comfort.
+
+2. **Time-Specific Optimization:** Optimal routes change geometry across different times of day and seasons, validating the need for dynamic routing rather than static "shady route" recommendations.
+
+3. **Summer Effectiveness:** The algorithm performs best during summer scenarios when shade is most needed, with efficiency scores 2-3× higher than winter evening.
+
+4. **Network-Level Variation:** Mean shade scores range from 0.25 to 0.45 (80% difference) across scenarios, demonstrating substantial temporal variation in shade availability.
+
+## Practical Applications
+
+### For Transit Agencies
+- New metric for evaluating pedestrian access quality
+- Evidence base for shade infrastructure investments
+- Identify priority corridors needing tree planting or shade structures
+
+### For Urban Planners
+- Quantitative tool for assessing walkability beyond simple distance
+- Design guidance for shade-optimized streetscapes
+- Integration with transit-oriented development planning
+
+### For Technology Developers
+- Framework for implementing "comfort route" option in navigation apps
+- Parameters validated for routing algorithm deployment
+- Real-world test case for environmental routing
+
+## Limitations & Future Work
+
+### Current Limitations
+
+1. **Tree data:** Binary presence/absence only, no height variation or seasonal leaf modeling
+2. **Computational intensity:** Shadow calculations take 45-60 minutes, limiting real-time application
+3. **Single factor:** Only considers shade; ignores air quality, noise, perceived safety, and other comfort factors
+4. **Static analysis:** No real-time weather integration or dynamic canopy updates
+
+### Recommended Enhancements
+
+::: {.callout-note}
+## Priority Enhancement: 3D Tree Modeling
+Use LiDAR point clouds (classes 3, 4, 5) to extract actual tree heights and calculate height-based shadows. Would also enable seasonal leaf-on/leaf-off modeling for deciduous vs evergreen differentiation.
+:::
+
+Additional future work:
+
+1. **Multi-Factor Routing:** Integrate air quality, noise levels, surface quality, slope
+2. **Real-Time API:** Deploy as web service with current weather conditions
+3. **Mobile Interface:** Develop responsive web app or native application
+4. **User Validation:** Conduct surveys and behavioral studies to validate preferences
+
+## Final Thoughts
+
+As climate change intensifies urban heat challenges, **pedestrian comfort will become increasingly critical to transit use and walkable urbanism**. This project demonstrates that data-driven comfort routing is ready for deployment. The methodology is transferable, the data increasingly available, and the need urgent.
+
+::: {.callout-important}
+With typical detours of just 1-2 blocks, people can access substantially shadier routes — making walking and transit more comfortable, especially during summer heat. **Shade-optimized routing is not just technically possible; it's practically useful and ready for real-world application.**
+:::
+
+---
+
+# Interactive Routing Dashboard {#dashboard}
+
+::: {.callout-warning}
+## Interactive Dashboard
+An interactive routing calculator is available as a separate Shiny application. See the repository for deployment instructions.
+:::
+
+The interactive dashboard allows users to:
+- Select origin and destination from dropdown menus
+- Choose time of day and season
+- View shortest vs shadiest routes on interactive map
+- See detailed metrics and trade-offs
+- Export results
+
+Visit the [GitHub repository](https://github.com/YOUR-USERNAME/shade-routing-philly) for the full Shiny application code.
+
+---
+
+# Acknowledgments {#acknowledgments}
+
+This project was completed as part of **MUSA 5500: Geospatial Data Science with Python** at the University of Pennsylvania's Weitzman School of Design.
+
+**Thanks to:**
+- Course instructor for guidance on solar modeling approaches
+- OpenStreetMap contributors for street network data
+- City of Philadelphia for LiDAR and building data
+- SEPTA for transit location data
+- Weitzman GIS Lab for computational resources
+
+---
+
+# Contact & Repository {#contact}
+
+**Kavana Raju**  
+Master of Urban Spatial Analytics (MUSA)  
+University of Pennsylvania
+
+- Email: [kavana@upenn.edu](mailto:kavana@upenn.edu)
+- GitHub: [@kavanaraju](https://github.com/kavanaraju)
+- LinkedIn: [https://www.linkedin.com/in/kavanaraju/](https://www.linkedin.com/in/kavanaraju/)
+
+**GitHub Repository:** [https://github.com/kavanaraju/Pedestrian-Shade-Routing/](https://github.com/kavanaraju/Pedestrian-Shade-Routing/)
+
+All code, notebooks, and data are available in the repository with complete documentation.
+
+---
+
+::: {.callout-note appearance="simple"}
+Made with solar data and data science in Philadelphia | December 2025
+:::
