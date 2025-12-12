@@ -1,22 +1,53 @@
 project:
   type: website
-  output-dir: docs
+  output-dir: _site
 
 website:
-  title: "UCity Shade Routing"
+  title: "Shade-Optimized Routing"
   navbar:
+    background: primary
+    search: true
     left:
       - text: "Home"
         href: index.qmd
+      - text: "Introduction"
+        href: index.qmd#introduction
       - text: "Methodology"
-        href: methodology.qmd
+        href: index.qmd#methodology
       - text: "Results"
-        href: results.qmd
-      - text: "GitHub"
-        href: https://github.com/kavanaraju/Pedestrian-Shade-Routing
+        href: index.qmd#results
+      - text: "Conclusion"
+        href: index.qmd#conclusion
+      - text: "Dashboard"
+        href: index.qmd#dashboard
+    right:
+      - icon: github
+        href: https://github.com/YOUR-USERNAME/shade-routing-philly
+        text: "GitHub"
+      - icon: envelope
+        href: mailto:your.email@upenn.edu
+        text: "Contact"
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: 
+      light: [cosmo, styles.css]
+      dark: [darkly, styles.css]
     toc: true
+    toc-depth: 3
+    toc-location: left
+    code-fold: true
+    code-tools: true
+    smooth-scroll: true
+    number-sections: false
+    fig-width: 10
+    fig-height: 6
+    df-print: paged
+
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: false
+
+editor: visual
