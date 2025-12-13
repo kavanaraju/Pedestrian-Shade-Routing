@@ -571,14 +571,14 @@
     "href": "interactive.html#how-to-use",
     "title": "Interactive Shade Routing Calculator",
     "section": "How to Use",
-    "text": "How to Use\n\nSelect a scenario from the dropdown menu\n\nSummer Midday, Summer Morning/Evening\nWinter Midday, Winter Morning\nSpring Midday, Fall Midday\n\nClick on the map to set your starting point\n\nA blue marker appears at your origin\n\nClick again to set your destination\n\nA red marker appears at your destination\nRoutes calculate automatically\n\nView both routes:\n\nBlue route: Shortest distance path\nGreen route: Maximum shade path (may be longer)\n\nCompare the trade-offs\n\nDistance difference\nShade coverage improvement\nDetour percentage\n\nTry different scenarios to see how shade availability changes by season and time of day\nClick “Reset” to start over"
+    "text": "How to Use\n\nSelect a scenario from the dropdown menu\n\nSummer Midday, Summer Morning/Evening\nWinter Midday, Winter Morning\nSpring Midday, Fall Midday\n\nClick on the map to set your starting point\n\nA blue marker appears at your origin\n\nClick again to set your destination\n\nA red marker appears at your destination\nRoutes calculate automatically\n\nView both routes:\n\nGreen route: Shortest distance path\nBlue route: Maximum shade path (may be longer)\n\nCompare the trade-offs\n\nDistance difference\nShade coverage improvement\nDetour percentage\n\nTry different scenarios to see how shade availability changes by season and time of day\nClick “Reset” to start over"
   },
   {
     "objectID": "interactive.html#what-youre-seeing",
     "href": "interactive.html#what-youre-seeing",
     "title": "Interactive Shade Routing Calculator",
     "section": "What You’re Seeing",
-    "text": "What You’re Seeing\n\nNetwork Visualization\nThe street network is colored by shade availability:\n\n🔴 Red: 0-20% shade (full sun)\n🟠 Orange: 20-40% shade (minimal shade)\n🟡 Yellow: 40-60% shade (moderate shade)\n🟢 Light Green: 60-80% shade (good shade)\n🟢 Dark Green: 80-100% shade (excellent shade)\n\n\n\nRoute Comparison\nShortest Route (Blue):\n\nMinimizes walking distance\nOptimizes for time efficiency\nMay cross sunny areas\n\nShadiest Route (Green):\n\nMaximizes shade coverage\nBalances shade benefit vs. distance penalty\nUses shade-weighted cost: length × (1 - 0.3 × shade)"
+    "text": "What You’re Seeing\n\nNetwork Visualization\nThe street network is colored by shade availability:\n\nRed: 0-20% shade (full sun)\nOrange: 20-40% shade (minimal shade)\nYellow: 40-60% shade (moderate shade)\nLight Green: 60-80% shade (good shade)\nDark Green: 80-100% shade (excellent shade)\n\n\n\nRoute Comparison\nShortest Route (Pink):\n\nMinimizes walking distance\nOptimizes for time efficiency\nMay cross sunny areas\n\nShadiest Route (Blue):\n\nMaximizes shade coverage\nBalances shade benefit vs. distance penalty\nUses shade-weighted cost: length × (1 - 0.3 × shade)"
   },
   {
     "objectID": "interactive.html#example-scenarios",

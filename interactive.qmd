@@ -28,8 +28,8 @@ Click on the map below to plan shade-optimized routes in University City Philade
    - Routes calculate automatically
 
 4. **View both routes:**
-   - **Blue route**: Shortest distance path
-   - **Green route**: Maximum shade path (may be longer)
+   - **Green route**: Shortest distance path
+   - **Blue route**: Maximum shade path (may be longer)
 
 5. **Compare the trade-offs**
    - Distance difference
@@ -48,21 +48,21 @@ Click on the map below to plan shade-optimized routes in University City Philade
 
 The street network is colored by shade availability:
 
-- 🔴 **Red**: 0-20% shade (full sun)
-- 🟠 **Orange**: 20-40% shade (minimal shade)
-- 🟡 **Yellow**: 40-60% shade (moderate shade)
-- 🟢 **Light Green**: 60-80% shade (good shade)
-- 🟢 **Dark Green**: 80-100% shade (excellent shade)
+- **Red**: 0-20% shade (full sun)
+- **Orange**: 20-40% shade (minimal shade)
+- **Yellow**: 40-60% shade (moderate shade)
+- **Light Green**: 60-80% shade (good shade)
+- **Dark Green**: 80-100% shade (excellent shade)
 
 ### Route Comparison
 
-**Shortest Route (Blue):**
+**Shortest Route (Pink):**
 
 - Minimizes walking distance
 - Optimizes for time efficiency
 - May cross sunny areas
 
-**Shadiest Route (Green):**
+**Shadiest Route (Blue):**
 
 - Maximizes shade coverage
 - Balances shade benefit vs. distance penalty
