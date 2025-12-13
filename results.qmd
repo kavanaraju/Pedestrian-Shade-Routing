@@ -134,11 +134,11 @@ The network transforms from green (high shade) to red (low shade) depending on s
 
 **Color Legend:**
 
-- 🔴 **Red (0-20%):** "Shade Deserts" - Priority intervention areas
-- 🟠 **Orange (20-40%):** Low shade - Tree planting candidates
-- 🟡 **Yellow (40-60%):** Moderate shade
-- 🟢 **Light Green (60-80%):** High shade - Recommended routes
-- 🟢 **Dark Green (80-100%):** Excellent shade - Ideal conditions
+-  **Red (0-20%):** "Shade Deserts" - Priority intervention areas
+-  **Orange (20-40%):** Low shade - Tree planting candidates
+-  **Yellow (40-60%):** Moderate shade
+-  **Light Green (60-80%):** High shade - Recommended routes
+-  **Dark Green (80-100%):** Excellent shade - Ideal conditions
 
 ---
 
