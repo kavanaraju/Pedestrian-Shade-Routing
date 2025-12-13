@@ -185,39 +185,27 @@ The network transforms from green (high shade) to red (low shade) depending on s
 1. **Market Street**
    - Mean summer shade: **15-20%**
    - Issues: Wide ROW (80+ ft), sparse young trees
-   - Traffic: Highest pedestrian volume
-   - **Priority 1:** Add 100+ large-canopy trees
-   - **Cost:** ~$30,000 investment
-   - **Impact:** 15,000+ daily pedestrians
+   - **Priority 1:** Add large-canopy trees
 
 2. **Chestnut Street**
    - Mean summer shade: **18-22%**
    - Issues: Limited tree canopy, commercial focus
    - **Priority 2:** Tree pit expansion program
-   - **Cost:** ~$15,000 for 50 trees
-   - **Impact:** Major commercial corridor improvement
 
 3. **University Avenue**
    - Mean summer shade: **12-18%**
    - Issues: Recent construction, immature trees
    - **Priority 3:** Temporary shade structures + irrigation
-   - **Cost:** ~$10,000 interim solutions
-   - **Timeline:** Trees need 10-15 years to mature
 
 4. **Walnut Street (plaza areas)**
    - Mean summer shade: **20-25%**
    - Issues: Building setbacks, intentional openness
    - **Priority 4:** Seasonal shade structures
-   - **Cost:** ~$8,000 portable installations
 
 5. **Baltimore Avenue**
    - Mean summer shade: **22-28%**
    - Issues: Wide street, inconsistent tree coverage
-   - **Priority 5:** Infill tree planting (30 trees)
-   - **Cost:** ~$9,000
-
-**Total Investment for Top 5:** ~$72,000  
-**Expected Benefit:** Shade improvement for 25,000+ daily pedestrians
+   - **Priority 5:** Infill tree planting
 
 ---
 
@@ -332,32 +320,6 @@ Across all analyzed routes:
 
 ---
 
-## Heat Vulnerability Analysis
-
-### Estimated Pedestrian Exposure
-
-**Summer Midday (Current State):**
-
-- 75.8% of segments have <50% shade
-- ~30,000 daily pedestrians in low-shade areas
-- Estimated heat exposure: 20,000+ person-hours/day
-
-**After Full Implementation (Scenario C):**
-
-- Projected: 50% reduction in heat exposure
-- ~10,000 person-hours/day saved
-- Health benefits: Reduced heat illness, improved comfort
-
-**Economic Value:**
-
-- Avoided heat-related illness: ~$50k-100k/year
-- Productivity benefits: ~$200k/year (reduced heat stress)
-- Property value uplift: ~$2-5M (tree canopy premium)
-
-**Return on investment:** 3-5 years payback period
-
----
-
 ## Future Work & Limitations
 
 ### Current Limitations
@@ -406,9 +368,8 @@ Across all analyzed routes:
 
 **Clear investment priorities identified:**
 
-- Market Street needs urgent intervention ($30k)
-- Quick-win shade structures provide immediate benefit ($50k)
-- Network-wide program achievable at reasonable cost ($500k over 5 years)
+- Quick-win shade structures provide immediate benefit
+- Network-wide program achievable at reasonable cost
 - Strong ROI through health, comfort, and economic benefits
 
 ---
@@ -430,7 +391,7 @@ Across all analyzed routes:
 
 The **2.5x variation in shade availability** between seasons and times of day creates clear opportunities for temporally-adaptive routing strategies. The **identified shade deserts** (Market St, Chestnut St) represent focused intervention opportunities with high impact potential.
 
-**Investment of $225k over 3 years** targeting high-priority corridors can provide **measurable thermal comfort improvement for 20,000+ daily pedestrians**, with strong return on investment through health benefits and economic productivity.
+**Investments** targeting high-priority corridors can provide **measurable thermal comfort improvement for pedestrians**, with strong return on investment through health benefits and economic productivity.
 
 **This work provides the foundation for heat-resilient urban mobility** in Philadelphia and serves as a model for other cities facing rising temperatures.
 
