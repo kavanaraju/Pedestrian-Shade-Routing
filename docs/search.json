@@ -305,14 +305,14 @@
     "href": "interactive.html",
     "title": "Interactive Shade Routing Calculator",
     "section": "",
-    "text": "This interactive map allows you to calculate shade-optimized routes between any two points in University City Philadelphia.\n\n\n\nClick anywhere on the map to set your starting point (origin)\nClick again to set your destination\nView both the shortest route (blue) and shadiest route (green)\nCompare distance vs. shade trade-offs\nSwitch scenarios to see seasonal/temporal variations\n\n\n\n\n\n✓ Real-time route calculation (runs in your browser!)\n✓ Click-to-select interface\n✓ Shortest vs. shadiest route comparison\n✓ 8 temporal scenarios (summer, winter, morning, evening)\n✓ Detailed metrics (distance, shade, detour %)\n\n\n\n\n📍 Interactive Map Coming Soon\n\n\nThe interactive routing calculator will be embedded here after Notebook 5 data preparation completes.\n\n\nFor now, you can explore the static route comparisons in the Results section."
+    "text": "Click on the map below to plan shade-optimized routes in University City Philadelphia."
   },
   {
     "objectID": "interactive.html#calculate-your-own-routes",
     "href": "interactive.html#calculate-your-own-routes",
     "title": "Interactive Shade Routing Calculator",
     "section": "",
-    "text": "This interactive map allows you to calculate shade-optimized routes between any two points in University City Philadelphia.\n\n\n\nClick anywhere on the map to set your starting point (origin)\nClick again to set your destination\nView both the shortest route (blue) and shadiest route (green)\nCompare distance vs. shade trade-offs\nSwitch scenarios to see seasonal/temporal variations\n\n\n\n\n\n✓ Real-time route calculation (runs in your browser!)\n✓ Click-to-select interface\n✓ Shortest vs. shadiest route comparison\n✓ 8 temporal scenarios (summer, winter, morning, evening)\n✓ Detailed metrics (distance, shade, detour %)\n\n\n\n\n📍 Interactive Map Coming Soon\n\n\nThe interactive routing calculator will be embedded here after Notebook 5 data preparation completes.\n\n\nFor now, you can explore the static route comparisons in the Results section."
+    "text": "Click on the map below to plan shade-optimized routes in University City Philadelphia."
   },
   {
     "objectID": "interactive.html#how-it-works",
@@ -565,5 +565,47 @@
     "title": "Notebook 5: Web Data Preparation",
     "section": "10. Summary and Next Steps",
     "text": "10. Summary and Next Steps\n\nprint(\"\\n\" + \"=\"*70)\nprint(\"WEB DATA PREPARATION COMPLETE\")\nprint(\"=\"*70)\n\nprint(f\"\\nOutput Directory: {output_dir.absolute()}\")\nprint(f\"\\nFiles Created:\")\nprint(f\"  • nodes.json:     {nodes_size:.2f} MB ({len(nodes_data):,} nodes)\")\nprint(f\"  • edges.json:     {edges_size:.2f} MB ({len(edges_data):,} edges)\")\nprint(f\"  • stops.json:     {stops_size:.2f} MB ({len(stops_data)} stops)\")\nprint(f\"  • metadata.json:  {metadata_size:.2f} KB\")\nprint(f\"\\n  Total: {nodes_size + edges_size + stops_size:.2f} MB\")\n\nprint(f\"\\nData Includes:\")\nprint(f\"  • {len(scenarios)} temporal scenarios\")\nprint(f\"  • Shade scores for all street segments\")\nprint(f\"  • Network structure for routing\")\nprint(f\"  • Transit stop locations\")\n\nprint(f\"\\nNext Steps:\")\nprint(f\"  1. Copy website/data/ folder to your web hosting\")\nprint(f\"  2. Deploy React application with InteractiveShadeRouting component\")\nprint(f\"  3. Configure web server to serve compressed .gz files\")\nprint(f\"  4. Test routing functionality\")\n\nprint(f\"\\nPerformance Tips:\")\nif edges_size &gt; 20:\n    print(f\"  ⚠ edges.json is {edges_size:.1f} MB - consider:\")\n    print(f\"    • Using .gz compressed version\")\n    print(f\"    • Implementing lazy loading\")\n    print(f\"    • Adding loading progress indicator\")\nelse:\n    print(f\"  ✓ File sizes are reasonable for web loading\")\n\nprint(f\"\\nReady for Interactive Web Application!\")\nprint(\"=\"*70)"
+  },
+  {
+    "objectID": "interactive.html#how-to-use",
+    "href": "interactive.html#how-to-use",
+    "title": "Interactive Shade Routing Calculator",
+    "section": "How to Use",
+    "text": "How to Use\n\nSelect a scenario from the dropdown menu\n\nSummer Midday, Summer Morning/Evening\nWinter Midday, Winter Morning\nSpring Midday, Fall Midday\n\nClick on the map to set your starting point\n\nA blue marker appears at your origin\n\nClick again to set your destination\n\nA red marker appears at your destination\nRoutes calculate automatically\n\nView both routes:\n\nBlue route: Shortest distance path\nGreen route: Maximum shade path (may be longer)\n\nCompare the trade-offs\n\nDistance difference\nShade coverage improvement\nDetour percentage\n\nTry different scenarios to see how shade availability changes by season and time of day\nClick “Reset” to start over"
+  },
+  {
+    "objectID": "interactive.html#what-youre-seeing",
+    "href": "interactive.html#what-youre-seeing",
+    "title": "Interactive Shade Routing Calculator",
+    "section": "What You’re Seeing",
+    "text": "What You’re Seeing\n\nNetwork Visualization\nThe street network is colored by shade availability: - 🔴 Red: 0-20% shade (full sun) - 🟠 Orange: 20-40% shade (minimal shade) - 🟡 Yellow: 40-60% shade (moderate shade) - 🟢 Light Green: 60-80% shade (good shade) - 🟢 Dark Green: 80-100% shade (excellent shade)\n\n\nRoute Comparison\nShortest Route (Blue): - Minimizes walking distance - Optimizes for time efficiency - May cross sunny areas\nShadiest Route (Green): - Maximizes shade coverage - Balances shade benefit vs. distance penalty - Uses shade-weighted cost: length × (1 - 0.3 × shade)"
+  },
+  {
+    "objectID": "interactive.html#example-scenarios",
+    "href": "interactive.html#example-scenarios",
+    "title": "Interactive Shade Routing Calculator",
+    "section": "Example Scenarios",
+    "text": "Example Scenarios\n\nHot Summer Afternoon\nScenario: Summer Midday (sun at 68.9° altitude) - Shadows are short - Shade is scarce - Shadiest route provides significant thermal comfort improvement - Typical detour: 10-15% longer\n\n\nCool Winter Morning\nScenario: Winter Morning (sun at 14.2° altitude) - Shadows are very long - Shade is abundant - Shadiest route often similar to shortest - Typical detour: 5-10% longer"
+  },
+  {
+    "objectID": "interactive.html#technical-details",
+    "href": "interactive.html#technical-details",
+    "title": "Interactive Shade Routing Calculator",
+    "section": "Technical Details",
+    "text": "Technical Details\n\nPerformance\n\nNetwork size: 23,486 street segments\nRoute calculation: &lt;100ms per route pair\nAlgorithm: Dijkstra’s shortest path\nProcessing: 100% client-side (no server needed)\n\n\n\nData Format\nThe map uses four JSON files: 1. nodes.json - Network intersections (~12,000 nodes) 2. edges.json - Street segments with shade scores 3. scenarios.json - Solar position data for each scenario 4. metadata.json - Map bounds and configuration\n\n\nCost Function\nShortest path:\ncost = length\nShadiest path:\ncost = length × (1 - w × shade)\nwhere w = 0.3 (30% preference for shade)\nA segment with: - 0% shade has cost = length × 1.0 - 50% shade has cost = length × 0.85 - 100% shade has cost = length × 0.7\nThis creates a 30% preference for shade while still prioritizing reasonable distances."
+  },
+  {
+    "objectID": "interactive.html#limitations",
+    "href": "interactive.html#limitations",
+    "title": "Interactive Shade Routing Calculator",
+    "section": "Limitations",
+    "text": "Limitations\n\nStatic data: Based on 2018-2020 LiDAR (tree canopy may have changed)\nClear sky assumed: Does not account for clouds\nNo real-time updates: Shadow positions are pre-calculated for specific dates/times\nSimplified pedestrian comfort: Shade is only one factor (wind, humidity, temperature also matter)\nNetwork completeness: Limited to OpenStreetMap pedestrian paths"
+  },
+  {
+    "objectID": "interactive.html#mobile-use",
+    "href": "interactive.html#mobile-use",
+    "title": "Interactive Shade Routing Calculator",
+    "section": "Mobile Use",
+    "text": "Mobile Use\nThe map works on mobile devices: - Touch to set origin/destination - Pinch to zoom - Swipe to pan - Works offline after initial load\n\n← Back to Results | View Code Implementation →"
   }
 ]

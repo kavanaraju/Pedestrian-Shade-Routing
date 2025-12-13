@@ -1,0 +1,12 @@
+{
+  "bounds": {
+    "south": 39.9449353,
+    "west": -75.229977,
+    "north": 39.96499879999998,
+    "east": -75.1800272
+  },
+  "num_nodes": 7343,
+  "num_edges": 23486,
+  "num_scenarios": 8,
+  "default_scenario": "summer_midday"
+}

@@ -20,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -190,110 +155,113 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="calculate-your-own-routes" class="level2">
 <h2 class="anchored" data-anchor-id="calculate-your-own-routes">Calculate Your Own Routes</h2>
-<p>This interactive map allows you to calculate shade-optimized routes between any two points in University City Philadelphia.</p>
-<section id="how-to-use" class="level3">
-<h3 class="anchored" data-anchor-id="how-to-use">How to Use</h3>
+<p>Click on the map below to plan shade-optimized routes in University City Philadelphia.</p>
+<iframe src="map.html" width="100%" height="700px" style="border: 1px solid #ddd; border-radius: 8px;">
+</iframe>
+<hr>
+</section>
+<section id="how-to-use" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-use">How to Use</h2>
 <ol type="1">
-<li><strong>Click</strong> anywhere on the map to set your starting point (origin)</li>
-<li><strong>Click again</strong> to set your destination</li>
-<li><strong>View</strong> both the shortest route (blue) and shadiest route (green)</li>
-<li><strong>Compare</strong> distance vs.&nbsp;shade trade-offs</li>
-<li><strong>Switch scenarios</strong> to see seasonal/temporal variations</li>
+<li><p><strong>Select a scenario</strong> from the dropdown menu</p>
+<ul>
+<li>Summer Midday, Summer Morning/Evening</li>
+<li>Winter Midday, Winter Morning</li>
+<li>Spring Midday, Fall Midday</li>
+</ul></li>
+<li><p><strong>Click on the map</strong> to set your starting point</p>
+<ul>
+<li>A blue marker appears at your origin</li>
+</ul></li>
+<li><p><strong>Click again</strong> to set your destination</p>
+<ul>
+<li>A red marker appears at your destination</li>
+<li>Routes calculate automatically</li>
+</ul></li>
+<li><p><strong>View both routes:</strong></p>
+<ul>
+<li><strong>Blue route</strong>: Shortest distance path</li>
+<li><strong>Green route</strong>: Maximum shade path (may be longer)</li>
+</ul></li>
+<li><p><strong>Compare the trade-offs</strong></p>
+<ul>
+<li>Distance difference</li>
+<li>Shade coverage improvement</li>
+<li>Detour percentage</li>
+</ul></li>
+<li><p><strong>Try different scenarios</strong> to see how shade availability changes by season and time of day</p></li>
+<li><p><strong>Click “Reset”</strong> to start over</p></li>
 </ol>
-</section>
-<section id="features" class="level3">
-<h3 class="anchored" data-anchor-id="features">Features</h3>
-<ul>
-<li>✓ Real-time route calculation (runs in your browser!)</li>
-<li>✓ Click-to-select interface</li>
-<li>✓ Shortest vs.&nbsp;shadiest route comparison</li>
-<li>✓ 8 temporal scenarios (summer, winter, morning, evening)</li>
-<li>✓ Detailed metrics (distance, shade, detour %)</li>
-</ul>
 <hr>
-<div style="border: 2px solid #667eea; border-radius: 8px; padding: 20px; margin: 20px 0;">
-<p style="text-align: center; font-size: 1.2em; color: #667eea;">
-<strong>📍 Interactive Map Coming Soon</strong>
-</p>
-<p style="text-align: center;">
-The interactive routing calculator will be embedded here after Notebook 5 data preparation completes.
-</p>
-<p style="text-align: center; margin-top: 20px;">
-For now, you can explore the static route comparisons in the <a href="./results.html">Results</a> section.
-</p>
-</div>
+</section>
+<section id="what-youre-seeing" class="level2">
+<h2 class="anchored" data-anchor-id="what-youre-seeing">What You’re Seeing</h2>
+<section id="network-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="network-visualization">Network Visualization</h3>
+<p>The street network is colored by shade availability: - 🔴 <strong>Red</strong>: 0-20% shade (full sun) - 🟠 <strong>Orange</strong>: 20-40% shade (minimal shade) - 🟡 <strong>Yellow</strong>: 40-60% shade (moderate shade) - 🟢 <strong>Light Green</strong>: 60-80% shade (good shade) - 🟢 <strong>Dark Green</strong>: 80-100% shade (excellent shade)</p>
+</section>
+<section id="route-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="route-comparison">Route Comparison</h3>
+<p><strong>Shortest Route (Blue):</strong> - Minimizes walking distance - Optimizes for time efficiency - May cross sunny areas</p>
+<p><strong>Shadiest Route (Green):</strong> - Maximizes shade coverage - Balances shade benefit vs.&nbsp;distance penalty - Uses shade-weighted cost: <code>length × (1 - 0.3 × shade)</code></p>
 <hr>
 </section>
 </section>
-<section id="how-it-works" class="level2">
-<h2 class="anchored" data-anchor-id="how-it-works">How It Works</h2>
-<section id="client-side-routing" class="level3">
-<h3 class="anchored" data-anchor-id="client-side-routing">Client-Side Routing</h3>
-<p>The interactive map implements Dijkstra’s algorithm entirely in JavaScript:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Simplified routing logic</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">calculateRoute</span>(origin<span class="op">,</span> destination<span class="op">,</span> scenario<span class="op">,</span> useShade) {</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cost <span class="op">=</span> (edge) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (useShade) {</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> edge<span class="op">.</span><span class="at">length</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> <span class="fl">0.3</span> <span class="op">*</span> edge<span class="op">.</span><span class="at">shade</span>[scenario])<span class="op">;</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> edge<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">dijkstra</span>(graph<span class="op">,</span> origin<span class="op">,</span> destination<span class="op">,</span> cost)<span class="op">;</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="example-scenarios" class="level2">
+<h2 class="anchored" data-anchor-id="example-scenarios">Example Scenarios</h2>
+<section id="hot-summer-afternoon" class="level3">
+<h3 class="anchored" data-anchor-id="hot-summer-afternoon">Hot Summer Afternoon</h3>
+<p><strong>Scenario:</strong> Summer Midday (sun at 68.9° altitude) - Shadows are short - Shade is scarce - Shadiest route provides significant thermal comfort improvement - Typical detour: 10-15% longer</p>
 </section>
-<section id="data-format" class="level3">
-<h3 class="anchored" data-anchor-id="data-format">Data Format</h3>
-<p>The map uses pre-processed network data (from Notebook 5):</p>
-<ul>
-<li><strong>nodes.json</strong> - Network intersections with coordinates</li>
-<li><strong>edges.json</strong> - Street segments with shade scores for all scenarios</li>
-<li><strong>stops.json</strong> - SEPTA station locations</li>
-<li><strong>metadata.json</strong> - Scenario information and bounds</li>
-</ul>
+<section id="cool-winter-morning" class="level3">
+<h3 class="anchored" data-anchor-id="cool-winter-morning">Cool Winter Morning</h3>
+<p><strong>Scenario:</strong> Winter Morning (sun at 14.2° altitude) - Shadows are very long - Shade is abundant - Shadiest route often similar to shortest - Typical detour: 5-10% longer</p>
+<hr>
 </section>
+</section>
+<section id="technical-details" class="level2">
+<h2 class="anchored" data-anchor-id="technical-details">Technical Details</h2>
 <section id="performance" class="level3">
 <h3 class="anchored" data-anchor-id="performance">Performance</h3>
 <ul>
-<li>Network size: 23,486 edges</li>
-<li>Route calculation: &lt;100ms</li>
-<li>No backend required (all processing client-side)</li>
-<li>Works offline after initial data load</li>
+<li><strong>Network size:</strong> 23,486 street segments</li>
+<li><strong>Route calculation:</strong> &lt;100ms per route pair</li>
+<li><strong>Algorithm:</strong> Dijkstra’s shortest path</li>
+<li><strong>Processing:</strong> 100% client-side (no server needed)</li>
 </ul>
+</section>
+<section id="data-format" class="level3">
+<h3 class="anchored" data-anchor-id="data-format">Data Format</h3>
+<p>The map uses four JSON files: 1. <strong>nodes.json</strong> - Network intersections (~12,000 nodes) 2. <strong>edges.json</strong> - Street segments with shade scores 3. <strong>scenarios.json</strong> - Solar position data for each scenario 4. <strong>metadata.json</strong> - Map bounds and configuration</p>
+</section>
+<section id="cost-function" class="level3">
+<h3 class="anchored" data-anchor-id="cost-function">Cost Function</h3>
+<p><strong>Shortest path:</strong></p>
+<pre><code>cost = length</code></pre>
+<p><strong>Shadiest path:</strong></p>
+<pre><code>cost = length × (1 - w × shade)
+where w = 0.3 (30% preference for shade)</code></pre>
+<p>A segment with: - 0% shade has cost = length × 1.0 - 50% shade has cost = length × 0.85 - 100% shade has cost = length × 0.7</p>
+<p>This creates a 30% preference for shade while still prioritizing reasonable distances.</p>
 <hr>
 </section>
 </section>
-<section id="example-use-cases" class="level2">
-<h2 class="anchored" data-anchor-id="example-use-cases">Example Use Cases</h2>
-<section id="use-case-1-daily-commute" class="level3">
-<h3 class="anchored" data-anchor-id="use-case-1-daily-commute">Use Case 1: Daily Commute</h3>
-<p><strong>Scenario:</strong> Walking from home to 40th St Station in summer</p>
-<p><strong>Input:</strong> - Origin: 3900 Spruce St - Destination: 40th St Station - Scenario: Summer Midday</p>
-<p><strong>Output:</strong> - Shortest: 780m, 9 min walk, 0.25 average shade - Shadiest: 850m (+9%), 10 min walk (+1 min), 0.42 average shade (+68%)</p>
-<p><strong>Decision:</strong> Worth the extra minute for significantly more shade on a hot day!</p>
-<hr>
-</section>
-<section id="use-case-2-visitor-navigation" class="level3">
-<h3 class="anchored" data-anchor-id="use-case-2-visitor-navigation">Use Case 2: Visitor Navigation</h3>
-<p><strong>Scenario:</strong> Tourist walking to Penn Museum</p>
-<p><strong>Input:</strong> - Origin: 30th Street Station - Destination: Penn Museum - Scenario: Summer Afternoon</p>
-<p><strong>Output:</strong> - Routes calculated with shade optimization - Recommends walking through campus (more trees) rather than Market St</p>
-<hr>
-</section>
-</section>
-<section id="technical-implementation" class="level2">
-<h2 class="anchored" data-anchor-id="technical-implementation">Technical Implementation</h2>
-<p>The interactive map uses:</p>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
 <ul>
-<li><strong>Leaflet.js</strong> for mapping</li>
-<li><strong>Turf.js</strong> for geospatial operations</li>
-<li><strong>Custom Dijkstra</strong> implementation in JavaScript</li>
-<li><strong>React</strong> (optional) for UI components</li>
+<li><strong>Static data:</strong> Based on 2018-2020 LiDAR (tree canopy may have changed)</li>
+<li><strong>Clear sky assumed:</strong> Does not account for clouds</li>
+<li><strong>No real-time updates:</strong> Shadow positions are pre-calculated for specific dates/times</li>
+<li><strong>Simplified pedestrian comfort:</strong> Shade is only one factor (wind, humidity, temperature also matter)</li>
+<li><strong>Network completeness:</strong> Limited to OpenStreetMap pedestrian paths</li>
 </ul>
-<p>Full code available in project repository.</p>
 <hr>
-<p><a href="./results.html">← Back to Results</a> | <a href="./appendix.html">View Technical Details →</a></p>
+</section>
+<section id="mobile-use" class="level2">
+<h2 class="anchored" data-anchor-id="mobile-use">Mobile Use</h2>
+<p>The map works on mobile devices: - Touch to set origin/destination - Pinch to zoom - Swipe to pan - Works offline after initial load</p>
+<hr>
+<p><a href="./results.html">← Back to Results</a> | <a href="./appendix.html">View Code Implementation →</a></p>
 
 
 </section>
