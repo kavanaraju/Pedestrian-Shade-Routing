@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Map Data Debug Tool</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        #status {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        #map {
+            height: 500px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border-left: 4px solid #ccc;
+        }
+        
+        .error {
+            background: #ffebee;
+            border-left-color: #f44336;
+            color: #c62828;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+            color: #2e7d32;
+        }
+        
+        .warning {
+            background: #fff3e0;
+            border-left-color: #ff9800;
+            color: #e65100;
+        }
+        
+        .info {
+            background: #e3f2fd;
+            border-left-color: #2196f3;
+            color: #1565c0;
+        }
+        
+        .code {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        h3 {
+            margin-top: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Map Data Debug Tool</h1>
+    <p>This tool will test your map data files and show you exactly what's wrong.</p>
+    
+    <div id="status">
+        <div class="test-item info">⏳ Starting tests...</div>
+    </div>
+    
+    <div id="map"></div>
+    
+    <script>
+        const status = document.getElementById('status');
+        let map = null;
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-item ${type}`;
+            
+            const icon = {
+                'success': '✓',
+                'error': '✗',
+                'warning': '⚠',
+                'info': '●'
+            }[type] || '●';
+            
+            div.innerHTML = `${icon} ${message}`;
+            status.appendChild(div);
+        }
+        
+        function logCode(code) {
+            const div = document.createElement('div');
+            div.className = 'code';
+            div.textContent = code;
+            status.appendChild(div);
+        }
+        
+        async function testFiles() {
+            log('Testing map data files...', 'info');
+            
+            const files = [
+                { name: 'metadata.json', critical: true },
+                { name: 'scenarios.json', critical: true },
+                { name: 'nodes.json', critical: true },
+                { name: 'edges.json', critical: true }
+            ];
+            
+            const results = {};
+            
+            for (const fileInfo of files) {
+                const file = fileInfo.name;
+                
+                try {
+                    log(`Loading map_data/${file}...`, 'info');
+                    
+                    const response = await fetch(`map_data/${file}`);
+                    
+                    if (!response.ok) {
+                        log(`Failed to load ${file}: HTTP ${response.status} ${response.statusText}`, 'error');
+                        log(`Make sure map_data/ folder is in the same directory as this HTML file!`, 'warning');
+                        continue;
+                    }
+                    
+                    const text = await response.text();
+                    const size = text.length;
+                    
+                    try {
+                        const data = JSON.parse(text);
+                        results[file] = data;
+                        
+                        // File-specific tests
+                        if (file === 'nodes.json') {
+                            if (Array.isArray(data) && data.length > 0) {
+                                log(`${file}: ${data.length.toLocaleString()} nodes (${(size/1024).toFixed(1)} KB)`, 'success');
+                                
+                                // Check structure
+                                const node = data[0];
+                                if (node.id !== undefined && node.lon !== undefined && node.lat !== undefined) {
+                                    log(`Node structure: OK (id, lon, lat present)`, 'success');
+                                    logCode(`Sample: ${JSON.stringify(node)}`);
+                                } else {
+                                    log(`Node structure: INVALID - missing required fields`, 'error');
+                                    logCode(`Sample: ${JSON.stringify(node)}`);
+                                }
+                            } else {
+                                log(`${file}: EMPTY or invalid array`, 'error');
+                            }
+                            
+                        } else if (file === 'edges.json') {
+                            if (Array.isArray(data) && data.length > 0) {
+                                log(`${file}: ${data.length.toLocaleString()} edges (${(size/1024/1024).toFixed(1)} MB)`, 'success');
+                                
+                                // Check structure
+                                const edge = data[0];
+                                const required = ['id', 'source', 'target', 'length', 'geometry', 'shade'];
+                                const missing = required.filter(f => !(f in edge));
+                                
+                                if (missing.length === 0) {
+                                    log(`Edge structure: OK (all required fields present)`, 'success');
+                                    log(`Edge has ${Object.keys(edge.shade).length} shade scenarios`, 'success');
+                                    logCode(`Sample edge (truncated): ${JSON.stringify(edge).substring(0, 300)}...`);
+                                } else {
+                                    log(`Edge structure: MISSING FIELDS - ${missing.join(', ')}`, 'error');
+                                    logCode(`Sample: ${JSON.stringify(edge)}`);
+                                }
+                                
+                                // Check geometry
+                                if (edge.geometry && Array.isArray(edge.geometry) && edge.geometry.length > 0) {
+                                    log(`Geometry: ${edge.geometry.length} coordinates`, 'success');
+                                } else {
+                                    log(`Geometry: INVALID or empty`, 'error');
+                                }
+                                
+                            } else {
+                                log(`${file}: EMPTY or invalid array`, 'error');
+                            }
+                            
+                        } else if (file === 'scenarios.json') {
+                            if (Array.isArray(data) && data.length > 0) {
+                                log(`${file}: ${data.length} scenarios`, 'success');
+                                const names = data.map(s => s.name || s.id).join(', ');
+                                log(`Scenarios: ${names}`, 'info');
+                            } else {
+                                log(`${file}: EMPTY or invalid`, 'error');
+                            }
+                            
+                        } else if (file === 'metadata.json') {
+                            if (data.center && data.bounds) {
+                                log(`${file}: Loaded successfully`, 'success');
+                                log(`Center: (${data.center.lat}, ${data.center.lon})`, 'info');
+                                log(`Bounds: [${data.bounds.south}, ${data.bounds.west}] to [${data.bounds.north}, ${data.bounds.east}]`, 'info');
+                            } else {
+                                log(`${file}: INVALID - missing center or bounds`, 'error');
+                            }
+                        }
+                        
+                    } catch (parseError) {
+                        log(`${file}: JSON PARSE ERROR - ${parseError.message}`, 'error');
+                        log(`File size: ${size} bytes. First 200 chars:`, 'info');
+                        logCode(text.substring(0, 200));
+                    }
+                    
+                } catch (fetchError) {
+                    log(`${file}: FETCH ERROR - ${fetchError.message}`, 'error');
+                    
+                    if (fetchError.message.includes('Failed to fetch')) {
+                        log(`This usually means the file doesn't exist or is in the wrong location.`, 'warning');
+                        log(`Expected location: map_data/${file} (relative to this HTML file)`, 'info');
+                    }
+                }
+            }
+            
+            // Summary
+            log('', 'info');
+            log('═══════════════════════════════════════', 'info');
+            log('TEST SUMMARY', 'info');
+            log('═══════════════════════════════════════', 'info');
+            
+            const hasAll = results['nodes.json'] && results['edges.json'] && 
+                          results['scenarios.json'] && results['metadata.json'];
+            
+            if (hasAll) {
+                log('✓ All required files loaded successfully!', 'success');
+                
+                // Try to draw map
+                log('', 'info');
+                log('Attempting to draw network on map...', 'info');
+                
+                try {
+                    drawMap(results);
+                } catch (mapError) {
+                    log(`Map drawing error: ${mapError.message}`, 'error');
+                }
+                
+            } else {
+                log('✗ Some files are missing or invalid', 'error');
+                log('', 'info');
+                log('TO FIX THIS:', 'warning');
+                log('1. Run the export script in Notebook 2', 'info');
+                log('2. Make sure map_data/ folder is in same directory as map.html', 'info');
+                log('3. Check that all 4 JSON files exist and have reasonable sizes', 'info');
+            }
+        }
+        
+        function drawMap(data) {
+            const { metadata, edges, scenarios } = data;
+            
+            // Initialize map
+            const center = metadata.center || { lat: 39.95, lon: -75.19 };
+            map = L.map('map').setView([center.lat, center.lon], 13);
+            
+            log(`Map initialized at (${center.lat}, ${center.lon})`, 'success');
+            
+            // Add base layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+            
+            log('Base map layer added', 'success');
+            
+            // Try to draw network
+            log(`Attempting to draw ${edges.length.toLocaleString()} edges...`, 'info');
+            log(`(Drawing first 500 for performance)`, 'info');
+            
+            let drawn = 0;
+            let errors = 0;
+            const maxDraw = Math.min(500, edges.length);
+            
+            for (let i = 0; i < maxDraw; i++) {
+                const edge = edges[i];
+                
+                try {
+                    if (edge.geometry && Array.isArray(edge.geometry) && edge.geometry.length > 1) {
+                        // Convert from [lon, lat] to [lat, lon]
+                        const coords = edge.geometry.map(c => [c[1], c[0]]);
+                        
+                        // Get shade for first scenario
+                        const firstScenario = scenarios[0].id;
+                        const shade = edge.shade[firstScenario] || 0;
+                        
+                        // Color by shade
+                        const color = getShadeColor(shade);
+                        
+                        L.polyline(coords, {
+                            color: color,
+                            weight: 2,
+                            opacity: 0.6
+                        }).addTo(map);
+                        
+                        drawn++;
+                    }
+                } catch (edgeError) {
+                    errors++;
+                    if (errors < 5) {
+                        log(`Error drawing edge ${i}: ${edgeError.message}`, 'warning');
+                    }
+                }
+            }
+            
+            log(`Drew ${drawn} edges successfully`, 'success');
+            if (errors > 0) {
+                log(`${errors} edges had errors`, 'warning');
+            }
+            
+            // Fit bounds
+            if (metadata.bounds) {
+                const bounds = [
+                    [metadata.bounds.south, metadata.bounds.west],
+                    [metadata.bounds.north, metadata.bounds.east]
+                ];
+                map.fitBounds(bounds);
+                log('Map fitted to network bounds', 'success');
+            }
+            
+            log('', 'info');
+            log('✓ MAP RENDERING COMPLETE!', 'success');
+            log('If you see colored lines above, your data is working!', 'success');
+        }
+        
+        function getShadeColor(shade) {
+            if (shade < 0.2) return '#d32f2f';
+            if (shade < 0.4) return '#f57c00';
+            if (shade < 0.6) return '#fbc02d';
+            if (shade < 0.8) return '#689f38';
+            return '#388e3c';
+        }
+        
+        // Start tests
+        testFiles();
+    </script>
+</body>
+</html>
