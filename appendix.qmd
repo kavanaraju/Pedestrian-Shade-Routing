@@ -242,7 +242,7 @@ This project was developed as part of **MUSA 5500: Geospatial Data Science with 
 ## Contact
 
 **Kavana Raju**  
-Master of Urban Spatial Analytics  
+Master of City Planning
 University of Pennsylvania  
 
 **Project Repository:** [https://github.com/kavanaraju/Pedestrian-Shade-Routing](https://github.com/kavanaraju/Pedestrian-Shade-Routing)
