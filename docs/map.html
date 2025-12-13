@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shade-Optimized Routing Calculator</title>
-    
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         * {
             margin: 0;
@@ -16,206 +14,278 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        #map {
+            width: 100vw;
             height: 100vh;
         }
         
         #controls {
-            background: #fff;
-            padding: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: absolute;
+            top: 10px;
+            left: 60px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 1000;
+            max-width: 400px;
         }
         
-        #controls h2 {
-            margin-bottom: 0.5rem;
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
             color: #333;
         }
         
-        .control-row {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-            align-items: center;
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
         }
         
         select, button {
-            padding: 0.5rem 1rem;
+            width: 100%;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
         }
         
         button {
-            background: #667eea;
+            background: #4285f4;
             color: white;
+            font-weight: 600;
             cursor: pointer;
             border: none;
         }
         
         button:hover {
-            background: #5568d3;
+            background: #357ae8;
         }
         
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        
-        #map {
-            flex: 1;
-        }
-        
-        #instructions {
-            background: #f8f9fa;
-            padding: 0.75rem;
+        .info-box {
+            background: #f0f7ff;
+            padding: 12px;
             border-radius: 4px;
-            margin-top: 0.5rem;
+            border-left: 3px solid #4285f4;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .metrics {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
             font-size: 14px;
         }
         
-        #results {
-            background: #e3f2fd;
-            padding: 1rem;
-            margin-top: 0.5rem;
-            border-radius: 4px;
-            display: none;
+        .metric-label {
+            color: #666;
+            font-weight: 500;
         }
         
-        .metric {
-            display: inline-block;
-            margin-right: 1.5rem;
-        }
-        
-        .metric strong {
+        .metric-value {
             color: #333;
+            font-weight: 600;
         }
         
-        .route-shortest {
-            color: #2196F3;
-            font-weight: bold;
+        .error {
+            background: #fee;
+            border-left-color: #f44;
+            color: #c00;
         }
         
-        .route-shadiest {
-            color: #4CAF50;
-            font-weight: bold;
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 2000;
+            text-align: center;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4285f4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div id="controls">
-        <h2>🌳 Shade-Optimized Routing Calculator</h2>
-        
-        <div class="control-row">
-            <label>Scenario:</label>
-            <select id="scenario">
-                <option value="summer_midday">Summer Midday</option>
-                <option value="summer_morning">Summer Morning</option>
-                <option value="summer_evening">Summer Evening</option>
-                <option value="winter_midday">Winter Midday</option>
-                <option value="winter_morning">Winter Morning</option>
-                <option value="spring_midday">Spring Midday</option>
-                <option value="fall_midday">Fall Midday</option>
-            </select>
-            
-            <button id="reset">Reset</button>
-        </div>
-        
-        <div id="instructions">
-            <strong>How to use:</strong> Click anywhere on the map to set origin, then click again for destination. Routes will calculate automatically.
-        </div>
-        
-        <div id="results">
-            <div class="metric">
-                <span class="route-shortest">Shortest:</span>
-                <span id="shortest-dist">-</span> | 
-                <span id="shortest-shade">-</span> shade
-            </div>
-            <div class="metric">
-                <span class="route-shadiest">Shadiest:</span>
-                <span id="shadiest-dist">-</span> | 
-                <span id="shadiest-shade">-</span> shade | 
-                <span id="detour">-</span> detour
-            </div>
-        </div>
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Loading network data...</p>
     </div>
     
     <div id="map"></div>
     
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <div id="controls">
+        <div class="title">🌳 Shade-Optimized Routing Calculator</div>
+        
+        <div class="control-group">
+            <label for="scenario">Scenario:</label>
+            <select id="scenario">
+                <option value="summer_midday">Summer Midday</option>
+            </select>
+        </div>
+        
+        <button id="reset">Reset</button>
+        
+        <div class="info-box" id="instructions">
+            <strong>How to use:</strong> Click once to set <strong>origin</strong>, click again to set <strong>destination</strong>. Routes compute automatically: <strong>Shortest</strong> (blue) vs <strong>Shadiest</strong> (green).
+        </div>
+        
+        <div class="metrics" id="metrics">
+            <div class="metric-row">
+                <span class="metric-label">Shortest Route:</span>
+                <span class="metric-value" id="shortest-dist">-</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">Shadiest Route:</span>
+                <span class="metric-value" id="shadiest-dist">-</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">Detour:</span>
+                <span class="metric-value" id="detour">-</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">Shade Gain:</span>
+                <span class="metric-value" id="shade-gain">-</span>
+            </div>
+        </div>
+    </div>
     
     <script>
-        // App state
-        let map, networkLayer, routeLayer;
-        let nodes = [], edges = [], scenarios = [], metadata = {};
-        let origin = null, destination = null;
+        let map, nodes = [], edges = [], scenarios = [], metadata = {};
         let currentScenario = 'summer_midday';
+        let originNode = null, destNode = null;
+        let originMarker = null, destMarker = null;
+        let networkLayers = [];
+        let routeLayers = [];
         
-        // Initialize map
         async function init() {
-            // Load data
-            console.log('Loading network data...');
-            nodes = await fetch('map_data/nodes.json').then(r => r.json());
-            edges = await fetch('map_data/edges.json').then(r => r.json());
-            scenarios = await fetch('map_data/scenarios.json').then(r => r.json());
-            metadata = await fetch('map_data/metadata.json').then(r => r.json());
+            try {
+                // Load all data
+                await loadData();
+                
+                // Initialize map
+                initMap();
+                
+                // Draw network
+                drawNetwork();
+                
+                // Setup controls
+                setupControls();
+                
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+                document.getElementById('loading').innerHTML = 
+                    `<div class="error info-box">
+                        <strong>Error loading map:</strong><br>
+                        ${error.message}<br><br>
+                        <small>Check browser console for details (F12)</small>
+                    </div>`;
+            }
+        }
+        
+        async function loadData() {
+            console.log('Loading data files...');
             
-            console.log(`Loaded ${nodes.length} nodes, ${edges.length} edges`);
+            // Load metadata
+            const metadataRes = await fetch('map_data/metadata.json');
+            if (!metadataRes.ok) throw new Error('Failed to load metadata.json');
+            metadata = await metadataRes.json();
+            console.log('✓ Metadata loaded');
             
-            // Create map
-            const bounds = metadata.bounds;
-            map = L.map('map').fitBounds([
-                [bounds.south, bounds.west],
-                [bounds.north, bounds.east]
-            ]);
+            // Load scenarios
+            const scenariosRes = await fetch('map_data/scenarios.json');
+            if (!scenariosRes.ok) throw new Error('Failed to load scenarios.json');
+            scenarios = await scenariosRes.json();
+            console.log('✓ Scenarios loaded:', scenarios.length);
             
-            // Add base map
+            // Load nodes
+            const nodesRes = await fetch('map_data/nodes.json');
+            if (!nodesRes.ok) throw new Error('Failed to load nodes.json');
+            nodes = await nodesRes.json();
+            console.log('✓ Nodes loaded:', nodes.length);
+            
+            // Load edges
+            const edgesRes = await fetch('map_data/edges.json');
+            if (!edgesRes.ok) throw new Error('Failed to load edges.json');
+            edges = await edgesRes.json();
+            console.log('✓ Edges loaded:', edges.length);
+        }
+        
+        function initMap() {
+            const center = metadata.center || { lat: 39.95, lon: -75.19 };
+            map = L.map('map').setView([center.lat, center.lon], 14);
+            
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '© OpenStreetMap contributors © CARTO',
+                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
                 maxZoom: 19
             }).addTo(map);
             
-            // Add network layer
-            networkLayer = L.layerGroup().addTo(map);
-            routeLayer = L.layerGroup().addTo(map);
-            
-            drawNetwork();
-            
-            // Click handler
             map.on('click', handleMapClick);
-            
-            // Controls
-            document.getElementById('scenario').addEventListener('change', e => {
-                currentScenario = e.target.value;
-                drawNetwork();
-                if (origin && destination) {
-                    calculateRoutes();
-                }
-            });
-            
-            document.getElementById('reset').addEventListener('click', reset);
         }
         
         function drawNetwork() {
-            networkLayer.clearLayers();
+            // Clear existing
+            networkLayers.forEach(layer => map.removeLayer(layer));
+            networkLayers = [];
+            
+            console.log('Drawing network...');
             
             edges.forEach(edge => {
-                const shade = edge.shade[currentScenario] || 0;
-                const color = getShadeColor(shade);
+                if (!edge.geometry || edge.geometry.length < 2) return;
                 
-                L.polyline(edge.geometry, {
-                    color: color,
+                const shade = (edge.shade && edge.shade[currentScenario]) || 0;
+                const coords = edge.geometry.map(c => [c[1], c[0]]); // [lat, lon]
+                
+                const layer = L.polyline(coords, {
+                    color: getShadeColor(shade),
                     weight: 2,
                     opacity: 0.6
-                }).addTo(networkLayer);
+                }).addTo(map);
+                
+                networkLayers.push(layer);
             });
+            
+            console.log('✓ Network drawn:', networkLayers.length, 'segments');
         }
         
         function getShadeColor(shade) {
-            // Color scale: red (no shade) to green (full shade)
             if (shade < 0.2) return '#d32f2f';
             if (shade < 0.4) return '#f57c00';
             if (shade < 0.6) return '#fbc02d';
@@ -223,159 +293,204 @@
             return '#388e3c';
         }
         
+        function setupControls() {
+            const select = document.getElementById('scenario');
+            select.innerHTML = '';
+            scenarios.forEach(s => {
+                const option = document.createElement('option');
+                option.value = s.id;
+                option.textContent = s.name;
+                select.appendChild(option);
+            });
+            
+            select.value = currentScenario;
+            select.addEventListener('change', (e) => {
+                currentScenario = e.target.value;
+                drawNetwork();
+                if (originNode && destNode) calculateRoutes();
+            });
+            
+            document.getElementById('reset').addEventListener('click', reset);
+        }
+        
         function handleMapClick(e) {
-            if (!origin) {
-                origin = e.latlng;
-                L.marker(origin, {
-                    icon: L.divIcon({
-                        className: 'origin-marker',
-                        html: '<div style="background:#2196F3;width:12px;height:12px;border-radius:50%;border:2px solid white;"></div>'
-                    })
-                }).addTo(routeLayer);
-            } else if (!destination) {
-                destination = e.latlng;
-                L.marker(destination, {
-                    icon: L.divIcon({
-                        className: 'dest-marker',
-                        html: '<div style="background:#f44336;width:12px;height:12px;border-radius:50%;border:2px solid white;"></div>'
-                    })
-                }).addTo(routeLayer);
-                
+            const nearest = findNearestNode(e.latlng.lat, e.latlng.lng);
+            
+            if (!originNode) {
+                setOrigin(nearest);
+            } else if (!destNode) {
+                setDestination(nearest);
                 calculateRoutes();
+            } else {
+                reset();
+                setOrigin(nearest);
             }
         }
         
-        function calculateRoutes() {
-            console.log('Calculating routes...');
-            
-            // Find nearest nodes
-            const originNode = findNearestNode(origin);
-            const destNode = findNearestNode(destination);
-            
-            // Calculate shortest path
-            const shortestPath = dijkstra(originNode, destNode, false);
-            
-            // Calculate shadiest path
-            const shadiestPath = dijkstra(originNode, destNode, true);
-            
-            // Draw routes
-            drawRoute(shortestPath, '#2196F3', 4);
-            drawRoute(shadiestPath, '#4CAF50', 4);
-            
-            // Show results
-            displayResults(shortestPath, shadiestPath);
-        }
-        
-        function findNearestNode(latlng) {
-            let nearest = null;
+        function findNearestNode(lat, lon) {
+            let nearest = nodes[0];
             let minDist = Infinity;
             
             nodes.forEach(node => {
-                const dist = Math.sqrt(
-                    Math.pow(node.lat - latlng.lat, 2) +
-                    Math.pow(node.lon - latlng.lng, 2)
-                );
+                const dist = Math.pow(node.lat - lat, 2) + Math.pow(node.lon - lon, 2);
                 if (dist < minDist) {
                     minDist = dist;
-                    nearest = node.id;
+                    nearest = node;
                 }
             });
             
             return nearest;
         }
         
-        function dijkstra(start, end, useShade) {
-            // Build adjacency list
-            const graph = {};
-            edges.forEach(edge => {
-                if (!graph[edge.source]) graph[edge.source] = [];
-                if (!graph[edge.target]) graph[edge.target] = [];
-                
-                const shade = edge.shade[currentScenario] || 0;
-                const cost = useShade ? edge.length * (1 - 0.3 * shade) : edge.length;
-                
-                graph[edge.source].push({node: edge.target, cost, edge});
-                graph[edge.target].push({node: edge.source, cost, edge});
-            });
+        function setOrigin(node) {
+            originNode = node;
+            if (originMarker) map.removeLayer(originMarker);
+            originMarker = L.circleMarker([node.lat, node.lon], {
+                radius: 8,
+                fillColor: '#2196F3',
+                color: 'white',
+                weight: 2,
+                fillOpacity: 1
+            }).addTo(map);
+        }
+        
+        function setDestination(node) {
+            destNode = node;
+            if (destMarker) map.removeLayer(destMarker);
+            destMarker = L.circleMarker([node.lat, node.lon], {
+                radius: 8,
+                fillColor: '#f44336',
+                color: 'white',
+                weight: 2,
+                fillOpacity: 1
+            }).addTo(map);
+        }
+        
+        function calculateRoutes() {
+            clearRoutes();
             
-            // Dijkstra's algorithm
+            const shortest = dijkstra(originNode.id, destNode.id, false);
+            const shadiest = dijkstra(originNode.id, destNode.id, true);
+            
+            drawRoute(shortest, '#2196F3', 'Shortest');
+            drawRoute(shadiest, '#4CAF50', 'Shadiest');
+            
+            showMetrics(shortest, shadiest);
+        }
+        
+        function dijkstra(startId, endId, useShade) {
             const dist = {};
             const prev = {};
-            const pq = [{node: start, cost: 0}];
+            const unvisited = new Set();
             
-            nodes.forEach(n => {
-                dist[n.id] = Infinity;
-                prev[n.id] = null;
+            nodes.forEach(node => {
+                dist[node.id] = Infinity;
+                unvisited.add(node.id);
             });
-            dist[start] = 0;
+            dist[startId] = 0;
             
-            while (pq.length > 0) {
-                pq.sort((a, b) => a.cost - b.cost);
-                const {node: u} = pq.shift();
+            while (unvisited.size > 0) {
+                let current = null;
+                let minDist = Infinity;
+                unvisited.forEach(nodeId => {
+                    if (dist[nodeId] < minDist) {
+                        minDist = dist[nodeId];
+                        current = nodeId;
+                    }
+                });
                 
-                if (u === end) break;
+                if (current === null || current === endId) break;
+                unvisited.delete(current);
                 
-                if (!graph[u]) continue;
-                
-                graph[u].forEach(({node: v, cost, edge}) => {
-                    const alt = dist[u] + cost;
-                    if (alt < dist[v]) {
-                        dist[v] = alt;
-                        prev[v] = {node: u, edge};
-                        pq.push({node: v, cost: alt});
+                edges.forEach(edge => {
+                    if (edge.source === current && unvisited.has(edge.target)) {
+                        const shade = (edge.shade && edge.shade[currentScenario]) || 0;
+                        const cost = useShade ? edge.length * (1 - 0.3 * shade) : edge.length;
+                        const alt = dist[current] + cost;
+                        
+                        if (alt < dist[edge.target]) {
+                            dist[edge.target] = alt;
+                            prev[edge.target] = current;
+                        }
                     }
                 });
             }
             
             // Reconstruct path
             const path = [];
-            let u = end;
-            while (prev[u]) {
-                path.unshift(prev[u].edge);
-                u = prev[u].node;
+            let current = endId;
+            while (current !== undefined) {
+                path.unshift(current);
+                current = prev[current];
             }
             
-            return path;
+            // Calculate metrics
+            let totalLength = 0;
+            let totalShade = 0;
+            
+            for (let i = 0; i < path.length - 1; i++) {
+                const edge = edges.find(e => e.source === path[i] && e.target === path[i+1]);
+                if (edge) {
+                    totalLength += edge.length;
+                    const shade = (edge.shade && edge.shade[currentScenario]) || 0;
+                    totalShade += shade * edge.length;
+                }
+            }
+            
+            return {
+                path,
+                distance: totalLength,
+                avgShade: totalLength > 0 ? totalShade / totalLength : 0
+            };
         }
         
-        function drawRoute(path, color, weight) {
-            path.forEach(edge => {
-                L.polyline(edge.geometry, {
-                    color: color,
-                    weight: weight,
-                    opacity: 0.8
-                }).addTo(routeLayer);
+        function drawRoute(route, color, label) {
+            const coords = route.path.map(nodeId => {
+                const node = nodes.find(n => n.id === nodeId);
+                return [node.lat, node.lon];
             });
+            
+            const layer = L.polyline(coords, {
+                color: color,
+                weight: 4,
+                opacity: 0.8
+            }).bindPopup(`<strong>${label}</strong><br>
+                Distance: ${route.distance.toFixed(0)}m<br>
+                Avg Shade: ${(route.avgShade * 100).toFixed(1)}%`);
+            
+            layer.addTo(map);
+            routeLayers.push(layer);
         }
         
-        function displayResults(shortestPath, shadiestPath) {
-            const shortestDist = shortestPath.reduce((sum, e) => sum + e.length, 0);
-            const shadiestDist = shadiestPath.reduce((sum, e) => sum + e.length, 0);
+        function showMetrics(shortest, shadiest) {
+            document.getElementById('metrics').style.display = 'block';
+            document.getElementById('shortest-dist').textContent = `${shortest.distance.toFixed(0)}m`;
+            document.getElementById('shadiest-dist').textContent = `${shadiest.distance.toFixed(0)}m`;
             
-            const shortestShade = shortestPath.reduce((sum, e) => 
-                sum + e.shade[currentScenario] * e.length, 0) / shortestDist;
-            const shadiestShade = shadiestPath.reduce((sum, e) => 
-                sum + e.shade[currentScenario] * e.length, 0) / shadiestDist;
+            const detourPct = ((shadiest.distance - shortest.distance) / shortest.distance * 100).toFixed(1);
+            document.getElementById('detour').textContent = `+${detourPct}%`;
             
-            const detour = ((shadiestDist - shortestDist) / shortestDist * 100).toFixed(1);
-            
-            document.getElementById('shortest-dist').textContent = `${(shortestDist * 0.3048).toFixed(0)}m`;
-            document.getElementById('shortest-shade').textContent = `${(shortestShade * 100).toFixed(0)}%`;
-            document.getElementById('shadiest-dist').textContent = `${(shadiestDist * 0.3048).toFixed(0)}m`;
-            document.getElementById('shadiest-shade').textContent = `${(shadiestShade * 100).toFixed(0)}%`;
-            document.getElementById('detour').textContent = `+${detour}%`;
-            
-            document.getElementById('results').style.display = 'block';
+            const shadeGain = ((shadiest.avgShade - shortest.avgShade) * 100).toFixed(1);
+            document.getElementById('shade-gain').textContent = `+${shadeGain}%`;
+        }
+        
+        function clearRoutes() {
+            routeLayers.forEach(layer => map.removeLayer(layer));
+            routeLayers = [];
+            document.getElementById('metrics').style.display = 'none';
         }
         
         function reset() {
-            origin = null;
-            destination = null;
-            routeLayer.clearLayers();
-            document.getElementById('results').style.display = 'none';
+            if (originMarker) map.removeLayer(originMarker);
+            if (destMarker) map.removeLayer(destMarker);
+            originNode = null;
+            destNode = null;
+            originMarker = null;
+            destMarker = null;
+            clearRoutes();
         }
         
-        // Initialize on load
+        // Start
         init();
     </script>
 </body>
