@@ -2,7 +2,7 @@
 title: "Shade-Optimized Pedestrian Routing"
 subtitle: "LiDAR-Based Shadow Modeling for Heat-Resilient Urban Mobility"
 author: "Kavana Raju | MUSA 5500 Final Project"
-date: "December 2025"
+date: "12 December 2025"
 format:
   html:
     toc: false
@@ -32,6 +32,7 @@ Using High-Resolution LiDAR to Map Shadow Coverage Across 23,486 Street Segments
 ### Urban Heat is Intensifying
 
 **Climate data shows:**
+
 - Philadelphia summers now average 5-7°F warmer than 1970s
 - Heat waves lasting 5+ days increasingly common
 - Surface temperatures in sun can reach 130°F+
@@ -40,22 +41,23 @@ Using High-Resolution LiDAR to Map Shadow Coverage Across 23,486 Street Segments
 ### But Routing Apps Ignore Shade
 
 **Current navigation apps optimize for:**
-- ✅ Distance
-- ✅ Time
-- ✅ Traffic
-- ❌ **Thermal comfort**
+
+- Distance
+- Time
+- Traffic
+- **Not for Thermal Comfort**
 
 **Result:** Pedestrians get routed through "shade deserts" during summer heat.
 
 ---
 
-## Our Solution
+## My Solution
 
 ### LiDAR-Based Shade Modeling + Smart Routing
 
 ![Study Area Coverage](figures/study_area_overview.png){width=100%}
 
-**What we built:**
+**What I built:**
 
 1. **Accurate Shadow Modeling**
    - Real building heights from LiDAR (not estimates)
@@ -83,6 +85,7 @@ Using High-Resolution LiDAR to Map Shadow Coverage Across 23,486 Street Segments
 ![Summer vs Winter Shade Coverage Comparison](figures/summer_vs_winter_comparison.png){width=100%}
 
 **2.5x difference in shade availability:**
+
 - **Winter Morning:** 61.5% average network shade
 - **Summer Midday:** 24.2% average network shade
 
@@ -95,10 +98,12 @@ Using High-Resolution LiDAR to Map Shadow Coverage Across 23,486 Street Segments
 ![Building and Tree Shade Contributions](figures/building_vs_tree_contribution.png){width=100%}
 
 **Winter:** Buildings dominate (74.4% contribution)
+
 - Low sun creates long building shadows
 - Trees less effective (deciduous leaf loss)
 
 **Summer:** Trees become critical (35.9% vs 16.3%)
+
 - High sun reduces building shadows
 - Tree canopies provide primary shade
 
@@ -110,17 +115,6 @@ Using High-Resolution LiDAR to Map Shadow Coverage Across 23,486 Street Segments
 
 ![Shade Corridors Map - Red = Intervention Priorities](figures/shade_corridors_map.png){width=100%}
 
-**Highest-priority streets for urban greening:**
-
-| Street | Current Shade | Investment | Impact |
-|--------|--------------|------------|--------|
-| Market St | 15-20% | $30k (100 trees) | 15,000 pedestrians/day |
-| Chestnut St | 18-22% | $15k (50 trees) | 8,000 pedestrians/day |
-| University Ave | 12-18% | $10k (structures) | 5,000 pedestrians/day |
-
-**Total cost:** $55k to transform 3 major corridors  
-**Total impact:** 28,000+ daily pedestrians
-
 ---
 
 ## How It Works
@@ -128,12 +122,14 @@ Using High-Resolution LiDAR to Map Shadow Coverage Across 23,486 Street Segments
 ### 1. Data Collection
 
 **High-resolution inputs:**
-- 📡 LiDAR point clouds (USGS 3DEP)
-- 🏢 Building footprints (PASDA)
-- 🌳 Individual tree heights (2.1M points)
-- 🚇 Transit network (SEPTA GTFS)
+
+- LiDAR point clouds (USGS 3DEP)
+- Building footprints (PASDA)
+- Individual tree heights (2.1M points)
+- Transit network (SEPTA GTFS)
 
 **Coverage:**
+
 - 4.2 square miles
 - 23,486 street segments
 - 99.7% LiDAR height coverage
@@ -149,6 +145,7 @@ For each building/tree at height $h$ with sun at altitude $\alpha$:
 $$\text{shadow\_length} = \frac{h}{\tan(\alpha)}$$
 
 **8 scenarios modeled:**
+
 - Summer: Morning, Midday, Evening
 - Winter: Morning, Midday, Evening
 - Spring/Fall: Midday
@@ -164,6 +161,7 @@ $$\text{shadow\_length} = \frac{h}{\tan(\alpha)}$$
 $$\text{cost} = \text{length} \times (1 - 0.3 \times \text{shade})$$
 
 **Interpretation:**
+
 - 100% shade segment → 30% cost reduction
 - 0% shade segment → No discount
 - Algorithm balances shade benefit vs distance penalty
@@ -175,11 +173,11 @@ $$\text{cost} = \text{length} \times (1 - 0.3 \times \text{shade})$$
 ### 4. Interactive Deployment
 
 **Web-based routing calculator:**
+
 - Click map to set origin/destination
 - Instant route calculation (client-side)
 - Compare shortest vs shadiest
 - Switch between 8 scenarios
-- No backend needed
 
 [**Try it now →**](interactive.qmd){.btn .btn-primary}
 
@@ -224,6 +222,7 @@ Summer Midday
 ![Shade Score Distributions Across Scenarios](figures/shade_distributions.png){width=100%}
 
 **Pattern:**
+
 - **Summer midday:** Right-skewed (most segments low shade)
 - **Winter morning:** Left-skewed (most segments high shade)
 - **Spring/Fall:** Normal distribution (moderate shade)
@@ -235,7 +234,8 @@ Summer Midday
 ![Box Plot Analysis](figures/shade_boxplot_comparison.png){width=100%}
 
 **Variability:**
-- Winter shows tighter distributions (consistent shade)
+
+- Winter shows tighter distributions (consistent shade; sun below horizon in the evening)
 - Summer shows wider spread (variable conditions)
 - Outliers in all scenarios (extreme high/low shade streets)
 
@@ -246,70 +246,14 @@ Summer Midday
 ### For Pedestrians
 
 **Summer Strategy:**
+
 1. Use shade routing during 10 AM - 4 PM
 2. Accept 10-15% longer routes for 40% more shade
-3. Prioritize: Spruce St, Pine St, Locust Walk
-4. Avoid: Market St, Chestnut St during midday
 
 **Winter Strategy:**
+
 1. Shortest path usually sufficient (abundant shade)
 2. Focus on safety (ice) rather than shade
-
----
-
-### For Urban Planners
-
-**Investment Priorities:**
-
-```{=html}
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 8px; margin: 2rem 0;">
-  <h3 style="margin-top: 0; color: white;">Recommended 3-Year Program: $225k</h3>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px;">
-      <strong>Year 1</strong><br>
-      Bus stop structures<br>
-      50 trees (Market St)<br>
-      <em>$75k</em>
-    </div>
-    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px;">
-      <strong>Year 2</strong><br>
-      100 trees (corridors)<br>
-      Wayfinding signage<br>
-      <em>$75k</em>
-    </div>
-    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px;">
-      <strong>Year 3</strong><br>
-      Infrastructure upgrades<br>
-      Monitoring system<br>
-      <em>$75k</em>
-    </div>
-  </div>
-  <p style="margin-bottom: 0; margin-top: 1rem;"><strong>Impact:</strong> 20,000+ pedestrians/day benefit from improved shade coverage</p>
-</div>
-```
-
----
-
-## Innovation Highlights
-
-### What Makes This Different
-
-**Compared to existing research:**
-
-| Feature | This Project | Typical Studies |
-|---------|--------------|-----------------|
-| **Building Heights** | Actual LiDAR measurements | Estimated from footprints |
-| **Tree Data** | 2.1M individual heights | Binary canopy presence |
-| **Temporal Modeling** | 8 scenarios (season × time) | Single snapshot or none |
-| **Route Optimization** | Shade-weighted Dijkstra | Not implemented |
-| **Deployment** | Interactive web tool | Static maps only |
-| **Cost Calculation** | Real-time (<100ms) | Offline analysis only |
-
-**Technical achievements:**
-- ✅ 99.7% LiDAR building coverage
-- ✅ Raster-based efficiency (3-foot resolution)
-- ✅ Client-side routing (no server needed)
-- ✅ Open-source implementation
 
 ---
 
@@ -318,11 +262,13 @@ Summer Midday
 ### Academic Contribution
 
 **Methodology:**
+
 - Replicable framework for other cities
 - Integration of remote sensing + network analysis
 - Novel shade-weighted routing approach
 
 **Documentation:**
+
 - Complete code notebooks (4 published)
 - Step-by-step technical guide
 - Open-source deployment
@@ -332,12 +278,12 @@ Summer Midday
 ### Policy Relevance
 
 **Actionable recommendations:**
-- $225k investment program designed
-- Priority corridors identified (Market, Chestnut)
-- ROI analysis completed
+
+- Priority corridors identified
 - Integration with climate adaptation planning
 
 **Stakeholder engagement:**
+
 - City planning departments
 - SEPTA transit authority
 - Community organizations
@@ -348,10 +294,11 @@ Summer Midday
 ### Public Benefit
 
 **Expected outcomes:**
+
 - Reduced heat exposure for vulnerable populations
 - Improved pedestrian comfort during heat events
 - Evidence-based tree planting priorities
-- Free routing tool for all residents
+- Free routing tool for all users
 
 ---
 
@@ -364,7 +311,7 @@ Summer Midday
 ::: {.g-col-4}
 **📊 [Results](results.qmd)**
 
-Complete analysis with 9+ visualizations showing network patterns, temporal variation, and policy recommendations
+Complete analysis showing network patterns, temporal variation, and policy recommendations
 :::
 
 ::: {.g-col-4}
@@ -401,25 +348,27 @@ Download code, data, and documentation
 
 ## About This Project
 
-**Course:** MUSA 5500 - Geospatial Data Science with Python  
-**Program:** Master of Urban Spatial Analytics  
-**Institution:** University of Pennsylvania, Weitzman School of Design  
-**Semester:** Fall 2024
+**Course:** MUSA 5500 - Geospatial Data Science with Python
+
+**Institution:** University of Pennsylvania
+
+**Semester:** Fall 2025
 
 **Student:** Kavana Raju  
-**Advisor:** [Instructor Name]
 
 ---
 
 ## Acknowledgments
 
 **Data Sources:**
+
 - USGS 3D Elevation Program (LiDAR)
 - Pennsylvania Spatial Data Access (Buildings)
 - OpenStreetMap (Network)
 - SEPTA (Transit data)
 
 **Software:**
+
 - Python geospatial stack (GeoPandas, Rasterio, NetworkX)
 - Quarto publishing system
 - Leaflet.js mapping library
@@ -428,12 +377,12 @@ Download code, data, and documentation
 
 ## Contact & Feedback
 
-**Questions?** Email: [your.email@upenn.edu]  
-**Code:** [GitHub Repository]  
+**Questions?** Email: [kavana@upenn.edu]  
+**Code:** [https://github.com/kavanaraju/Pedestrian-Shade-Routing]  
 **Data:** [Available upon request]
 
 ---
 
 *This project demonstrates the application of advanced geospatial analysis to real-world urban planning challenges, combining remote sensing, network analysis, and web development to create actionable tools for climate-adapted urban mobility.*
 
-**Built with 🌳 for heat-resilient cities**
+**Built for heat-resilient cities**

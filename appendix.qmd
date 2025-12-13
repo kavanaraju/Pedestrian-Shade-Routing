@@ -11,12 +11,14 @@ Complete implementation available as Jupyter notebooks:
 [View Full Notebook →](notebooks/01-data-acquisition.html)
 
 **Covers:**
+
 - Downloading LiDAR tiles from USGS
 - Processing building footprints
 - Extracting pedestrian network from OSM
 - Loading SEPTA transit stops
 
 **Key outputs:**
+
 - `data/raw/lidar/` - 18 LAS files
 - `data/processed/buildings_with_heights.geojson`
 - `data/processed/edges.geojson`
@@ -29,6 +31,7 @@ Complete implementation available as Jupyter notebooks:
 [View Full Notebook →](notebooks/02-network-shade.html)
 
 **Covers:**
+
 - LiDAR rasterization (buildings and trees)
 - Solar position modeling
 - Geometric shadow calculation
@@ -36,6 +39,7 @@ Complete implementation available as Jupyter notebooks:
 - Shade score computation
 
 **Key outputs:**
+
 - `data/processed/buildings_heights.tif`
 - `data/processed/tree_heights.tif`
 - `data/processed/network_edges_with_shade.geojson`
@@ -49,12 +53,14 @@ Complete implementation available as Jupyter notebooks:
 [View Full Notebook →](notebooks/03-routing.html)
 
 **Covers:**
+
 - Network graph construction
 - Dijkstra's algorithm implementation
 - Test route calculation
 - Shortest vs. shadiest comparison
 
 **Key outputs:**
+
 - Route geometries for visualization
 - Comparison metrics (CSV)
 - Trade-off analysis data
@@ -68,12 +74,14 @@ Complete implementation available as Jupyter notebooks:
 [View Full Notebook →](notebooks/04-visualizations.html)
 
 **Covers:**
+
 - Static map creation (matplotlib)
 - Route comparison figures
 - Shade heatmaps
 - Chart generation
 
 **Key outputs:**
+
 - `outputs/figures/penn_to_40th_comparison.png`
 - `outputs/figures/powelton_to_34th_comparison.png`
 - `outputs/figures/spruce_hill_to_46th_comparison.png`
@@ -222,9 +230,10 @@ quarto render
 
 ## Acknowledgments
 
-This project was developed as part of **MUSA 5500: Geospatial Data Science with Python** at the University of Pennsylvania, Fall 2024.
+This project was developed as part of **MUSA 5500: Geospatial Data Science with Python** at the University of Pennsylvania, Fall 2025.
 
 **Special Thanks:**
+
 - USGS for providing open LiDAR data
 - OpenStreetMap contributors
 

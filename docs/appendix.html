@@ -231,31 +231,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="notebook-1-data-acquisition" class="level3">
 <h3 class="anchored" data-anchor-id="notebook-1-data-acquisition">Notebook 1: Data Acquisition</h3>
 <p><a href="notebooks/01-data-acquisition.html">View Full Notebook →</a></p>
-<p><strong>Covers:</strong> - Downloading LiDAR tiles from USGS - Processing building footprints - Extracting pedestrian network from OSM - Loading SEPTA transit stops</p>
-<p><strong>Key outputs:</strong> - <code>data/raw/lidar/</code> - 18 LAS files - <code>data/processed/buildings_with_heights.geojson</code> - <code>data/processed/edges.geojson</code> - <code>data/processed/septa_stops.geojson</code></p>
+<p><strong>Covers:</strong></p>
+<ul>
+<li>Downloading LiDAR tiles from USGS</li>
+<li>Processing building footprints</li>
+<li>Extracting pedestrian network from OSM</li>
+<li>Loading SEPTA transit stops</li>
+</ul>
+<p><strong>Key outputs:</strong></p>
+<ul>
+<li><code>data/raw/lidar/</code> - 18 LAS files</li>
+<li><code>data/processed/buildings_with_heights.geojson</code></li>
+<li><code>data/processed/edges.geojson</code></li>
+<li><code>data/processed/septa_stops.geojson</code></li>
+</ul>
 <hr>
 </section>
 <section id="notebook-2-network-shade-calculation" class="level3">
 <h3 class="anchored" data-anchor-id="notebook-2-network-shade-calculation">Notebook 2: Network Shade Calculation</h3>
 <p><a href="notebooks/02-network-shade.html">View Full Notebook →</a></p>
-<p><strong>Covers:</strong> - LiDAR rasterization (buildings and trees) - Solar position modeling - Geometric shadow calculation - Pedestrian buffer creation - Shade score computation</p>
-<p><strong>Key outputs:</strong> - <code>data/processed/buildings_heights.tif</code> - <code>data/processed/tree_heights.tif</code> - <code>data/processed/network_edges_with_shade.geojson</code></p>
+<p><strong>Covers:</strong></p>
+<ul>
+<li>LiDAR rasterization (buildings and trees)</li>
+<li>Solar position modeling</li>
+<li>Geometric shadow calculation</li>
+<li>Pedestrian buffer creation</li>
+<li>Shade score computation</li>
+</ul>
+<p><strong>Key outputs:</strong></p>
+<ul>
+<li><code>data/processed/buildings_heights.tif</code></li>
+<li><code>data/processed/tree_heights.tif</code></li>
+<li><code>data/processed/network_edges_with_shade.geojson</code></li>
+</ul>
 <p><strong>Runtime:</strong> ~2 hours for 8 scenarios</p>
 <hr>
 </section>
 <section id="notebook-3-routing-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="notebook-3-routing-analysis">Notebook 3: Routing Analysis</h3>
 <p><a href="notebooks/03-routing.html">View Full Notebook →</a></p>
-<p><strong>Covers:</strong> - Network graph construction - Dijkstra’s algorithm implementation - Test route calculation - Shortest vs.&nbsp;shadiest comparison</p>
-<p><strong>Key outputs:</strong> - Route geometries for visualization - Comparison metrics (CSV) - Trade-off analysis data</p>
+<p><strong>Covers:</strong></p>
+<ul>
+<li>Network graph construction</li>
+<li>Dijkstra’s algorithm implementation</li>
+<li>Test route calculation</li>
+<li>Shortest vs.&nbsp;shadiest comparison</li>
+</ul>
+<p><strong>Key outputs:</strong></p>
+<ul>
+<li>Route geometries for visualization</li>
+<li>Comparison metrics (CSV)</li>
+<li>Trade-off analysis data</li>
+</ul>
 <p><strong>Runtime:</strong> ~15 minutes</p>
 <hr>
 </section>
 <section id="notebook-4-visualization" class="level3">
 <h3 class="anchored" data-anchor-id="notebook-4-visualization">Notebook 4: Visualization</h3>
 <p><a href="notebooks/04-visualizations.html">View Full Notebook →</a></p>
-<p><strong>Covers:</strong> - Static map creation (matplotlib) - Route comparison figures - Shade heatmaps - Chart generation</p>
-<p><strong>Key outputs:</strong> - <code>outputs/figures/penn_to_40th_comparison.png</code> - <code>outputs/figures/powelton_to_34th_comparison.png</code> - <code>outputs/figures/spruce_hill_to_46th_comparison.png</code> - Additional analysis charts</p>
+<p><strong>Covers:</strong></p>
+<ul>
+<li>Static map creation (matplotlib)</li>
+<li>Route comparison figures</li>
+<li>Shade heatmaps</li>
+<li>Chart generation</li>
+</ul>
+<p><strong>Key outputs:</strong></p>
+<ul>
+<li><code>outputs/figures/penn_to_40th_comparison.png</code></li>
+<li><code>outputs/figures/powelton_to_34th_comparison.png</code></li>
+<li><code>outputs/figures/spruce_hill_to_46th_comparison.png</code></li>
+<li>Additional analysis charts</li>
+</ul>
 <p><strong>Runtime:</strong> ~10 minutes</p>
 <hr>
 </section>
@@ -455,8 +502,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="acknowledgments" class="level2">
 <h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
-<p>This project was developed as part of <strong>MUSA 5500: Geospatial Data Science with Python</strong> at the University of Pennsylvania, Fall 2024.</p>
-<p><strong>Special Thanks:</strong> - USGS for providing open LiDAR data - OpenStreetMap contributors</p>
+<p>This project was developed as part of <strong>MUSA 5500: Geospatial Data Science with Python</strong> at the University of Pennsylvania, Fall 2025.</p>
+<p><strong>Special Thanks:</strong></p>
+<ul>
+<li>USGS for providing open LiDAR data</li>
+<li>OpenStreetMap contributors</li>
+</ul>
 <hr>
 </section>
 <section id="contact" class="level2">

@@ -45,6 +45,7 @@ edges = ox.graph_to_gdfs(network, nodes=False)
 ```
 
 **Outputs:**
+
 - 23,486 pedestrian network segments
 - 99.7% of buildings with LiDAR heights
 - 2.1M+ tree points with individual heights
@@ -96,6 +97,7 @@ $$
 $$
 
 **Rationale:**
+
 - Buildings provide solid, consistent shade (60% weight)
 - Trees provide dappled but significant shade (40% weight)
 
@@ -128,6 +130,7 @@ $$
 where $w = 0.3$ (30% preference for shade)
 
 **Interpretation:**
+
 - A segment with 100% shade has effective cost = $\text{length} \times 0.7$
 - A segment with 0% shade has effective cost = $\text{length} \times 1.0$
 - Algorithm balances shade benefit against distance penalty
@@ -151,6 +154,7 @@ Three representative routes to SEPTA stations:
 ### Static Maps
 
 Created comparison visualizations showing:
+
 - Shortest path (blue) vs. shadiest path (green)
 - Shade coverage heatmap
 - Route metrics (distance, shade, detour %)
@@ -158,6 +162,7 @@ Created comparison visualizations showing:
 ### Interactive Application
 
 Developed web-based routing calculator with:
+
 - Click-to-select origin/destination
 - Real-time Dijkstra algorithm (runs in browser)
 - Scenario switching (8 temporal options)

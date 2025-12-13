@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Kavana Raju | MUSA 5500 Final Project">
-<meta name="dcterms.date" content="2025-12-01">
+<meta name="dcterms.date" content="2025-12-12">
 
 <title>Shade-Optimized Pedestrian Routing</title>
 <style>
@@ -185,7 +185,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 1, 2025</p>
+      <p class="date">December 12, 2025</p>
     </div>
   </div>
   
@@ -218,17 +218,29 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
 <section id="urban-heat-is-intensifying" class="level3">
 <h3 class="anchored" data-anchor-id="urban-heat-is-intensifying">Urban Heat is Intensifying</h3>
-<p><strong>Climate data shows:</strong> - Philadelphia summers now average 5-7°F warmer than 1970s - Heat waves lasting 5+ days increasingly common - Surface temperatures in sun can reach 130°F+ - Shade can reduce temperatures by <strong>15-30°F</strong></p>
+<p><strong>Climate data shows:</strong></p>
+<ul>
+<li>Philadelphia summers now average 5-7°F warmer than 1970s</li>
+<li>Heat waves lasting 5+ days increasingly common</li>
+<li>Surface temperatures in sun can reach 130°F+</li>
+<li>Shade can reduce temperatures by <strong>15-30°F</strong></li>
+</ul>
 </section>
 <section id="but-routing-apps-ignore-shade" class="level3">
 <h3 class="anchored" data-anchor-id="but-routing-apps-ignore-shade">But Routing Apps Ignore Shade</h3>
-<p><strong>Current navigation apps optimize for:</strong> - ✅ Distance - ✅ Time - ✅ Traffic - ❌ <strong>Thermal comfort</strong></p>
+<p><strong>Current navigation apps optimize for:</strong></p>
+<ul>
+<li>Distance</li>
+<li>Time</li>
+<li>Traffic</li>
+<li><strong>Not for Thermal Comfort</strong></li>
+</ul>
 <p><strong>Result:</strong> Pedestrians get routed through “shade deserts” during summer heat.</p>
 <hr>
 </section>
 </section>
-<section id="our-solution" class="level2">
-<h2 class="anchored" data-anchor-id="our-solution">Our Solution</h2>
+<section id="my-solution" class="level2">
+<h2 class="anchored" data-anchor-id="my-solution">My Solution</h2>
 <section id="lidar-based-shade-modeling-smart-routing" class="level3">
 <h3 class="anchored" data-anchor-id="lidar-based-shade-modeling-smart-routing">LiDAR-Based Shade Modeling + Smart Routing</h3>
 <div class="quarto-figure quarto-figure-center">
@@ -237,7 +249,7 @@ window.Quarto = {
 <figcaption>Study Area Coverage</figcaption>
 </figure>
 </div>
-<p><strong>What we built:</strong></p>
+<p><strong>What I built:</strong></p>
 <ol type="1">
 <li><strong>Accurate Shadow Modeling</strong>
 <ul>
@@ -273,7 +285,11 @@ window.Quarto = {
 <figcaption>Summer vs Winter Shade Coverage Comparison</figcaption>
 </figure>
 </div>
-<p><strong>2.5x difference in shade availability:</strong> - <strong>Winter Morning:</strong> 61.5% average network shade - <strong>Summer Midday:</strong> 24.2% average network shade</p>
+<p><strong>2.5x difference in shade availability:</strong></p>
+<ul>
+<li><strong>Winter Morning:</strong> 61.5% average network shade</li>
+<li><strong>Summer Midday:</strong> 24.2% average network shade</li>
+</ul>
 <p><strong>Implication:</strong> Routing strategies must be time-aware.</p>
 <hr>
 </section>
@@ -285,8 +301,16 @@ window.Quarto = {
 <figcaption>Building and Tree Shade Contributions</figcaption>
 </figure>
 </div>
-<p><strong>Winter:</strong> Buildings dominate (74.4% contribution) - Low sun creates long building shadows - Trees less effective (deciduous leaf loss)</p>
-<p><strong>Summer:</strong> Trees become critical (35.9% vs 16.3%) - High sun reduces building shadows - Tree canopies provide primary shade</p>
+<p><strong>Winter:</strong> Buildings dominate (74.4% contribution)</p>
+<ul>
+<li>Low sun creates long building shadows</li>
+<li>Trees less effective (deciduous leaf loss)</li>
+</ul>
+<p><strong>Summer:</strong> Trees become critical (35.9% vs 16.3%)</p>
+<ul>
+<li>High sun reduces building shadows</li>
+<li>Tree canopies provide primary shade</li>
+</ul>
 <p><strong>Implication:</strong> Need BOTH building design AND tree canopy programs.</p>
 <hr>
 </section>
@@ -298,39 +322,6 @@ window.Quarto = {
 <figcaption>Shade Corridors Map - Red = Intervention Priorities</figcaption>
 </figure>
 </div>
-<p><strong>Highest-priority streets for urban greening:</strong></p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Street</th>
-<th>Current Shade</th>
-<th>Investment</th>
-<th>Impact</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Market St</td>
-<td>15-20%</td>
-<td>$30k (100 trees)</td>
-<td>15,000 pedestrians/day</td>
-</tr>
-<tr class="even">
-<td>Chestnut St</td>
-<td>18-22%</td>
-<td>$15k (50 trees)</td>
-<td>8,000 pedestrians/day</td>
-</tr>
-<tr class="odd">
-<td>University Ave</td>
-<td>12-18%</td>
-<td>$10k (structures)</td>
-<td>5,000 pedestrians/day</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Total cost:</strong> $55k to transform 3 major corridors<br>
-<strong>Total impact:</strong> 28,000+ daily pedestrians</p>
 <hr>
 </section>
 </section>
@@ -338,8 +329,19 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="how-it-works">How It Works</h2>
 <section id="data-collection" class="level3">
 <h3 class="anchored" data-anchor-id="data-collection">1. Data Collection</h3>
-<p><strong>High-resolution inputs:</strong> - 📡 LiDAR point clouds (USGS 3DEP) - 🏢 Building footprints (PASDA) - 🌳 Individual tree heights (2.1M points) - 🚇 Transit network (SEPTA GTFS)</p>
-<p><strong>Coverage:</strong> - 4.2 square miles - 23,486 street segments - 99.7% LiDAR height coverage</p>
+<p><strong>High-resolution inputs:</strong></p>
+<ul>
+<li>LiDAR point clouds (USGS 3DEP)</li>
+<li>Building footprints (PASDA)</li>
+<li>Individual tree heights (2.1M points)</li>
+<li>Transit network (SEPTA GTFS)</li>
+</ul>
+<p><strong>Coverage:</strong></p>
+<ul>
+<li>4.2 square miles</li>
+<li>23,486 street segments</li>
+<li>99.7% LiDAR height coverage</li>
+</ul>
 <hr>
 </section>
 <section id="shadow-calculation" class="level3">
@@ -347,7 +349,12 @@ window.Quarto = {
 <p><strong>Geometric modeling:</strong></p>
 <p>For each building/tree at height <span class="math inline">\(h\)</span> with sun at altitude <span class="math inline">\(\alpha\)</span>:</p>
 <p><span class="math display">\[\text{shadow\_length} = \frac{h}{\tan(\alpha)}\]</span></p>
-<p><strong>8 scenarios modeled:</strong> - Summer: Morning, Midday, Evening - Winter: Morning, Midday, Evening - Spring/Fall: Midday</p>
+<p><strong>8 scenarios modeled:</strong></p>
+<ul>
+<li>Summer: Morning, Midday, Evening</li>
+<li>Winter: Morning, Midday, Evening</li>
+<li>Spring/Fall: Midday</li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figures/shade_heatmap_all_scenarios.png" class="img-fluid figure-img" style="width:100.0%"></p>
@@ -360,7 +367,12 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="route-optimization">3. Route Optimization</h3>
 <p><strong>Shade-weighted cost function:</strong></p>
 <p><span class="math display">\[\text{cost} = \text{length} \times (1 - 0.3 \times \text{shade})\]</span></p>
-<p><strong>Interpretation:</strong> - 100% shade segment → 30% cost reduction - 0% shade segment → No discount - Algorithm balances shade benefit vs distance penalty</p>
+<p><strong>Interpretation:</strong></p>
+<ul>
+<li>100% shade segment → 30% cost reduction</li>
+<li>0% shade segment → No discount</li>
+<li>Algorithm balances shade benefit vs distance penalty</li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figures/temporal_comparison.png" class="img-fluid figure-img" style="width:100.0%"></p>
@@ -371,7 +383,13 @@ window.Quarto = {
 </section>
 <section id="interactive-deployment" class="level3">
 <h3 class="anchored" data-anchor-id="interactive-deployment">4. Interactive Deployment</h3>
-<p><strong>Web-based routing calculator:</strong> - Click map to set origin/destination - Instant route calculation (client-side) - Compare shortest vs shadiest - Switch between 8 scenarios - No backend needed</p>
+<p><strong>Web-based routing calculator:</strong></p>
+<ul>
+<li>Click map to set origin/destination</li>
+<li>Instant route calculation (client-side)</li>
+<li>Compare shortest vs shadiest</li>
+<li>Switch between 8 scenarios</li>
+</ul>
 <p><a href="./interactive.html" class="btn btn-primary"><strong>Try it now →</strong></a></p>
 <hr>
 </section>
@@ -412,7 +430,12 @@ Summer Midday<br>
 <figcaption>Shade Score Distributions Across Scenarios</figcaption>
 </figure>
 </div>
-<p><strong>Pattern:</strong> - <strong>Summer midday:</strong> Right-skewed (most segments low shade) - <strong>Winter morning:</strong> Left-skewed (most segments high shade) - <strong>Spring/Fall:</strong> Normal distribution (moderate shade)</p>
+<p><strong>Pattern:</strong></p>
+<ul>
+<li><strong>Summer midday:</strong> Right-skewed (most segments low shade)</li>
+<li><strong>Winter morning:</strong> Left-skewed (most segments high shade)</li>
+<li><strong>Spring/Fall:</strong> Normal distribution (moderate shade)</li>
+</ul>
 <hr>
 </section>
 <section id="statistical-comparison" class="level3">
@@ -423,7 +446,12 @@ Summer Midday<br>
 <figcaption>Box Plot Analysis</figcaption>
 </figure>
 </div>
-<p><strong>Variability:</strong> - Winter shows tighter distributions (consistent shade) - Summer shows wider spread (variable conditions) - Outliers in all scenarios (extreme high/low shade streets)</p>
+<p><strong>Variability:</strong></p>
+<ul>
+<li>Winter shows tighter distributions (consistent shade; sun below horizon in the evening)</li>
+<li>Summer shows wider spread (variable conditions)</li>
+<li>Outliers in all scenarios (extreme high/low shade streets)</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -431,92 +459,16 @@ Summer Midday<br>
 <h2 class="anchored" data-anchor-id="practical-applications">Practical Applications</h2>
 <section id="for-pedestrians" class="level3">
 <h3 class="anchored" data-anchor-id="for-pedestrians">For Pedestrians</h3>
-<p><strong>Summer Strategy:</strong> 1. Use shade routing during 10 AM - 4 PM 2. Accept 10-15% longer routes for 40% more shade 3. Prioritize: Spruce St, Pine St, Locust Walk 4. Avoid: Market St, Chestnut St during midday</p>
-<p><strong>Winter Strategy:</strong> 1. Shortest path usually sufficient (abundant shade) 2. Focus on safety (ice) rather than shade</p>
-<hr>
-</section>
-<section id="for-urban-planners" class="level3">
-<h3 class="anchored" data-anchor-id="for-urban-planners">For Urban Planners</h3>
-<p><strong>Investment Priorities:</strong></p>
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 8px; margin: 2rem 0;">
-  <h3 style="margin-top: 0; color: white;" class="anchored">Recommended 3-Year Program: $225k</h3>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px;">
-      <strong>Year 1</strong><br>
-      Bus stop structures<br>
-      50 trees (Market St)<br>
-      <em>$75k</em>
-    </div>
-    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px;">
-      <strong>Year 2</strong><br>
-      100 trees (corridors)<br>
-      Wayfinding signage<br>
-      <em>$75k</em>
-    </div>
-    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px;">
-      <strong>Year 3</strong><br>
-      Infrastructure upgrades<br>
-      Monitoring system<br>
-      <em>$75k</em>
-    </div>
-  </div>
-  <p style="margin-bottom: 0; margin-top: 1rem;"><strong>Impact:</strong> 20,000+ pedestrians/day benefit from improved shade coverage</p>
-</div>
-<hr>
-</section>
-</section>
-<section id="innovation-highlights" class="level2">
-<h2 class="anchored" data-anchor-id="innovation-highlights">Innovation Highlights</h2>
-<section id="what-makes-this-different" class="level3">
-<h3 class="anchored" data-anchor-id="what-makes-this-different">What Makes This Different</h3>
-<p><strong>Compared to existing research:</strong></p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 22%">
-<col style="width: 35%">
-<col style="width: 42%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Feature</th>
-<th>This Project</th>
-<th>Typical Studies</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Building Heights</strong></td>
-<td>Actual LiDAR measurements</td>
-<td>Estimated from footprints</td>
-</tr>
-<tr class="even">
-<td><strong>Tree Data</strong></td>
-<td>2.1M individual heights</td>
-<td>Binary canopy presence</td>
-</tr>
-<tr class="odd">
-<td><strong>Temporal Modeling</strong></td>
-<td>8 scenarios (season × time)</td>
-<td>Single snapshot or none</td>
-</tr>
-<tr class="even">
-<td><strong>Route Optimization</strong></td>
-<td>Shade-weighted Dijkstra</td>
-<td>Not implemented</td>
-</tr>
-<tr class="odd">
-<td><strong>Deployment</strong></td>
-<td>Interactive web tool</td>
-<td>Static maps only</td>
-</tr>
-<tr class="even">
-<td><strong>Cost Calculation</strong></td>
-<td>Real-time (&lt;100ms)</td>
-<td>Offline analysis only</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Technical achievements:</strong> - ✅ 99.7% LiDAR building coverage - ✅ Raster-based efficiency (3-foot resolution) - ✅ Client-side routing (no server needed) - ✅ Open-source implementation</p>
+<p><strong>Summer Strategy:</strong></p>
+<ol type="1">
+<li>Use shade routing during 10 AM - 4 PM</li>
+<li>Accept 10-15% longer routes for 40% more shade</li>
+</ol>
+<p><strong>Winter Strategy:</strong></p>
+<ol type="1">
+<li>Shortest path usually sufficient (abundant shade)</li>
+<li>Focus on safety (ice) rather than shade</li>
+</ol>
 <hr>
 </section>
 </section>
@@ -524,19 +476,45 @@ Summer Midday<br>
 <h2 class="anchored" data-anchor-id="project-impact">Project Impact</h2>
 <section id="academic-contribution" class="level3">
 <h3 class="anchored" data-anchor-id="academic-contribution">Academic Contribution</h3>
-<p><strong>Methodology:</strong> - Replicable framework for other cities - Integration of remote sensing + network analysis - Novel shade-weighted routing approach</p>
-<p><strong>Documentation:</strong> - Complete code notebooks (4 published) - Step-by-step technical guide - Open-source deployment</p>
+<p><strong>Methodology:</strong></p>
+<ul>
+<li>Replicable framework for other cities</li>
+<li>Integration of remote sensing + network analysis</li>
+<li>Novel shade-weighted routing approach</li>
+</ul>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li>Complete code notebooks (4 published)</li>
+<li>Step-by-step technical guide</li>
+<li>Open-source deployment</li>
+</ul>
 <hr>
 </section>
 <section id="policy-relevance" class="level3">
 <h3 class="anchored" data-anchor-id="policy-relevance">Policy Relevance</h3>
-<p><strong>Actionable recommendations:</strong> - $225k investment program designed - Priority corridors identified (Market, Chestnut) - ROI analysis completed - Integration with climate adaptation planning</p>
-<p><strong>Stakeholder engagement:</strong> - City planning departments - SEPTA transit authority - Community organizations - Public health officials</p>
+<p><strong>Actionable recommendations:</strong></p>
+<ul>
+<li>Priority corridors identified</li>
+<li>Integration with climate adaptation planning</li>
+</ul>
+<p><strong>Stakeholder engagement:</strong></p>
+<ul>
+<li>City planning departments</li>
+<li>SEPTA transit authority</li>
+<li>Community organizations</li>
+<li>Public health officials</li>
+</ul>
 <hr>
 </section>
 <section id="public-benefit" class="level3">
 <h3 class="anchored" data-anchor-id="public-benefit">Public Benefit</h3>
-<p><strong>Expected outcomes:</strong> - Reduced heat exposure for vulnerable populations - Improved pedestrian comfort during heat events - Evidence-based tree planting priorities - Free routing tool for all residents</p>
+<p><strong>Expected outcomes:</strong></p>
+<ul>
+<li>Reduced heat exposure for vulnerable populations</li>
+<li>Improved pedestrian comfort during heat events</li>
+<li>Evidence-based tree planting priorities</li>
+<li>Free routing tool for all users</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -547,7 +525,7 @@ Summer Midday<br>
 <div class="grid">
 <div class="g-col-4">
 <p><strong>📊 <a href="./results.html">Results</a></strong></p>
-<p>Complete analysis with 9+ visualizations showing network patterns, temporal variation, and policy recommendations</p>
+<p>Complete analysis showing network patterns, temporal variation, and policy recommendations</p>
 </div>
 <div class="g-col-4">
 <p><strong>🔬 <a href="./methodology.html">Methodology</a></strong></p>
@@ -573,28 +551,37 @@ Summer Midday<br>
 </section>
 <section id="about-this-project" class="level2">
 <h2 class="anchored" data-anchor-id="about-this-project">About This Project</h2>
-<p><strong>Course:</strong> MUSA 5500 - Geospatial Data Science with Python<br>
-<strong>Program:</strong> Master of Urban Spatial Analytics<br>
-<strong>Institution:</strong> University of Pennsylvania, Weitzman School of Design<br>
-<strong>Semester:</strong> Fall 2024</p>
-<p><strong>Student:</strong> Kavana Raju<br>
-<strong>Advisor:</strong> [Instructor Name]</p>
+<p><strong>Course:</strong> MUSA 5500 - Geospatial Data Science with Python</p>
+<p><strong>Institution:</strong> University of Pennsylvania</p>
+<p><strong>Semester:</strong> Fall 2025</p>
+<p><strong>Student:</strong> Kavana Raju</p>
 <hr>
 </section>
 <section id="acknowledgments" class="level2">
 <h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
-<p><strong>Data Sources:</strong> - USGS 3D Elevation Program (LiDAR) - Pennsylvania Spatial Data Access (Buildings) - OpenStreetMap (Network) - SEPTA (Transit data)</p>
-<p><strong>Software:</strong> - Python geospatial stack (GeoPandas, Rasterio, NetworkX) - Quarto publishing system - Leaflet.js mapping library</p>
+<p><strong>Data Sources:</strong></p>
+<ul>
+<li>USGS 3D Elevation Program (LiDAR)</li>
+<li>Pennsylvania Spatial Data Access (Buildings)</li>
+<li>OpenStreetMap (Network)</li>
+<li>SEPTA (Transit data)</li>
+</ul>
+<p><strong>Software:</strong></p>
+<ul>
+<li>Python geospatial stack (GeoPandas, Rasterio, NetworkX)</li>
+<li>Quarto publishing system</li>
+<li>Leaflet.js mapping library</li>
+</ul>
 <hr>
 </section>
 <section id="contact-feedback" class="level2">
 <h2 class="anchored" data-anchor-id="contact-feedback">Contact &amp; Feedback</h2>
-<p><strong>Questions?</strong> Email: [your.email@upenn.edu]<br>
-<strong>Code:</strong> [GitHub Repository]<br>
+<p><strong>Questions?</strong> Email: [kavana@upenn.edu]<br>
+<strong>Code:</strong> [https://github.com/kavanaraju/Pedestrian-Shade-Routing]<br>
 <strong>Data:</strong> [Available upon request]</p>
 <hr>
 <p><em>This project demonstrates the application of advanced geospatial analysis to real-world urban planning challenges, combining remote sensing, network analysis, and web development to create actionable tools for climate-adapted urban mobility.</em></p>
-<p><strong>Built with 🌳 for heat-resilient cities</strong></p>
+<p><strong>Built for heat-resilient cities</strong></p>
 
 
 </section>

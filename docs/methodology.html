@@ -323,7 +323,12 @@ window.Quarto = {
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to GeoDataFrame</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>edges <span class="op">=</span> ox.graph_to_gdfs(network, nodes<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Outputs:</strong> - 23,486 pedestrian network segments - 99.7% of buildings with LiDAR heights - 2.1M+ tree points with individual heights</p>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li>23,486 pedestrian network segments</li>
+<li>99.7% of buildings with LiDAR heights</li>
+<li>2.1M+ tree points with individual heights</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -417,7 +422,11 @@ window.Quarto = {
 <p><span class="math display">\[
 \text{shade}_{combined} = 0.6 \times \text{shade}_{buildings} + 0.4 \times \text{shade}_{trees}
 \]</span></p>
-<p><strong>Rationale:</strong> - Buildings provide solid, consistent shade (60% weight) - Trees provide dappled but significant shade (40% weight)</p>
+<p><strong>Rationale:</strong></p>
+<ul>
+<li>Buildings provide solid, consistent shade (60% weight)</li>
+<li>Trees provide dappled but significant shade (40% weight)</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -445,7 +454,12 @@ window.Quarto = {
 \text{cost} = \text{length} \times (1 - w \times \text{shade})
 \]</span></p>
 <p>where <span class="math inline">\(w = 0.3\)</span> (30% preference for shade)</p>
-<p><strong>Interpretation:</strong> - A segment with 100% shade has effective cost = <span class="math inline">\(\text{length} \times 0.7\)</span> - A segment with 0% shade has effective cost = <span class="math inline">\(\text{length} \times 1.0\)</span> - Algorithm balances shade benefit against distance penalty</p>
+<p><strong>Interpretation:</strong></p>
+<ul>
+<li>A segment with 100% shade has effective cost = <span class="math inline">\(\text{length} \times 0.7\)</span></li>
+<li>A segment with 0% shade has effective cost = <span class="math inline">\(\text{length} \times 1.0\)</span></li>
+<li>Algorithm balances shade benefit against distance penalty</li>
+</ul>
 <p><strong>See complete implementation:</strong> <a href="notebooks/03-routing__1_.html">Routing Analysis Notebook</a></p>
 </section>
 <section id="test-routes" class="level3">
@@ -464,11 +478,22 @@ window.Quarto = {
 <p><strong>See complete implementation:</strong> <a href="notebooks/04-visualizations.html">Visualization Notebook</a></p>
 <section id="static-maps" class="level3">
 <h3 class="anchored" data-anchor-id="static-maps">Static Maps</h3>
-<p>Created comparison visualizations showing: - Shortest path (blue) vs.&nbsp;shadiest path (green) - Shade coverage heatmap - Route metrics (distance, shade, detour %)</p>
+<p>Created comparison visualizations showing:</p>
+<ul>
+<li>Shortest path (blue) vs.&nbsp;shadiest path (green)</li>
+<li>Shade coverage heatmap</li>
+<li>Route metrics (distance, shade, detour %)</li>
+</ul>
 </section>
 <section id="interactive-application" class="level3">
 <h3 class="anchored" data-anchor-id="interactive-application">Interactive Application</h3>
-<p>Developed web-based routing calculator with: - Click-to-select origin/destination - Real-time Dijkstra algorithm (runs in browser) - Scenario switching (8 temporal options) - Trade-off metrics display</p>
+<p>Developed web-based routing calculator with:</p>
+<ul>
+<li>Click-to-select origin/destination</li>
+<li>Real-time Dijkstra algorithm (runs in browser)</li>
+<li>Scenario switching (8 temporal options)</li>
+<li>Trade-off metrics display</li>
+</ul>
 <hr>
 </section>
 </section>
