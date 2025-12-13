@@ -15,100 +15,138 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-        
-        #map {
-            width: 100vw;
+            display: flex;
+            flex-direction: column;
             height: 100vh;
+            overflow: hidden;
         }
         
-        #controls {
-            position: absolute;
-            top: 10px;
-            left: 60px;
+        /* Header section - ABOVE the map */
+        #header {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border-bottom: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             z-index: 1000;
-            max-width: 400px;
+        }
+        
+        #header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        /* Left side - Scenario controls */
+        #scenario-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
         .title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 15px;
             color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .control-group {
-            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         label {
-            display: block;
             font-weight: 600;
-            margin-bottom: 5px;
             color: #555;
-        }
-        
-        select, button {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
             font-size: 14px;
         }
         
+        select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            min-width: 180px;
+        }
+        
         button {
+            padding: 8px 16px;
             background: #4285f4;
             color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            border: none;
         }
         
         button:hover {
             background: #357ae8;
         }
         
-        .info-box {
-            background: #f0f7ff;
-            padding: 12px;
-            border-radius: 4px;
-            border-left: 3px solid #4285f4;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-        
-        .metrics {
+        /* Right side - Metrics */
+        #metrics-section {
             display: none;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid #eee;
+            background: #f8f9fa;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
         }
         
-        .metric-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-            font-size: 14px;
+        #metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            gap: 20px;
+        }
+        
+        .metric {
+            text-align: center;
         }
         
         .metric-label {
+            font-size: 11px;
             color: #666;
-            font-weight: 500;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         
         .metric-value {
+            font-size: 16px;
+            font-weight: bold;
             color: #333;
-            font-weight: 600;
+            margin-top: 4px;
         }
         
-        .error {
-            background: #fee;
-            border-left-color: #f44;
-            color: #c00;
+        .metric-value.positive {
+            color: #4caf50;
+        }
+        
+        .metric-value.neutral {
+            color: #ff9800;
+        }
+        
+        /* Instructions bar */
+        #instructions-bar {
+            background: #e3f2fd;
+            padding: 10px 20px;
+            border-bottom: 1px solid #90caf9;
+            font-size: 13px;
+            text-align: center;
+            color: #1565c0;
+        }
+        
+        /* Map container */
+        #map {
+            flex: 1;
+            width: 100%;
         }
         
         #loading {
@@ -117,7 +155,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 30px;
+            padding: 30px 40px;
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             z-index: 2000;
@@ -138,6 +176,18 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            #header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            #metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
@@ -146,43 +196,54 @@
         <p>Loading network data...</p>
     </div>
     
-    <div id="map"></div>
-    
-    <div id="controls">
-        <div class="title">🌳 Shade-Optimized Routing Calculator</div>
-        
-        <div class="control-group">
-            <label for="scenario">Scenario:</label>
-            <select id="scenario">
-                <option value="summer_midday">Summer Midday</option>
-            </select>
-        </div>
-        
-        <button id="reset">Reset</button>
-        
-        <div class="info-box" id="instructions">
-            <strong>How to use:</strong> Click once to set <strong>origin</strong>, click again to set <strong>destination</strong>. Routes compute automatically: <strong>Shortest</strong> (blue) vs <strong>Shadiest</strong> (green).
-        </div>
-        
-        <div class="metrics" id="metrics">
-            <div class="metric-row">
-                <span class="metric-label">Shortest Route:</span>
-                <span class="metric-value" id="shortest-dist">-</span>
+    <!-- Header section - ABOVE map -->
+    <div id="header">
+        <div id="header-content">
+            <!-- Left: Scenario controls -->
+            <div id="scenario-section">
+                <div class="title">🌳 Shade Routing</div>
+                
+                <div class="control-group">
+                    <label for="scenario">Scenario:</label>
+                    <select id="scenario">
+                        <option value="summer_midday">Summer Midday</option>
+                    </select>
+                </div>
+                
+                <button id="reset">Reset</button>
             </div>
-            <div class="metric-row">
-                <span class="metric-label">Shadiest Route:</span>
-                <span class="metric-value" id="shadiest-dist">-</span>
-            </div>
-            <div class="metric-row">
-                <span class="metric-label">Detour:</span>
-                <span class="metric-value" id="detour">-</span>
-            </div>
-            <div class="metric-row">
-                <span class="metric-label">Shade Gain:</span>
-                <span class="metric-value" id="shade-gain">-</span>
+            
+            <!-- Right: Metrics (hidden until routes calculated) -->
+            <div id="metrics-section">
+                <div id="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-label">Shortest</div>
+                        <div class="metric-value" id="shortest-dist">-</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Shadiest</div>
+                        <div class="metric-value" id="shadiest-dist">-</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Detour</div>
+                        <div class="metric-value neutral" id="detour">-</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Shade Gain</div>
+                        <div class="metric-value positive" id="shade-gain">-</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    
+    <!-- Instructions bar -->
+    <div id="instructions-bar">
+        <strong>How to use:</strong> Click once to set origin (blue marker), click again to set destination (red marker). Routes compute automatically: Shortest (blue) vs Shadiest (green).
+    </div>
+    
+    <!-- Map container -->
+    <div id="map"></div>
     
     <script>
         let map, nodes = [], edges = [], scenarios = [], metadata = {};
@@ -194,28 +255,17 @@
         
         async function init() {
             try {
-                // Load all data
                 await loadData();
-                
-                // Initialize map
                 initMap();
-                
-                // Draw network
                 drawNetwork();
-                
-                // Setup controls
                 setupControls();
-                
-                // Hide loading
                 document.getElementById('loading').style.display = 'none';
-                
             } catch (error) {
                 console.error('Initialization error:', error);
                 document.getElementById('loading').innerHTML = 
-                    `<div class="error info-box">
+                    `<div style="color: #c00; padding: 20px;">
                         <strong>Error loading map:</strong><br>
-                        ${error.message}<br><br>
-                        <small>Check browser console for details (F12)</small>
+                        ${error.message}
                     </div>`;
             }
         }
@@ -223,25 +273,21 @@
         async function loadData() {
             console.log('Loading data files...');
             
-            // Load metadata
             const metadataRes = await fetch('map_data/metadata.json');
             if (!metadataRes.ok) throw new Error('Failed to load metadata.json');
             metadata = await metadataRes.json();
             console.log('✓ Metadata loaded');
             
-            // Load scenarios
             const scenariosRes = await fetch('map_data/scenarios.json');
             if (!scenariosRes.ok) throw new Error('Failed to load scenarios.json');
             scenarios = await scenariosRes.json();
             console.log('✓ Scenarios loaded:', scenarios.length);
             
-            // Load nodes
             const nodesRes = await fetch('map_data/nodes.json');
             if (!nodesRes.ok) throw new Error('Failed to load nodes.json');
             nodes = await nodesRes.json();
             console.log('✓ Nodes loaded:', nodes.length);
             
-            // Load edges
             const edgesRes = await fetch('map_data/edges.json');
             if (!edgesRes.ok) throw new Error('Failed to load edges.json');
             edges = await edgesRes.json();
@@ -253,7 +299,7 @@
             map = L.map('map').setView([center.lat, center.lon], 14);
             
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
                 maxZoom: 19
             }).addTo(map);
             
@@ -261,7 +307,6 @@
         }
         
         function drawNetwork() {
-            // Clear existing
             networkLayers.forEach(layer => map.removeLayer(layer));
             networkLayers = [];
             
@@ -271,7 +316,7 @@
                 if (!edge.geometry || edge.geometry.length < 2) return;
                 
                 const shade = (edge.shade && edge.shade[currentScenario]) || 0;
-                const coords = edge.geometry.map(c => [c[1], c[0]]); // [lat, lon]
+                const coords = edge.geometry.map(c => [c[1], c[0]]);
                 
                 const layer = L.polyline(coords, {
                     color: getShadeColor(shade),
@@ -416,7 +461,6 @@
                 });
             }
             
-            // Reconstruct path
             const path = [];
             let current = endId;
             while (current !== undefined) {
@@ -424,7 +468,6 @@
                 current = prev[current];
             }
             
-            // Calculate metrics
             let totalLength = 0;
             let totalShade = 0;
             
@@ -463,7 +506,7 @@
         }
         
         function showMetrics(shortest, shadiest) {
-            document.getElementById('metrics').style.display = 'block';
+            document.getElementById('metrics-section').style.display = 'block';
             document.getElementById('shortest-dist').textContent = `${shortest.distance.toFixed(0)}m`;
             document.getElementById('shadiest-dist').textContent = `${shadiest.distance.toFixed(0)}m`;
             
@@ -477,7 +520,7 @@
         function clearRoutes() {
             routeLayers.forEach(layer => map.removeLayer(layer));
             routeLayers = [];
-            document.getElementById('metrics').style.display = 'none';
+            document.getElementById('metrics-section').style.display = 'none';
         }
         
         function reset() {
@@ -490,7 +533,6 @@
             clearRoutes();
         }
         
-        // Start
         init();
     </script>
 </body>

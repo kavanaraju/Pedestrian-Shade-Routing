@@ -91,23 +91,27 @@
             background: #357ae8;
         }
         
-        /* Right side - Metrics */
+        /* Right side - Metrics (ALWAYS VISIBLE, blank when no routes) */
         #metrics-section {
-            display: none;
             background: #f8f9fa;
             padding: 10px 20px;
             border-radius: 6px;
             border: 1px solid #e0e0e0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
         }
         
         #metrics-grid {
             display: grid;
             grid-template-columns: repeat(4, auto);
             gap: 20px;
+            width: 100%;
         }
         
         .metric {
             text-align: center;
+            min-width: 80px;
         }
         
         .metric-label {
@@ -125,12 +129,16 @@
             margin-top: 4px;
         }
         
+        .metric-value.empty {
+            color: #bbb;
+        }
+        
         .metric-value.positive {
-            color: #4caf50;
+            color: #2196F3;
         }
         
         .metric-value.neutral {
-            color: #ff9800;
+            color: #ff6b9d;
         }
         
         /* Instructions bar */
@@ -213,24 +221,24 @@
                 <button id="reset">Reset</button>
             </div>
             
-            <!-- Right: Metrics (hidden until routes calculated) -->
+            <!-- Right: Metrics (ALWAYS VISIBLE, shows dashes when empty) -->
             <div id="metrics-section">
                 <div id="metrics-grid">
                     <div class="metric">
                         <div class="metric-label">Shortest</div>
-                        <div class="metric-value" id="shortest-dist">-</div>
+                        <div class="metric-value empty" id="shortest-dist">-</div>
                     </div>
                     <div class="metric">
                         <div class="metric-label">Shadiest</div>
-                        <div class="metric-value" id="shadiest-dist">-</div>
+                        <div class="metric-value empty" id="shadiest-dist">-</div>
                     </div>
                     <div class="metric">
                         <div class="metric-label">Detour</div>
-                        <div class="metric-value neutral" id="detour">-</div>
+                        <div class="metric-value empty" id="detour">-</div>
                     </div>
                     <div class="metric">
                         <div class="metric-label">Shade Gain</div>
-                        <div class="metric-value positive" id="shade-gain">-</div>
+                        <div class="metric-value empty" id="shade-gain">-</div>
                     </div>
                 </div>
             </div>
@@ -239,7 +247,7 @@
     
     <!-- Instructions bar -->
     <div id="instructions-bar">
-        <strong>How to use:</strong> Click once to set origin (blue marker), click again to set destination (red marker). Routes compute automatically: Shortest (blue) vs Shadiest (green).
+        <strong>How to use:</strong> Click once to set origin (blue marker), click again to set destination (red marker). Routes compute automatically: <strong style="color: #ff6b9d;">Shortest (pink)</strong> vs <strong style="color: #2196F3;">Shadiest (blue)</strong>.
     </div>
     
     <!-- Map container -->
@@ -417,8 +425,11 @@
             const shortest = dijkstra(originNode.id, destNode.id, false);
             const shadiest = dijkstra(originNode.id, destNode.id, true);
             
-            drawRoute(shortest, '#2196F3', 'Shortest');
-            drawRoute(shadiest, '#4CAF50', 'Shadiest');
+            // Shortest route = PINK (#ff6b9d)
+            drawRoute(shortest, '#ff6b9d', 'Shortest Route');
+            
+            // Shadiest route = BLUE (#2196F3)
+            drawRoute(shadiest, '#2196F3', 'Shadiest Route');
             
             showMetrics(shortest, shadiest);
         }
@@ -495,8 +506,8 @@
             
             const layer = L.polyline(coords, {
                 color: color,
-                weight: 4,
-                opacity: 0.8
+                weight: 5,
+                opacity: 0.9
             }).bindPopup(`<strong>${label}</strong><br>
                 Distance: ${route.distance.toFixed(0)}m<br>
                 Avg Shade: ${(route.avgShade * 100).toFixed(1)}%`);
@@ -506,21 +517,37 @@
         }
         
         function showMetrics(shortest, shadiest) {
-            document.getElementById('metrics-section').style.display = 'block';
-            document.getElementById('shortest-dist').textContent = `${shortest.distance.toFixed(0)}m`;
-            document.getElementById('shadiest-dist').textContent = `${shadiest.distance.toFixed(0)}m`;
+            // Update values and remove 'empty' class
+            const shortestEl = document.getElementById('shortest-dist');
+            const shadiestEl = document.getElementById('shadiest-dist');
+            const detourEl = document.getElementById('detour');
+            const shadeGainEl = document.getElementById('shade-gain');
+            
+            shortestEl.textContent = `${shortest.distance.toFixed(0)}m`;
+            shortestEl.className = 'metric-value neutral';
+            
+            shadiestEl.textContent = `${shadiest.distance.toFixed(0)}m`;
+            shadiestEl.className = 'metric-value positive';
             
             const detourPct = ((shadiest.distance - shortest.distance) / shortest.distance * 100).toFixed(1);
-            document.getElementById('detour').textContent = `+${detourPct}%`;
+            detourEl.textContent = `+${detourPct}%`;
+            detourEl.className = 'metric-value neutral';
             
             const shadeGain = ((shadiest.avgShade - shortest.avgShade) * 100).toFixed(1);
-            document.getElementById('shade-gain').textContent = `+${shadeGain}%`;
+            shadeGainEl.textContent = `+${shadeGain}%`;
+            shadeGainEl.className = 'metric-value positive';
         }
         
         function clearRoutes() {
             routeLayers.forEach(layer => map.removeLayer(layer));
             routeLayers = [];
-            document.getElementById('metrics-section').style.display = 'none';
+            
+            // Reset metrics to dashes with 'empty' class
+            const metricValues = document.querySelectorAll('.metric-value');
+            metricValues.forEach(el => {
+                el.textContent = '-';
+                el.className = 'metric-value empty';
+            });
         }
         
         function reset() {
