@@ -1,0 +1,50 @@
+[
+  {
+    "id": "summer_morning",
+    "name": "Summer Morning",
+    "altitude": 36.90209009242766,
+    "azimuth": 88.8470619145794
+  },
+  {
+    "id": "summer_midday",
+    "name": "Summer Midday",
+    "altitude": 68.85703134943897,
+    "azimuth": 136.6688986690241
+  },
+  {
+    "id": "summer_evening",
+    "name": "Summer Evening",
+    "altitude": 26.47604762073001,
+    "azimuth": 279.3683707311745
+  },
+  {
+    "id": "winter_morning",
+    "name": "Winter Morning",
+    "altitude": 14.189948871544969,
+    "azimuth": 138.23690553000438
+  },
+  {
+    "id": "winter_midday",
+    "name": "Winter Midday",
+    "altitude": 26.640142758150997,
+    "azimuth": 180.24232724066746
+  },
+  {
+    "id": "winter_evening",
+    "name": "Winter Evening",
+    "altitude": -14.94962832994464,
+    "azimuth": 251.73604751302094
+  },
+  {
+    "id": "spring_midday",
+    "name": "Spring Midday",
+    "altitude": 47.763256684237554,
+    "azimuth": 154.37617282984013
+  },
+  {
+    "id": "fall_midday",
+    "name": "Fall Midday",
+    "altitude": 48.5648669563235,
+    "azimuth": 159.55351621081365
+  }
+]
