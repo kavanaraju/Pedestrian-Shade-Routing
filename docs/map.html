@@ -15,59 +15,41 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-        
-        #map {
-            width: 100vw;
+            display: flex;
+            flex-direction: column;
             height: 100vh;
+            overflow: hidden;
         }
         
-        /* Scenario controls - TOP LEFT */
-        #scenario-controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+        /* Header section - ABOVE the map */
+        #header {
             background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border-bottom: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             z-index: 1000;
-            min-width: 250px;
         }
         
-        /* Metrics display - TOP RIGHT */
-        #metrics-panel {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
-            min-width: 200px;
-            display: none;
+        #header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 20px;
+            flex-wrap: wrap;
         }
         
-        /* Instructions - BOTTOM LEFT */
-        #instructions {
-            position: absolute;
-            bottom: 30px;
-            left: 10px;
-            background: white;
-            padding: 12px 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
-            max-width: 350px;
-            font-size: 13px;
-            line-height: 1.5;
+        /* Left side - Scenario controls */
+        #scenario-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
-        .panel-title {
-            font-size: 14px;
+        .title {
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 10px;
             color: #333;
             display: flex;
             align-items: center;
@@ -75,59 +57,72 @@
         }
         
         .control-group {
-            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         label {
-            display: block;
             font-weight: 600;
-            margin-bottom: 5px;
             color: #555;
-            font-size: 13px;
+            font-size: 14px;
         }
         
-        select, button {
-            width: 100%;
-            padding: 8px 10px;
+        select {
+            padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 13px;
+            font-size: 14px;
+            min-width: 180px;
         }
         
         button {
+            padding: 8px 16px;
             background: #4285f4;
             color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            border: none;
-            margin-top: 5px;
         }
         
         button:hover {
             background: #357ae8;
         }
         
-        .metric-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-            font-size: 13px;
-            padding: 4px 0;
-            border-bottom: 1px solid #f0f0f0;
+        /* Right side - Metrics */
+        #metrics-section {
+            display: none;
+            background: #f8f9fa;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
         }
         
-        .metric-row:last-child {
-            border-bottom: none;
+        #metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            gap: 20px;
+        }
+        
+        .metric {
+            text-align: center;
         }
         
         .metric-label {
+            font-size: 11px;
             color: #666;
-            font-weight: 500;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         
         .metric-value {
+            font-size: 16px;
+            font-weight: bold;
             color: #333;
-            font-weight: 700;
+            margin-top: 4px;
         }
         
         .metric-value.positive {
@@ -136,6 +131,22 @@
         
         .metric-value.neutral {
             color: #ff9800;
+        }
+        
+        /* Instructions bar */
+        #instructions-bar {
+            background: #e3f2fd;
+            padding: 10px 20px;
+            border-bottom: 1px solid #90caf9;
+            font-size: 13px;
+            text-align: center;
+            color: #1565c0;
+        }
+        
+        /* Map container */
+        #map {
+            flex: 1;
+            width: 100%;
         }
         
         #loading {
@@ -166,8 +177,16 @@
             100% { transform: rotate(360deg); }
         }
         
-        .leaflet-control-attribution {
-            font-size: 10px;
+        /* Responsive */
+        @media (max-width: 768px) {
+            #header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            #metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -177,48 +196,54 @@
         <p>Loading network data...</p>
     </div>
     
+    <!-- Header section - ABOVE map -->
+    <div id="header">
+        <div id="header-content">
+            <!-- Left: Scenario controls -->
+            <div id="scenario-section">
+                <div class="title">🌳 Shade Routing</div>
+                
+                <div class="control-group">
+                    <label for="scenario">Scenario:</label>
+                    <select id="scenario">
+                        <option value="summer_midday">Summer Midday</option>
+                    </select>
+                </div>
+                
+                <button id="reset">Reset</button>
+            </div>
+            
+            <!-- Right: Metrics (hidden until routes calculated) -->
+            <div id="metrics-section">
+                <div id="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-label">Shortest</div>
+                        <div class="metric-value" id="shortest-dist">-</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Shadiest</div>
+                        <div class="metric-value" id="shadiest-dist">-</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Detour</div>
+                        <div class="metric-value neutral" id="detour">-</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Shade Gain</div>
+                        <div class="metric-value positive" id="shade-gain">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Instructions bar -->
+    <div id="instructions-bar">
+        <strong>How to use:</strong> Click once to set origin (blue marker), click again to set destination (red marker). Routes compute automatically: Shortest (blue) vs Shadiest (green).
+    </div>
+    
+    <!-- Map container -->
     <div id="map"></div>
-    
-    <!-- Scenario controls - Top Left -->
-    <div id="scenario-controls">
-        <div class="panel-title">🌳 Shade Routing</div>
-        
-        <div class="control-group">
-            <label for="scenario">Scenario:</label>
-            <select id="scenario">
-                <option value="summer_midday">Summer Midday</option>
-            </select>
-        </div>
-        
-        <button id="reset">Reset Routes</button>
-    </div>
-    
-    <!-- Metrics - Top Right -->
-    <div id="metrics-panel">
-        <div class="panel-title">📊 Route Metrics</div>
-        
-        <div class="metric-row">
-            <span class="metric-label">Shortest:</span>
-            <span class="metric-value" id="shortest-dist">-</span>
-        </div>
-        <div class="metric-row">
-            <span class="metric-label">Shadiest:</span>
-            <span class="metric-value" id="shadiest-dist">-</span>
-        </div>
-        <div class="metric-row">
-            <span class="metric-label">Detour:</span>
-            <span class="metric-value neutral" id="detour">-</span>
-        </div>
-        <div class="metric-row">
-            <span class="metric-label">Shade Gain:</span>
-            <span class="metric-value positive" id="shade-gain">-</span>
-        </div>
-    </div>
-    
-    <!-- Instructions - Bottom Left -->
-    <div id="instructions">
-        <strong>How to use:</strong> Click once to set <strong>origin</strong> (blue marker), click again to set <strong>destination</strong> (red marker). Routes compute automatically: <strong>Shortest</strong> (blue line) vs <strong>Shadiest</strong> (green line).
-    </div>
     
     <script>
         let map, nodes = [], edges = [], scenarios = [], metadata = {};
@@ -481,7 +506,7 @@
         }
         
         function showMetrics(shortest, shadiest) {
-            document.getElementById('metrics-panel').style.display = 'block';
+            document.getElementById('metrics-section').style.display = 'block';
             document.getElementById('shortest-dist').textContent = `${shortest.distance.toFixed(0)}m`;
             document.getElementById('shadiest-dist').textContent = `${shadiest.distance.toFixed(0)}m`;
             
@@ -495,7 +520,7 @@
         function clearRoutes() {
             routeLayers.forEach(layer => map.removeLayer(layer));
             routeLayers = [];
-            document.getElementById('metrics-panel').style.display = 'none';
+            document.getElementById('metrics-section').style.display = 'none';
         }
         
         function reset() {
