@@ -578,28 +578,28 @@
     "href": "interactive.html#what-youre-seeing",
     "title": "Interactive Shade Routing Calculator",
     "section": "What You’re Seeing",
-    "text": "What You’re Seeing\n\nNetwork Visualization\nThe street network is colored by shade availability: - 🔴 Red: 0-20% shade (full sun) - 🟠 Orange: 20-40% shade (minimal shade) - 🟡 Yellow: 40-60% shade (moderate shade) - 🟢 Light Green: 60-80% shade (good shade) - 🟢 Dark Green: 80-100% shade (excellent shade)\n\n\nRoute Comparison\nShortest Route (Blue): - Minimizes walking distance - Optimizes for time efficiency - May cross sunny areas\nShadiest Route (Green): - Maximizes shade coverage - Balances shade benefit vs. distance penalty - Uses shade-weighted cost: length × (1 - 0.3 × shade)"
+    "text": "What You’re Seeing\n\nNetwork Visualization\nThe street network is colored by shade availability:\n\n🔴 Red: 0-20% shade (full sun)\n🟠 Orange: 20-40% shade (minimal shade)\n🟡 Yellow: 40-60% shade (moderate shade)\n🟢 Light Green: 60-80% shade (good shade)\n🟢 Dark Green: 80-100% shade (excellent shade)\n\n\n\nRoute Comparison\nShortest Route (Blue):\n\nMinimizes walking distance\nOptimizes for time efficiency\nMay cross sunny areas\n\nShadiest Route (Green):\n\nMaximizes shade coverage\nBalances shade benefit vs. distance penalty\nUses shade-weighted cost: length × (1 - 0.3 × shade)"
   },
   {
     "objectID": "interactive.html#example-scenarios",
     "href": "interactive.html#example-scenarios",
     "title": "Interactive Shade Routing Calculator",
     "section": "Example Scenarios",
-    "text": "Example Scenarios\n\nHot Summer Afternoon\nScenario: Summer Midday (sun at 68.9° altitude) - Shadows are short - Shade is scarce - Shadiest route provides significant thermal comfort improvement - Typical detour: 10-15% longer\n\n\nCool Winter Morning\nScenario: Winter Morning (sun at 14.2° altitude) - Shadows are very long - Shade is abundant - Shadiest route often similar to shortest - Typical detour: 5-10% longer"
+    "text": "Example Scenarios\n\nHot Summer Afternoon\nScenario: Summer Midday (sun at 68.9° altitude)\n\nShadows are short\nShade is scarce\nShadiest route provides significant thermal comfort improvement\nTypical detour: 10-15% longer\n\n\n\nCool Winter Morning\nScenario: Winter Morning (sun at 14.2° altitude)\n\nShadows are very long\nShade is abundant\nShadiest route often similar to shortest\nTypical detour: 5-10% longer"
   },
   {
     "objectID": "interactive.html#technical-details",
     "href": "interactive.html#technical-details",
     "title": "Interactive Shade Routing Calculator",
     "section": "Technical Details",
-    "text": "Technical Details\n\nPerformance\n\nNetwork size: 23,486 street segments\nRoute calculation: &lt;100ms per route pair\nAlgorithm: Dijkstra’s shortest path\nProcessing: 100% client-side (no server needed)\n\n\n\nData Format\nThe map uses four JSON files: 1. nodes.json - Network intersections (~12,000 nodes) 2. edges.json - Street segments with shade scores 3. scenarios.json - Solar position data for each scenario 4. metadata.json - Map bounds and configuration\n\n\nCost Function\nShortest path:\ncost = length\nShadiest path:\ncost = length × (1 - w × shade)\nwhere w = 0.3 (30% preference for shade)\nA segment with: - 0% shade has cost = length × 1.0 - 50% shade has cost = length × 0.85 - 100% shade has cost = length × 0.7\nThis creates a 30% preference for shade while still prioritizing reasonable distances."
+    "text": "Technical Details\n\nPerformance\n\nNetwork size: 23,486 street segments\nRoute calculation: &lt;100ms per route pair\nAlgorithm: Dijkstra’s shortest path\nProcessing: 100% client-side (no server needed)\n\n\n\nData Format\nThe map uses four JSON files:\n\nnodes.json - Network intersections (~12,000 nodes)\nedges.json - Street segments with shade scores\nscenarios.json - Solar position data for each scenario\nmetadata.json - Map bounds and configuration\n\n\n\nCost Function\nShortest path:\ncost = length\nShadiest path:\ncost = length × (1 - w × shade)\nwhere w = 0.3 (30% preference for shade)\nA segment with:\n\n0% shade has cost = length × 1.0\n50% shade has cost = length × 0.85\n100% shade has cost = length × 0.7\n\nThis creates a 30% preference for shade while still prioritizing reasonable distances."
   },
   {
     "objectID": "interactive.html#limitations",
     "href": "interactive.html#limitations",
     "title": "Interactive Shade Routing Calculator",
     "section": "Limitations",
-    "text": "Limitations\n\nStatic data: Based on 2018-2020 LiDAR (tree canopy may have changed)\nClear sky assumed: Does not account for clouds\nNo real-time updates: Shadow positions are pre-calculated for specific dates/times\nSimplified pedestrian comfort: Shade is only one factor (wind, humidity, temperature also matter)\nNetwork completeness: Limited to OpenStreetMap pedestrian paths"
+    "text": "Limitations\n\nStatic data: Based on 2018-2020 LiDAR (tree canopy may have changed)\nClear sky assumed: Does not account for clouds\nNo real-time updates: Shadow positions are pre-calculated for specific dates/times\nSimplified pedestrian comfort: Shade is only one factor (wind, humidity, temperature also matter)\nNetwork completeness: Limited to OpenStreetMap pedestrian paths\n\n\n← Back to Results | View Code Implementation →"
   },
   {
     "objectID": "interactive.html#mobile-use",

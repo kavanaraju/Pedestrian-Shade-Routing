@@ -47,6 +47,7 @@ Click on the map below to plan shade-optimized routes in University City Philade
 ### Network Visualization
 
 The street network is colored by shade availability:
+
 - 🔴 **Red**: 0-20% shade (full sun)
 - 🟠 **Orange**: 20-40% shade (minimal shade)
 - 🟡 **Yellow**: 40-60% shade (moderate shade)
@@ -56,11 +57,13 @@ The street network is colored by shade availability:
 ### Route Comparison
 
 **Shortest Route (Blue):**
+
 - Minimizes walking distance
 - Optimizes for time efficiency
 - May cross sunny areas
 
 **Shadiest Route (Green):**
+
 - Maximizes shade coverage
 - Balances shade benefit vs. distance penalty
 - Uses shade-weighted cost: `length × (1 - 0.3 × shade)`
@@ -72,6 +75,7 @@ The street network is colored by shade availability:
 ### Hot Summer Afternoon
 
 **Scenario:** Summer Midday (sun at 68.9° altitude)
+
 - Shadows are short
 - Shade is scarce
 - Shadiest route provides significant thermal comfort improvement
@@ -80,6 +84,7 @@ The street network is colored by shade availability:
 ### Cool Winter Morning
 
 **Scenario:** Winter Morning (sun at 14.2° altitude)
+
 - Shadows are very long
 - Shade is abundant
 - Shadiest route often similar to shortest
@@ -99,6 +104,7 @@ The street network is colored by shade availability:
 ### Data Format
 
 The map uses four JSON files:
+
 1. **nodes.json** - Network intersections (~12,000 nodes)
 2. **edges.json** - Street segments with shade scores
 3. **scenarios.json** - Solar position data for each scenario
@@ -118,6 +124,7 @@ where w = 0.3 (30% preference for shade)
 ```
 
 A segment with:
+
 - 0% shade has cost = length × 1.0
 - 50% shade has cost = length × 0.85
 - 100% shade has cost = length × 0.7
@@ -133,16 +140,6 @@ This creates a 30% preference for shade while still prioritizing reasonable dist
 - **No real-time updates:** Shadow positions are pre-calculated for specific dates/times
 - **Simplified pedestrian comfort:** Shade is only one factor (wind, humidity, temperature also matter)
 - **Network completeness:** Limited to OpenStreetMap pedestrian paths
-
----
-
-## Mobile Use
-
-The map works on mobile devices:
-- Touch to set origin/destination
-- Pinch to zoom
-- Swipe to pan
-- Works offline after initial load
 
 ---
 

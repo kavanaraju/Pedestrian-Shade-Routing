@@ -198,12 +198,29 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="what-youre-seeing">What You’re Seeing</h2>
 <section id="network-visualization" class="level3">
 <h3 class="anchored" data-anchor-id="network-visualization">Network Visualization</h3>
-<p>The street network is colored by shade availability: - 🔴 <strong>Red</strong>: 0-20% shade (full sun) - 🟠 <strong>Orange</strong>: 20-40% shade (minimal shade) - 🟡 <strong>Yellow</strong>: 40-60% shade (moderate shade) - 🟢 <strong>Light Green</strong>: 60-80% shade (good shade) - 🟢 <strong>Dark Green</strong>: 80-100% shade (excellent shade)</p>
+<p>The street network is colored by shade availability:</p>
+<ul>
+<li>🔴 <strong>Red</strong>: 0-20% shade (full sun)</li>
+<li>🟠 <strong>Orange</strong>: 20-40% shade (minimal shade)</li>
+<li>🟡 <strong>Yellow</strong>: 40-60% shade (moderate shade)</li>
+<li>🟢 <strong>Light Green</strong>: 60-80% shade (good shade)</li>
+<li>🟢 <strong>Dark Green</strong>: 80-100% shade (excellent shade)</li>
+</ul>
 </section>
 <section id="route-comparison" class="level3">
 <h3 class="anchored" data-anchor-id="route-comparison">Route Comparison</h3>
-<p><strong>Shortest Route (Blue):</strong> - Minimizes walking distance - Optimizes for time efficiency - May cross sunny areas</p>
-<p><strong>Shadiest Route (Green):</strong> - Maximizes shade coverage - Balances shade benefit vs.&nbsp;distance penalty - Uses shade-weighted cost: <code>length × (1 - 0.3 × shade)</code></p>
+<p><strong>Shortest Route (Blue):</strong></p>
+<ul>
+<li>Minimizes walking distance</li>
+<li>Optimizes for time efficiency</li>
+<li>May cross sunny areas</li>
+</ul>
+<p><strong>Shadiest Route (Green):</strong></p>
+<ul>
+<li>Maximizes shade coverage</li>
+<li>Balances shade benefit vs.&nbsp;distance penalty</li>
+<li>Uses shade-weighted cost: <code>length × (1 - 0.3 × shade)</code></li>
+</ul>
 <hr>
 </section>
 </section>
@@ -211,11 +228,23 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="example-scenarios">Example Scenarios</h2>
 <section id="hot-summer-afternoon" class="level3">
 <h3 class="anchored" data-anchor-id="hot-summer-afternoon">Hot Summer Afternoon</h3>
-<p><strong>Scenario:</strong> Summer Midday (sun at 68.9° altitude) - Shadows are short - Shade is scarce - Shadiest route provides significant thermal comfort improvement - Typical detour: 10-15% longer</p>
+<p><strong>Scenario:</strong> Summer Midday (sun at 68.9° altitude)</p>
+<ul>
+<li>Shadows are short</li>
+<li>Shade is scarce</li>
+<li>Shadiest route provides significant thermal comfort improvement</li>
+<li>Typical detour: 10-15% longer</li>
+</ul>
 </section>
 <section id="cool-winter-morning" class="level3">
 <h3 class="anchored" data-anchor-id="cool-winter-morning">Cool Winter Morning</h3>
-<p><strong>Scenario:</strong> Winter Morning (sun at 14.2° altitude) - Shadows are very long - Shade is abundant - Shadiest route often similar to shortest - Typical detour: 5-10% longer</p>
+<p><strong>Scenario:</strong> Winter Morning (sun at 14.2° altitude)</p>
+<ul>
+<li>Shadows are very long</li>
+<li>Shade is abundant</li>
+<li>Shadiest route often similar to shortest</li>
+<li>Typical detour: 5-10% longer</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -232,7 +261,13 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="data-format" class="level3">
 <h3 class="anchored" data-anchor-id="data-format">Data Format</h3>
-<p>The map uses four JSON files: 1. <strong>nodes.json</strong> - Network intersections (~12,000 nodes) 2. <strong>edges.json</strong> - Street segments with shade scores 3. <strong>scenarios.json</strong> - Solar position data for each scenario 4. <strong>metadata.json</strong> - Map bounds and configuration</p>
+<p>The map uses four JSON files:</p>
+<ol type="1">
+<li><strong>nodes.json</strong> - Network intersections (~12,000 nodes)</li>
+<li><strong>edges.json</strong> - Street segments with shade scores</li>
+<li><strong>scenarios.json</strong> - Solar position data for each scenario</li>
+<li><strong>metadata.json</strong> - Map bounds and configuration</li>
+</ol>
 </section>
 <section id="cost-function" class="level3">
 <h3 class="anchored" data-anchor-id="cost-function">Cost Function</h3>
@@ -241,7 +276,12 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Shadiest path:</strong></p>
 <pre><code>cost = length × (1 - w × shade)
 where w = 0.3 (30% preference for shade)</code></pre>
-<p>A segment with: - 0% shade has cost = length × 1.0 - 50% shade has cost = length × 0.85 - 100% shade has cost = length × 0.7</p>
+<p>A segment with:</p>
+<ul>
+<li>0% shade has cost = length × 1.0</li>
+<li>50% shade has cost = length × 0.85</li>
+<li>100% shade has cost = length × 0.7</li>
+</ul>
 <p>This creates a 30% preference for shade while still prioritizing reasonable distances.</p>
 <hr>
 </section>
@@ -255,11 +295,6 @@ where w = 0.3 (30% preference for shade)</code></pre>
 <li><strong>Simplified pedestrian comfort:</strong> Shade is only one factor (wind, humidity, temperature also matter)</li>
 <li><strong>Network completeness:</strong> Limited to OpenStreetMap pedestrian paths</li>
 </ul>
-<hr>
-</section>
-<section id="mobile-use" class="level2">
-<h2 class="anchored" data-anchor-id="mobile-use">Mobile Use</h2>
-<p>The map works on mobile devices: - Touch to set origin/destination - Pinch to zoom - Swipe to pan - Works offline after initial load</p>
 <hr>
 <p><a href="./results.html">← Back to Results</a> | <a href="./appendix.html">View Code Implementation →</a></p>
 
