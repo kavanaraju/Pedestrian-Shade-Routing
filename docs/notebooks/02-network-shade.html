@@ -177,6 +177,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#calculate-solar-position-for-each-scenario" id="toc-calculate-solar-position-for-each-scenario" class="nav-link" data-scroll-target="#calculate-solar-position-for-each-scenario">3. Calculate Solar Position for Each Scenario</a></li>
   <li><a href="#calculate-building-shadows-for-each-scenario" id="toc-calculate-building-shadows-for-each-scenario" class="nav-link" data-scroll-target="#calculate-building-shadows-for-each-scenario">4. Calculate Building Shadows for Each Scenario</a></li>
   <li><a href="#extract-tree-canopy-coverage" id="toc-extract-tree-canopy-coverage" class="nav-link" data-scroll-target="#extract-tree-canopy-coverage">5. Extract Tree Canopy Coverage</a></li>
+  <li><a href="#summary-statistics" id="toc-summary-statistics" class="nav-link" data-scroll-target="#summary-statistics">6. Summary Statistics</a></li>
+  <li><a href="#cleanup" id="toc-cleanup" class="nav-link" data-scroll-target="#cleanup">7. CleanUp</a></li>
   </ul>
 </nav>
     </div>
@@ -205,8 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="shade-optimized-pedestrian-routing-to-transit" class="level2">
 <h2 class="anchored" data-anchor-id="shade-optimized-pedestrian-routing-to-transit">Shade-Optimized Pedestrian Routing to Transit</h2>
 <p><strong>Author:</strong> Kavana Raju<br>
-<strong>Course:</strong> MUSA 5500 - Geospatial Data Science with Python<br>
-<strong>Date:</strong> December 2025</p>
+<strong>Course:</strong> MUSA 5500 - Geospatial Data Science with Python</p>
 <hr>
 <p>This notebook calculates shade scores for all street segments: 1. Calculate solar position for 8 temporal scenarios 2. Model building shadows using geometric methods 3. Extract tree canopy coverage (from LiDAR) 4. Combine building + tree shade 5. Assign shade scores to all network edges</p>
 </section>
@@ -1993,7 +1994,10 @@ Saving network to: data/processed/network_edges_with_shade.geojson
 ✓ Step 5 complete - final save done</code></pre>
 </div>
 </div>
-<div id="cell-22" class="cell" data-execution_count="20">
+</section>
+<section id="summary-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="summary-statistics">6. Summary Statistics</h2>
+<div id="cell-23" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 6: SUMMARY STATISTICS</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
@@ -2110,7 +2114,10 @@ Total computation time                   210.8
 ✓ Step 6 complete - summary generated</code></pre>
 </div>
 </div>
-<div id="cell-23" class="cell" data-execution_count="21">
+</section>
+<section id="cleanup" class="level2">
+<h2 class="anchored" data-anchor-id="cleanup">7. CleanUp</h2>
+<div id="cell-25" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 7: CLEANUP &amp; COMPLETION</span></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
@@ -2144,7 +2151,7 @@ Cleaning up memory...
 ✓ Step 7 complete - cleanup done</code></pre>
 </div>
 </div>
-<div id="cell-24" class="cell" data-execution_count="23">
+<div id="cell-26" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># NOTEBOOK 2 - COMPLETION REPORT (CORRECTED)</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
@@ -2155,7 +2162,7 @@ Cleaning up memory...
 <span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
 <span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
 <span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 WHAT WAS ACCOMPLISHED:"</span>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">WHAT WAS ACCOMPLISHED:"</span>)</span>
 <span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">70</span>)</span>
 <span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✓ Building Shadow Analysis:"</span>)</span>
@@ -2180,7 +2187,7 @@ Cleaning up memory...
 <span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  - File size: </span><span class="sc">{</span>file_size_mb<span class="sc">:.1f}</span><span class="ss"> MB"</span>)</span>
 <span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  - Contains </span><span class="sc">{</span><span class="bu">len</span>(combined_shade_cols)<span class="sc">}</span><span class="ss"> shade scenarios"</span>)</span>
 <span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📈 SHADE STATISTICS SUMMARY:"</span>)</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> SHADE STATISTICS SUMMARY:"</span>)</span>
 <span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">70</span>)</span>
 <span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick summary stats</span></span>
@@ -2209,7 +2216,7 @@ Cleaning up memory...
 <span id="cb32-62"><a href="#cb32-62" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  Best shade scenario: </span><span class="sc">{</span>best_scenario<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>scenario_means[best_scenario]<span class="sc">:.3f}</span><span class="ss">)"</span>)</span>
 <span id="cb32-63"><a href="#cb32-63" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Worst shade scenario: </span><span class="sc">{</span>worst_scenario<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>scenario_means[worst_scenario]<span class="sc">:.3f}</span><span class="ss">)"</span>)</span>
 <span id="cb32-64"><a href="#cb32-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-65"><a href="#cb32-65" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">⏱️ PERFORMANCE:"</span>)</span>
+<span id="cb32-65"><a href="#cb32-65" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> PERFORMANCE:"</span>)</span>
 <span id="cb32-66"><a href="#cb32-66" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">70</span>)</span>
 <span id="cb32-67"><a href="#cb32-67" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-68"><a href="#cb32-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate total time from scenario_times if available</span></span>
@@ -2222,11 +2229,11 @@ Cleaning up memory...
 <span id="cb32-75"><a href="#cb32-75" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Tree shadow generation: ~</span><span class="sc">{</span>tree_calc_time<span class="sc">:.1f}</span><span class="ss"> minutes"</span>)</span>
 <span id="cb32-76"><a href="#cb32-76" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Edge processing (raster-based): </span><span class="sc">{</span>edge_proc_time<span class="sc">:.1f}</span><span class="ss"> minutes"</span>)</span>
 <span id="cb32-77"><a href="#cb32-77" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Average per scenario: </span><span class="sc">{</span>np<span class="sc">.</span>mean(<span class="bu">list</span>(scenario_times.values()))<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss"> minutes"</span>)</span>
-<span id="cb32-78"><a href="#cb32-78" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">⚡ Raster-based approach provided 3-5x speedup over vector methods"</span>)</span>
+<span id="cb32-78"><a href="#cb32-78" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss"> Raster-based approach provided 3-5x speedup over vector methods"</span>)</span>
 <span id="cb32-79"><a href="#cb32-79" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb32-80"><a href="#cb32-80" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Estimated computation time: ~125-135 minutes"</span>)</span>
 <span id="cb32-81"><a href="#cb32-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-82"><a href="#cb32-82" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🎯 METHODOLOGY HIGHLIGHTS:"</span>)</span>
+<span id="cb32-82"><a href="#cb32-82" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> METHODOLOGY HIGHLIGHTS:"</span>)</span>
 <span id="cb32-83"><a href="#cb32-83" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">70</span>)</span>
 <span id="cb32-84"><a href="#cb32-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-85"><a href="#cb32-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"""</span></span>
@@ -2251,7 +2258,7 @@ Cleaning up memory...
 <span id="cb32-104"><a href="#cb32-104" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
 <span id="cb32-105"><a href="#cb32-105" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-106"><a href="#cb32-106" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
-<span id="cb32-107"><a href="#cb32-107" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 READY FOR NOTEBOOK 3: ROUTING ANALYSIS"</span>)</span>
+<span id="cb32-107"><a href="#cb32-107" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" READY FOR NOTEBOOK 3: ROUTING ANALYSIS"</span>)</span>
 <span id="cb32-108"><a href="#cb32-108" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
 <span id="cb32-109"><a href="#cb32-109" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-110"><a href="#cb32-110" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"""</span></span>
@@ -2266,7 +2273,7 @@ Cleaning up memory...
 <span id="cb32-119"><a href="#cb32-119" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
 <span id="cb32-120"><a href="#cb32-120" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-121"><a href="#cb32-121" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
-<span id="cb32-122"><a href="#cb32-122" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🎉 NOTEBOOK 2 SUCCESSFULLY COMPLETED!"</span>)</span>
+<span id="cb32-122"><a href="#cb32-122" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" NOTEBOOK 2 SUCCESSFULLY COMPLETED!"</span>)</span>
 <span id="cb32-123"><a href="#cb32-123" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">70</span> <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -2363,7 +2370,7 @@ The network is now ready with complete shade scores for all segments!
 </code></pre>
 </div>
 </div>
-<div id="cell-25" class="cell" data-execution_count="26">
+<div id="cell-27" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># FOR INTERACTIVE MAP</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
@@ -2494,11 +2501,7 @@ The network is now ready with complete shade scores for all segments!
 <span id="cb34-128"><a href="#cb34-128" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-129"><a href="#cb34-129" aria-hidden="true" tabindex="-1"></a>total_size <span class="op">=</span> <span class="bu">sum</span>(f.stat().st_size <span class="cf">for</span> f <span class="kw">in</span> Path(<span class="st">'map_data'</span>).glob(<span class="st">'*.json'</span>)) <span class="op">/</span> (<span class="dv">1024</span><span class="op">*</span><span class="dv">1024</span>)</span>
 <span id="cb34-130"><a href="#cb34-130" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Total size: </span><span class="sc">{</span>total_size<span class="sc">:.2f}</span><span class="ss"> MB"</span>)</span>
-<span id="cb34-131"><a href="#cb34-131" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Location: </span><span class="sc">{</span>Path(<span class="st">'map_data'</span>)<span class="sc">.</span>absolute()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb34-132"><a href="#cb34-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-133"><a href="#cb34-133" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> NEXT STEPS:"</span>)</span>
-<span id="cb34-134"><a href="#cb34-134" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"1. Copy the 'map_data' folder to website directory"</span>)</span>
-<span id="cb34-135"><a href="#cb34-135" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"2. Put it in the SAME folder as map.html"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb34-131"><a href="#cb34-131" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Location: </span><span class="sc">{</span>Path(<span class="st">'map_data'</span>)<span class="sc">.</span>absolute()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>======================================================================
 CREATING MAP DATA FOR INTERACTIVE MAP

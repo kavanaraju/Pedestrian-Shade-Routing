@@ -205,8 +205,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="shade-optimized-pedestrian-routing-to-transit" class="level2">
 <h2 class="anchored" data-anchor-id="shade-optimized-pedestrian-routing-to-transit">Shade-Optimized Pedestrian Routing to Transit</h2>
 <p><strong>Author:</strong> Kavana Raju<br>
-<strong>Course:</strong> MUSA 5500 - Geospatial Data Science with Python<br>
-<strong>Date:</strong> December 2025</p>
+<strong>Course:</strong> MUSA 5500 - Geospatial Data Science with Python</p>
 <hr>
 <p>This notebook creates final visualizations: 1. Load route data and analysis 2. Create route comparison maps 3. Generate trade-off visualizations 4. Produce publication-quality figures</p>
 </section>
@@ -1093,7 +1092,7 @@ All outputs saved to: outputs/figures/
 <span id="cb15-542"><a href="#cb15-542" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
 <span id="cb15-543"><a href="#cb15-543" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-544"><a href="#cb15-544" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
-<span id="cb15-545"><a href="#cb15-545" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ VISUALIZATION GENERATION COMPLETE!"</span>)</span>
+<span id="cb15-545"><a href="#cb15-545" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" VISUALIZATION GENERATION COMPLETE!"</span>)</span>
 <span id="cb15-546"><a href="#cb15-546" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
 <span id="cb15-547"><a href="#cb15-547" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-548"><a href="#cb15-548" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Generated </span><span class="sc">{</span><span class="bu">len</span>(<span class="bu">list</span>(output_dir.glob(<span class="st">'*.png'</span>)))<span class="sc">}</span><span class="ss"> visualization files in: </span><span class="sc">{</span>output_dir<span class="sc">}</span><span class="ss">"</span>)</span>
@@ -1157,51 +1156,6 @@ Files created:
 3. Render website with 'quarto render'
 
 🎨 Your website will be super visual!</code></pre>
-</div>
-</div>
-<div id="cell-16" class="cell" data-execution_count="28">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">6. Creating shade corridors map..."</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_summer_midday'</span> <span class="kw">in</span> edges.columns:</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Classify segments</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    edges[<span class="st">'shade_class'</span>] <span class="op">=</span> pd.cut(edges[<span class="st">'shade_summer_midday'</span>], </span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                                   bins<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">1.0</span>],</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                                   labels<span class="op">=</span>[<span class="st">'Very Low (0-20%)'</span>, <span class="st">'Low (20-40%)'</span>, </span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">'Moderate (40-60%)'</span>, <span class="st">'High (60-80%)'</span>, </span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">'Very High (80-100%)'</span>])</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">10</span>))</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    colors <span class="op">=</span> [<span class="st">'#d32f2f'</span>, <span class="st">'#f57c00'</span>, <span class="st">'#fbc02d'</span>, <span class="st">'#689f38'</span>, <span class="st">'#388e3c'</span>]</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    edges.plot(column<span class="op">=</span><span class="st">'shade_class'</span>, ax<span class="op">=</span>ax, legend<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>               categorical<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'RdYlGn'</span>, linewidth<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>               legend_kwds<span class="op">=</span>{<span class="st">'title'</span>: <span class="st">'Shade Category'</span>, <span class="st">'loc'</span>: <span class="st">'upper left'</span>})</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="st">'Shade Corridors - Summer Midday</span><span class="ch">\n</span><span class="st">Identifying Shade Deserts and Shaded Routes'</span>,</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>                 fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, pad<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">'off'</span>)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>        cx.add_basemap(ax, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    legend <span class="op">=</span> ax.get_legend()</span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    legend.set_frame_on(<span class="va">True</span>)</span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    legend.get_frame().set_facecolor(<span class="st">"white"</span>)</span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    legend.get_frame().set_alpha(<span class="dv">1</span>)</span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    legend.get_frame().set_edgecolor(<span class="st">"gray"</span>)</span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    legend.set_zorder(<span class="dv">10</span>)</span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>    plt.savefig(output_dir <span class="op">/</span> <span class="st">'shade_corridors_map.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  ✓ Saved: shade_corridors_map.png"</span>)</span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    plt.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-6. Creating shade corridors map...
-  ✓ Saved: shade_corridors_map.png</code></pre>
 </div>
 </div>
 
