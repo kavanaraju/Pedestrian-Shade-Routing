@@ -113,7 +113,7 @@ Using High-Resolution LiDAR to Map Shadow Coverage Across 23,486 Street Segments
 
 ### Finding 3: Shade Deserts Identified
 
-![Shade Corridors Map - Red = Intervention Priorities](figures/shade_corridors_map.png){width=100%}
+![Shade Corridors Map: Red = Intervention Priorities](figures/shade_corridors_map.png){width=100%}
 
 ---
 
@@ -378,8 +378,7 @@ Download code, data, and documentation
 ## Contact & Feedback
 
 **Questions?** Email: [kavana@upenn.edu]  
-**Code:** [https://github.com/kavanaraju/Pedestrian-Shade-Routing]  
-**Data:** [Available upon request]
+**Code:** [https://github.com/kavanaraju/Pedestrian-Shade-Routing]
 
 ---
 

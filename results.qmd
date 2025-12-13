@@ -225,15 +225,11 @@ The network transforms from green (high shade) to red (low shade) depending on s
 
 ### Example Route Comparisons
 
-*[Note: Add your specific route comparison images from Notebook 3/4 here]*
+![Route 1: Penn Campus to 40th St Station](figures/penn_to_40th_comparison.png){width=100%}
 
-```markdown
-![Route 1: Penn Campus to 40th St Station](figures/route1_comparison.png)
+![Route 2: Powelton to 34th St Station](figures/powelton_to_34th_comparison.png){width=100%}
 
-![Route 2: Powelton to 34th St Station](figures/route2_comparison.png)
-
-![Route 3: Spruce Hill to 46th St Station](figures/route3_comparison.png)
-```
+![Route 3: Spruce Hill to 46th St Station](figures/spruce_hill_to_46th_comparison.png){width=100%}
 
 **Typical Trade-offs:**
 
@@ -386,7 +382,7 @@ Across all analyzed routes:
 
 ### Technical Success
 
-**This analysis demonstrates:*
+**This analysis demonstrates:**
 
 - LiDAR-based shade modeling works at city scale
 - Geometric shadow calculations are accurate (98%+ validation)

@@ -703,314 +703,403 @@ All outputs saved to: outputs/figures/
 <span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a>    ax2.text(bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="dv">2</span>, bar.get_height() <span class="op">+</span> <span class="dv">1</span>, </span>
 <span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a>             <span class="ss">f'</span><span class="sc">{</span>val<span class="sc">:.1f}</span><span class="ss">%'</span>, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'bottom'</span>, fontsize<span class="op">=</span><span class="dv">9</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
 <span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'temporal_comparison.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: temporal_comparison.png"</span>)</span>
-<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
-<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 4: Building vs Tree Contribution</span></span>
-<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">4. Creating building vs tree contribution chart..."</span>)</span>
-<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate contributions</span></span>
-<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a>contributions <span class="op">=</span> []</span>
-<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> scenario_name <span class="kw">in</span> [<span class="st">'summer_morning'</span>, <span class="st">'summer_midday'</span>, <span class="st">'summer_evening'</span>,</span>
-<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'winter_morning'</span>, <span class="st">'winter_midday'</span>, <span class="st">'winter_evening'</span>,</span>
-<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'spring_midday'</span>, <span class="st">'fall_midday'</span>]:</span>
-<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a>    building_col <span class="op">=</span> <span class="ss">f'building_shadow_</span><span class="sc">{</span>scenario_name<span class="sc">}</span><span class="ss">'</span></span>
-<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a>    tree_col <span class="op">=</span> <span class="ss">f'tree_shadow_</span><span class="sc">{</span>scenario_name<span class="sc">}</span><span class="ss">'</span></span>
-<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> building_col <span class="kw">in</span> edges.columns <span class="kw">and</span> tree_col <span class="kw">in</span> edges.columns:</span>
-<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a>        contributions.append({</span>
-<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a>            <span class="st">'scenario'</span>: scenario_name.replace(<span class="st">'_'</span>, <span class="st">' '</span>).title(),</span>
-<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a>            <span class="st">'building'</span>: edges[building_col].mean(),</span>
-<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a>            <span class="st">'tree'</span>: edges[tree_col].mean()</span>
-<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a>        })</span>
-<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a>contrib_df <span class="op">=</span> pd.DataFrame(contributions)</span>
-<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
-<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(contrib_df))</span>
-<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.35</span></span>
-<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a>bars1 <span class="op">=</span> ax.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, contrib_df[<span class="st">'building'</span>], width, </span>
-<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a>               label<span class="op">=</span><span class="st">'Building Shade'</span>, color<span class="op">=</span><span class="st">'#1976d2'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>bars2 <span class="op">=</span> ax.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, contrib_df[<span class="st">'tree'</span>], width,</span>
-<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a>               label<span class="op">=</span><span class="st">'Tree Shade'</span>, color<span class="op">=</span><span class="st">'#388e3c'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Scenario'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Mean Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Building vs Tree Shade Contribution by Scenario'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(x)</span>
-<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(contrib_df[<span class="st">'scenario'</span>], rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
-<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">11</span>)</span>
-<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a>ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel 1 (mean)</span></span>
+<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, val <span class="kw">in</span> <span class="bu">enumerate</span>(stats_df[<span class="st">'mean'</span>]):</span>
+<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> val <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a>        ax1.text(</span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a>            i, <span class="fl">0.05</span>,</span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Shade not calculated</span><span class="ch">\n</span><span class="st">(sun below horizon)"</span>,</span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>            ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'bottom'</span>,</span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">'gray'</span>, rotation<span class="op">=</span><span class="dv">90</span></span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel 2 (high shade %)</span></span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, val <span class="kw">in</span> <span class="bu">enumerate</span>(stats_df[<span class="st">'high_shade_pct'</span>]):</span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> val <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>        ax2.text(</span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a>            i, <span class="dv">2</span>,  <span class="co"># small height above baseline</span></span>
+<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Shade not calculated</span><span class="ch">\n</span><span class="st">(sun below horizon)"</span>,</span>
+<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a>            ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'bottom'</span>,</span>
+<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">'gray'</span>, rotation<span class="op">=</span><span class="dv">90</span></span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'temporal_comparison.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: temporal_comparison.png"</span>)</span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 4: Building vs Tree Contribution</span></span>
+<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">4. Creating building vs tree contribution chart..."</span>)</span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate contributions</span></span>
+<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a>contributions <span class="op">=</span> []</span>
+<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> scenario_name <span class="kw">in</span> [<span class="st">'summer_morning'</span>, <span class="st">'summer_midday'</span>, <span class="st">'summer_evening'</span>,</span>
+<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'winter_morning'</span>, <span class="st">'winter_midday'</span>, <span class="st">'winter_evening'</span>,</span>
+<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'spring_midday'</span>, <span class="st">'fall_midday'</span>]:</span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a>    building_col <span class="op">=</span> <span class="ss">f'building_shadow_</span><span class="sc">{</span>scenario_name<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a>    tree_col <span class="op">=</span> <span class="ss">f'tree_shadow_</span><span class="sc">{</span>scenario_name<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> building_col <span class="kw">in</span> edges.columns <span class="kw">and</span> tree_col <span class="kw">in</span> edges.columns:</span>
+<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a>        contributions.append({</span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a>            <span class="st">'scenario'</span>: scenario_name.replace(<span class="st">'_'</span>, <span class="st">' '</span>).title(),</span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a>            <span class="st">'building'</span>: edges[building_col].mean(),</span>
+<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a>            <span class="st">'tree'</span>: edges[tree_col].mean()</span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a>        })</span>
 <span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a><span class="co"># Add value labels</span></span>
-<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bars <span class="kw">in</span> [bars1, bars2]:</span>
-<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> bar <span class="kw">in</span> bars:</span>
-<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a>        height <span class="op">=</span> bar.get_height()</span>
-<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a>        ax.text(bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="fl">2.</span>, height,</span>
-<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f'</span><span class="sc">{</span>height<span class="sc">:.1%}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'bottom'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a>contrib_df <span class="op">=</span> pd.DataFrame(contributions)</span>
+<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(contrib_df))</span>
+<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.35</span></span>
 <span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'building_vs_tree_contribution.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: building_vs_tree_contribution.png"</span>)</span>
-<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a>bars1 <span class="op">=</span> ax.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, contrib_df[<span class="st">'building'</span>], width, </span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a>               label<span class="op">=</span><span class="st">'Building Shade'</span>, color<span class="op">=</span><span class="st">'#1976d2'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>bars2 <span class="op">=</span> ax.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, contrib_df[<span class="st">'tree'</span>], width,</span>
+<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>               label<span class="op">=</span><span class="st">'Tree Shade'</span>, color<span class="op">=</span><span class="st">'#388e3c'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
 <span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 5: Summer vs Winter Comparison Map</span></span>
-<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">5. Creating summer vs winter comparison map..."</span>)</span>
-<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">8</span>))</span>
-<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Summer Midday vs Winter Morning Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a><span class="co"># Summer midday</span></span>
-<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_summer_midday'</span> <span class="kw">in</span> edges.columns:</span>
-<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a>    edges.plot(column<span class="op">=</span><span class="st">'shade_summer_midday'</span>, ax<span class="op">=</span>ax1, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'RdYlGn'</span>,</span>
-<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a>               vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>               legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Shade Coverage'</span>, <span class="st">'shrink'</span>: <span class="fl">0.8</span>})</span>
-<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a>    ax1.set_title(<span class="st">'Summer Midday (12 PM)</span><span class="ch">\n</span><span class="st">Worst Shade Conditions'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a>    ax1.axis(<span class="st">'off'</span>)</span>
-<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a>        cx.add_basemap(ax1, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
-<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
-<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="co"># Winter morning</span></span>
-<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_winter_morning'</span> <span class="kw">in</span> edges.columns:</span>
-<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a>    edges.plot(column<span class="op">=</span><span class="st">'shade_winter_morning'</span>, ax<span class="op">=</span>ax2, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'RdYlGn'</span>,</span>
-<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a>               vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a>               legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Shade Coverage'</span>, <span class="st">'shrink'</span>: <span class="fl">0.8</span>})</span>
-<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a>    ax2.set_title(<span class="st">'Winter Morning (8 AM)</span><span class="ch">\n</span><span class="st">Best Shade Conditions'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a>    ax2.axis(<span class="st">'off'</span>)</span>
-<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a>        cx.add_basemap(ax2, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
-<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
-<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'summer_vs_winter_comparison.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: summer_vs_winter_comparison.png"</span>)</span>
-<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
-<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 6: High Shade vs Low Shade Corridors Map</span></span>
-<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">6. Creating shade corridors map..."</span>)</span>
-<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_summer_midday'</span> <span class="kw">in</span> edges.columns:</span>
-<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Classify segments</span></span>
-<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a>    edges[<span class="st">'shade_class'</span>] <span class="op">=</span> pd.cut(edges[<span class="st">'shade_summer_midday'</span>], </span>
-<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a>                                   bins<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">1.0</span>],</span>
-<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a>                                   labels<span class="op">=</span>[<span class="st">'Very Low (0-20%)'</span>, <span class="st">'Low (20-40%)'</span>, </span>
-<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">'Moderate (40-60%)'</span>, <span class="st">'High (60-80%)'</span>, </span>
-<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">'Very High (80-100%)'</span>])</span>
-<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">10</span>))</span>
-<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a>    colors <span class="op">=</span> [<span class="st">'#d32f2f'</span>, <span class="st">'#f57c00'</span>, <span class="st">'#fbc02d'</span>, <span class="st">'#689f38'</span>, <span class="st">'#388e3c'</span>]</span>
-<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a>    edges.plot(column<span class="op">=</span><span class="st">'shade_class'</span>, ax<span class="op">=</span>ax, legend<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a>               categorical<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'RdYlGn'</span>, linewidth<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a>               legend_kwds<span class="op">=</span>{<span class="st">'title'</span>: <span class="st">'Shade Category'</span>, <span class="st">'loc'</span>: <span class="st">'upper left'</span>})</span>
-<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="st">'Shade Corridors - Summer Midday</span><span class="ch">\n</span><span class="st">Identifying Shade Deserts and Shaded Routes'</span>,</span>
-<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a>                 fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, pad<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">'off'</span>)</span>
-<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a>        cx.add_basemap(ax, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
-<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
-<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
-<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a>    plt.savefig(output_dir <span class="op">/</span> <span class="st">'shade_corridors_map.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  ✓ Saved: shade_corridors_map.png"</span>)</span>
-<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a>    plt.close()</span>
-<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 7: Box Plot Comparison</span></span>
-<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">7. Creating box plot comparison..."</span>)</span>
-<span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare data for box plots</span></span>
-<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a>box_data <span class="op">=</span> []</span>
-<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col, title <span class="kw">in</span> scenarios:</span>
-<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> edges.columns:</span>
-<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a>        values <span class="op">=</span> edges[col].dropna()</span>
-<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> val <span class="kw">in</span> values:</span>
-<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a>            box_data.append({<span class="st">'Scenario'</span>: title, <span class="st">'Shade'</span>: val})</span>
-<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a>box_df <span class="op">=</span> pd.DataFrame(box_data)</span>
-<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
-<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>box_df, x<span class="op">=</span><span class="st">'Scenario'</span>, y<span class="op">=</span><span class="st">'Shade'</span>, ax<span class="op">=</span>ax, palette<span class="op">=</span><span class="st">'Set2'</span>)</span>
-<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(ax.get_xticklabels(), rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
-<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Scenario'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Shade Distribution by Scenario - Box Plot Comparison'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a>ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'shade_boxplot_comparison.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: shade_boxplot_comparison.png"</span>)</span>
-<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
-<span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-317"><a href="#cb15-317" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-318"><a href="#cb15-318" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 8: Summary Dashboard</span></span>
-<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-320"><a href="#cb15-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-321"><a href="#cb15-321" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">8. Creating summary dashboard..."</span>)</span>
-<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">12</span>))</span>
-<span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a>gs <span class="op">=</span> fig.add_gridspec(<span class="dv">3</span>, <span class="dv">3</span>, hspace<span class="op">=</span><span class="fl">0.3</span>, wspace<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a><span class="co"># Title</span></span>
-<span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'University City Shade Analysis - Complete Dashboard'</span>, </span>
-<span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">18</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, y<span class="op">=</span><span class="fl">0.98</span>)</span>
-<span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-330"><a href="#cb15-330" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Mean shade by scenario (bar chart)</span></span>
-<span id="cb15-331"><a href="#cb15-331" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">0</span>, :<span class="dv">2</span>])</span>
-<span id="cb15-332"><a href="#cb15-332" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> ax1.bar(<span class="bu">range</span>(<span class="bu">len</span>(stats_df)), stats_df[<span class="st">'mean'</span>], </span>
-<span id="cb15-333"><a href="#cb15-333" aria-hidden="true" tabindex="-1"></a>               color<span class="op">=</span>plt.cm.RdYlGn(stats_df[<span class="st">'mean'</span>]))</span>
-<span id="cb15-334"><a href="#cb15-334" aria-hidden="true" tabindex="-1"></a>ax1.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(stats_df)))</span>
-<span id="cb15-335"><a href="#cb15-335" aria-hidden="true" tabindex="-1"></a>ax1.set_xticklabels([s.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)[<span class="dv">0</span>] <span class="cf">for</span> s <span class="kw">in</span> stats_df[<span class="st">'scenario'</span>]], </span>
-<span id="cb15-336"><a href="#cb15-336" aria-hidden="true" tabindex="-1"></a>                     rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb15-337"><a href="#cb15-337" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'Mean Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-338"><a href="#cb15-338" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">'Average Shade by Scenario'</span>, fontsize<span class="op">=</span><span class="dv">11</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-339"><a href="#cb15-339" aria-hidden="true" tabindex="-1"></a>ax1.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb15-340"><a href="#cb15-340" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bar, val <span class="kw">in</span> <span class="bu">zip</span>(bars, stats_df[<span class="st">'mean'</span>]):</span>
-<span id="cb15-341"><a href="#cb15-341" aria-hidden="true" tabindex="-1"></a>    ax1.text(bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="dv">2</span>, bar.get_height() <span class="op">+</span> <span class="fl">0.02</span>,</span>
-<span id="cb15-342"><a href="#cb15-342" aria-hidden="true" tabindex="-1"></a>             <span class="ss">f'</span><span class="sc">{</span>val<span class="sc">:.1%}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb15-343"><a href="#cb15-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-344"><a href="#cb15-344" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Key statistics</span></span>
-<span id="cb15-345"><a href="#cb15-345" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">0</span>, <span class="dv">2</span>])</span>
-<span id="cb15-346"><a href="#cb15-346" aria-hidden="true" tabindex="-1"></a>ax2.axis(<span class="st">'off'</span>)</span>
-<span id="cb15-347"><a href="#cb15-347" aria-hidden="true" tabindex="-1"></a>stats_text <span class="op">=</span> <span class="ss">f"""</span></span>
-<span id="cb15-348"><a href="#cb15-348" aria-hidden="true" tabindex="-1"></a><span class="ss">KEY STATISTICS</span></span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Scenario'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Mean Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Building vs Tree Shade Contribution by Scenario'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(x)</span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(contrib_df[<span class="st">'scenario'</span>], rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a>ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (b_val, t_val) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(contrib_df[<span class="st">'building'</span>], contrib_df[<span class="st">'tree'</span>])):</span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> b_val <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> t_val <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a>        ax.text(</span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a>            x[i],</span>
+<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.02</span>,</span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Shade not calculated</span><span class="ch">\n</span><span class="st">(sun below horizon)"</span>,</span>
+<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>            ha<span class="op">=</span><span class="st">'center'</span>,</span>
+<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a>            va<span class="op">=</span><span class="st">'bottom'</span>,</span>
+<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">9</span>,</span>
+<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'gray'</span>,</span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a>            rotation<span class="op">=</span><span class="dv">90</span></span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a><span class="co"># Add value labels</span></span>
+<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bars <span class="kw">in</span> [bars1, bars2]:</span>
+<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> bar <span class="kw">in</span> bars:</span>
+<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a>        height <span class="op">=</span> bar.get_height()</span>
+<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a>        ax.text(bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="fl">2.</span>, height,</span>
+<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f'</span><span class="sc">{</span>height<span class="sc">:.1%}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'bottom'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'building_vs_tree_contribution.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: building_vs_tree_contribution.png"</span>)</span>
+<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
+<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 5: Summer vs Winter Comparison Map</span></span>
+<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">5. Creating summer vs winter comparison map..."</span>)</span>
+<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">8</span>))</span>
+<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Summer Midday vs Winter Morning Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a><span class="co"># Summer midday</span></span>
+<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_summer_midday'</span> <span class="kw">in</span> edges.columns:</span>
+<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a>    edges.plot(column<span class="op">=</span><span class="st">'shade_summer_midday'</span>, ax<span class="op">=</span>ax1, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'RdYlGn'</span>,</span>
+<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a>               vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a>               legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Shade Coverage'</span>, <span class="st">'shrink'</span>: <span class="fl">0.8</span>})</span>
+<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a>    ax1.set_title(<span class="st">'Summer Midday (12 PM)</span><span class="ch">\n</span><span class="st">Worst Shade Conditions'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a>    ax1.axis(<span class="st">'off'</span>)</span>
+<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a>        cx.add_basemap(ax1, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a><span class="co"># Winter morning</span></span>
+<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_winter_morning'</span> <span class="kw">in</span> edges.columns:</span>
+<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a>    edges.plot(column<span class="op">=</span><span class="st">'shade_winter_morning'</span>, ax<span class="op">=</span>ax2, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'RdYlGn'</span>,</span>
+<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a>               vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a>               legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Shade Coverage'</span>, <span class="st">'shrink'</span>: <span class="fl">0.8</span>})</span>
+<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a>    ax2.set_title(<span class="st">'Winter Morning (8 AM)</span><span class="ch">\n</span><span class="st">Best Shade Conditions'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a>    ax2.axis(<span class="st">'off'</span>)</span>
+<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a>        cx.add_basemap(ax2, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'summer_vs_winter_comparison.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: summer_vs_winter_comparison.png"</span>)</span>
+<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
+<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 6: High Shade vs Low Shade Corridors Map</span></span>
+<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">6. Creating shade corridors map..."</span>)</span>
+<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_summer_midday'</span> <span class="kw">in</span> edges.columns:</span>
+<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Classify segments</span></span>
+<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a>    edges[<span class="st">'shade_class'</span>] <span class="op">=</span> pd.cut(edges[<span class="st">'shade_summer_midday'</span>], </span>
+<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a>                                   bins<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">1.0</span>],</span>
+<span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a>                                   labels<span class="op">=</span>[<span class="st">'Very Low (0-20%)'</span>, <span class="st">'Low (20-40%)'</span>, </span>
+<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">'Moderate (40-60%)'</span>, <span class="st">'High (60-80%)'</span>, </span>
+<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">'Very High (80-100%)'</span>])</span>
+<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">10</span>))</span>
+<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a>    colors <span class="op">=</span> [<span class="st">'#d32f2f'</span>, <span class="st">'#f57c00'</span>, <span class="st">'#fbc02d'</span>, <span class="st">'#689f38'</span>, <span class="st">'#388e3c'</span>]</span>
+<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a>    edges.plot(column<span class="op">=</span><span class="st">'shade_class'</span>, ax<span class="op">=</span>ax, legend<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a>               categorical<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'RdYlGn'</span>, linewidth<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a>               legend_kwds<span class="op">=</span>{<span class="st">'title'</span>: <span class="st">'Shade Category'</span>, <span class="st">'loc'</span>: <span class="st">'upper left'</span>})</span>
+<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="st">'Shade Corridors - Summer Midday</span><span class="ch">\n</span><span class="st">Identifying Shade Deserts and Shaded Routes'</span>,</span>
+<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a>                 fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, pad<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a>        cx.add_basemap(ax, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a>    legend <span class="op">=</span> ax.get_legend()</span>
+<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a>    legend.set_frame_on(<span class="va">True</span>)</span>
+<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a>    legend.get_frame().set_facecolor(<span class="st">"white"</span>)</span>
+<span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a>    legend.get_frame().set_alpha(<span class="dv">1</span>)</span>
+<span id="cb15-317"><a href="#cb15-317" aria-hidden="true" tabindex="-1"></a>    legend.get_frame().set_edgecolor(<span class="st">"gray"</span>)</span>
+<span id="cb15-318"><a href="#cb15-318" aria-hidden="true" tabindex="-1"></a>    legend.set_zorder(<span class="dv">10</span>)</span>
+<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-320"><a href="#cb15-320" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb15-321"><a href="#cb15-321" aria-hidden="true" tabindex="-1"></a>    plt.savefig(output_dir <span class="op">/</span> <span class="st">'shade_corridors_map.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  ✓ Saved: shade_corridors_map.png"</span>)</span>
+<span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a>    plt.close()</span>
+<span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 7: Box Plot Comparison</span></span>
+<span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">7. Creating box plot comparison..."</span>)</span>
+<span id="cb15-330"><a href="#cb15-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-331"><a href="#cb15-331" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare data for box plots</span></span>
+<span id="cb15-332"><a href="#cb15-332" aria-hidden="true" tabindex="-1"></a>box_data <span class="op">=</span> []</span>
+<span id="cb15-333"><a href="#cb15-333" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col, title <span class="kw">in</span> scenarios:</span>
+<span id="cb15-334"><a href="#cb15-334" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> edges.columns:</span>
+<span id="cb15-335"><a href="#cb15-335" aria-hidden="true" tabindex="-1"></a>        values <span class="op">=</span> edges[col].dropna()</span>
+<span id="cb15-336"><a href="#cb15-336" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> val <span class="kw">in</span> values:</span>
+<span id="cb15-337"><a href="#cb15-337" aria-hidden="true" tabindex="-1"></a>            box_data.append({<span class="st">'Scenario'</span>: title, <span class="st">'Shade'</span>: val})</span>
+<span id="cb15-338"><a href="#cb15-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-339"><a href="#cb15-339" aria-hidden="true" tabindex="-1"></a>box_df <span class="op">=</span> pd.DataFrame(box_data)</span>
+<span id="cb15-340"><a href="#cb15-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-341"><a href="#cb15-341" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
+<span id="cb15-342"><a href="#cb15-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-343"><a href="#cb15-343" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>box_df, x<span class="op">=</span><span class="st">'Scenario'</span>, y<span class="op">=</span><span class="st">'Shade'</span>, ax<span class="op">=</span>ax, palette<span class="op">=</span><span class="st">'Set2'</span>)</span>
+<span id="cb15-344"><a href="#cb15-344" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(ax.get_xticklabels(), rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb15-345"><a href="#cb15-345" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-346"><a href="#cb15-346" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Scenario'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-347"><a href="#cb15-347" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Shade Distribution by Scenario - Box Plot Comparison'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-348"><a href="#cb15-348" aria-hidden="true" tabindex="-1"></a>ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
 <span id="cb15-349"><a href="#cb15-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-350"><a href="#cb15-350" aria-hidden="true" tabindex="-1"></a><span class="ss">Network Size:</span></span>
-<span id="cb15-351"><a href="#cb15-351" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span><span class="bu">len</span>(edges)<span class="sc">:,}</span><span class="ss"> segments</span></span>
-<span id="cb15-352"><a href="#cb15-352" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>edges<span class="sc">.</span>geometry<span class="sc">.</span>length<span class="sc">.</span><span class="bu">sum</span>()<span class="op">/</span><span class="dv">5280</span><span class="sc">:.1f}</span><span class="ss"> miles</span></span>
-<span id="cb15-353"><a href="#cb15-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-354"><a href="#cb15-354" aria-hidden="true" tabindex="-1"></a><span class="ss">Best Scenario:</span></span>
-<span id="cb15-355"><a href="#cb15-355" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df<span class="sc">.</span>iloc[stats_df[<span class="st">'mean'</span>].idxmax()][<span class="st">'scenario'</span>]<span class="sc">.</span>split(<span class="bu">chr</span>(<span class="dv">10</span>))[<span class="dv">0</span>]<span class="sc">}</span></span>
-<span id="cb15-356"><a href="#cb15-356" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.1%}</span><span class="ss"> mean shade</span></span>
-<span id="cb15-357"><a href="#cb15-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-358"><a href="#cb15-358" aria-hidden="true" tabindex="-1"></a><span class="ss">Worst Scenario:</span></span>
-<span id="cb15-359"><a href="#cb15-359" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df<span class="sc">.</span>iloc[stats_df[<span class="st">'mean'</span>].idxmin()][<span class="st">'scenario'</span>]<span class="sc">.</span>split(<span class="bu">chr</span>(<span class="dv">10</span>))[<span class="dv">0</span>]<span class="sc">}</span></span>
-<span id="cb15-360"><a href="#cb15-360" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.1%}</span><span class="ss"> mean shade</span></span>
-<span id="cb15-361"><a href="#cb15-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-362"><a href="#cb15-362" aria-hidden="true" tabindex="-1"></a><span class="ss">Variation:</span></span>
-<span id="cb15-363"><a href="#cb15-363" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">max</span>() <span class="op">-</span> stats_df[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.1%}</span><span class="ss"> range</span></span>
-<span id="cb15-364"><a href="#cb15-364" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df[<span class="st">'mean'</span>]<span class="sc">.</span>std()<span class="sc">:.1%}</span><span class="ss"> std dev</span></span>
-<span id="cb15-365"><a href="#cb15-365" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
-<span id="cb15-366"><a href="#cb15-366" aria-hidden="true" tabindex="-1"></a>ax2.text(<span class="fl">0.1</span>, <span class="fl">0.5</span>, stats_text, fontsize<span class="op">=</span><span class="dv">10</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>,</span>
-<span id="cb15-367"><a href="#cb15-367" aria-hidden="true" tabindex="-1"></a>         family<span class="op">=</span><span class="st">'monospace'</span>, bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">'round'</span>, facecolor<span class="op">=</span><span class="st">'wheat'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>))</span>
-<span id="cb15-368"><a href="#cb15-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-369"><a href="#cb15-369" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Building vs Tree contribution</span></span>
-<span id="cb15-370"><a href="#cb15-370" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">1</span>, :])</span>
-<span id="cb15-371"><a href="#cb15-371" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(contrib_df) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb15-372"><a href="#cb15-372" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.arange(<span class="bu">len</span>(contrib_df))</span>
-<span id="cb15-373"><a href="#cb15-373" aria-hidden="true" tabindex="-1"></a>    width <span class="op">=</span> <span class="fl">0.35</span></span>
-<span id="cb15-374"><a href="#cb15-374" aria-hidden="true" tabindex="-1"></a>    ax3.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, contrib_df[<span class="st">'building'</span>], width, label<span class="op">=</span><span class="st">'Buildings'</span>, </span>
-<span id="cb15-375"><a href="#cb15-375" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'#1976d2'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb15-376"><a href="#cb15-376" aria-hidden="true" tabindex="-1"></a>    ax3.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, contrib_df[<span class="st">'tree'</span>], width, label<span class="op">=</span><span class="st">'Trees'</span>,</span>
-<span id="cb15-377"><a href="#cb15-377" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'#388e3c'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb15-378"><a href="#cb15-378" aria-hidden="true" tabindex="-1"></a>    ax3.set_xticks(x)</span>
-<span id="cb15-379"><a href="#cb15-379" aria-hidden="true" tabindex="-1"></a>    ax3.set_xticklabels([s.split()[<span class="dv">0</span>] <span class="cf">for</span> s <span class="kw">in</span> contrib_df[<span class="st">'scenario'</span>]], </span>
-<span id="cb15-380"><a href="#cb15-380" aria-hidden="true" tabindex="-1"></a>                         rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
-<span id="cb15-381"><a href="#cb15-381" aria-hidden="true" tabindex="-1"></a>    ax3.set_ylabel(<span class="st">'Mean Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-382"><a href="#cb15-382" aria-hidden="true" tabindex="-1"></a>    ax3.set_title(<span class="st">'Shade Source Contribution'</span>, fontsize<span class="op">=</span><span class="dv">11</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-383"><a href="#cb15-383" aria-hidden="true" tabindex="-1"></a>    ax3.legend()</span>
-<span id="cb15-384"><a href="#cb15-384" aria-hidden="true" tabindex="-1"></a>    ax3.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb15-385"><a href="#cb15-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-386"><a href="#cb15-386" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Shade distribution histogram (summer midday)</span></span>
-<span id="cb15-387"><a href="#cb15-387" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">2</span>, <span class="dv">0</span>])</span>
-<span id="cb15-388"><a href="#cb15-388" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_summer_midday'</span> <span class="kw">in</span> edges.columns:</span>
-<span id="cb15-389"><a href="#cb15-389" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> edges[<span class="st">'shade_summer_midday'</span>].dropna()</span>
-<span id="cb15-390"><a href="#cb15-390" aria-hidden="true" tabindex="-1"></a>    ax4.hist(data, bins<span class="op">=</span><span class="dv">30</span>, color<span class="op">=</span><span class="st">'coral'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb15-391"><a href="#cb15-391" aria-hidden="true" tabindex="-1"></a>    ax4.axvline(data.mean(), color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb15-392"><a href="#cb15-392" aria-hidden="true" tabindex="-1"></a>    ax4.set_xlabel(<span class="st">'Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb15-393"><a href="#cb15-393" aria-hidden="true" tabindex="-1"></a>    ax4.set_ylabel(<span class="st">'Frequency'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb15-394"><a href="#cb15-394" aria-hidden="true" tabindex="-1"></a>    ax4.set_title(<span class="st">'Summer Midday Distribution'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-395"><a href="#cb15-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-396"><a href="#cb15-396" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Shade distribution histogram (winter morning)</span></span>
-<span id="cb15-397"><a href="#cb15-397" aria-hidden="true" tabindex="-1"></a>ax5 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">2</span>, <span class="dv">1</span>])</span>
-<span id="cb15-398"><a href="#cb15-398" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_winter_morning'</span> <span class="kw">in</span> edges.columns:</span>
-<span id="cb15-399"><a href="#cb15-399" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> edges[<span class="st">'shade_winter_morning'</span>].dropna()</span>
-<span id="cb15-400"><a href="#cb15-400" aria-hidden="true" tabindex="-1"></a>    ax5.hist(data, bins<span class="op">=</span><span class="dv">30</span>, color<span class="op">=</span><span class="st">'lightgreen'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb15-401"><a href="#cb15-401" aria-hidden="true" tabindex="-1"></a>    ax5.axvline(data.mean(), color<span class="op">=</span><span class="st">'green'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb15-402"><a href="#cb15-402" aria-hidden="true" tabindex="-1"></a>    ax5.set_xlabel(<span class="st">'Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb15-403"><a href="#cb15-403" aria-hidden="true" tabindex="-1"></a>    ax5.set_ylabel(<span class="st">'Frequency'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb15-404"><a href="#cb15-404" aria-hidden="true" tabindex="-1"></a>    ax5.set_title(<span class="st">'Winter Morning Distribution'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-405"><a href="#cb15-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-406"><a href="#cb15-406" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. High shade percentage</span></span>
-<span id="cb15-407"><a href="#cb15-407" aria-hidden="true" tabindex="-1"></a>ax6 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">2</span>, <span class="dv">2</span>])</span>
-<span id="cb15-408"><a href="#cb15-408" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> ax6.barh(<span class="bu">range</span>(<span class="bu">len</span>(stats_df)), stats_df[<span class="st">'high_shade_pct'</span>],</span>
-<span id="cb15-409"><a href="#cb15-409" aria-hidden="true" tabindex="-1"></a>                color<span class="op">=</span>plt.cm.RdYlGn(stats_df[<span class="st">'mean'</span>]))</span>
-<span id="cb15-410"><a href="#cb15-410" aria-hidden="true" tabindex="-1"></a>ax6.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(stats_df)))</span>
-<span id="cb15-411"><a href="#cb15-411" aria-hidden="true" tabindex="-1"></a>ax6.set_yticklabels([s.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)[<span class="dv">0</span>] <span class="cf">for</span> s <span class="kw">in</span> stats_df[<span class="st">'scenario'</span>]], fontsize<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb15-412"><a href="#cb15-412" aria-hidden="true" tabindex="-1"></a>ax6.set_xlabel(<span class="st">'% Segments &gt;50% Shade'</span>, fontsize<span class="op">=</span><span class="dv">9</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-413"><a href="#cb15-413" aria-hidden="true" tabindex="-1"></a>ax6.set_title(<span class="st">'High-Shade Segments'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb15-414"><a href="#cb15-414" aria-hidden="true" tabindex="-1"></a>ax6.grid(axis<span class="op">=</span><span class="st">'x'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb15-415"><a href="#cb15-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-416"><a href="#cb15-416" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'dashboard_summary.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb15-417"><a href="#cb15-417" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: dashboard_summary.png"</span>)</span>
-<span id="cb15-418"><a href="#cb15-418" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
-<span id="cb15-419"><a href="#cb15-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-420"><a href="#cb15-420" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-421"><a href="#cb15-421" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 9: Study Area Overview Map</span></span>
-<span id="cb15-422"><a href="#cb15-422" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-423"><a href="#cb15-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-424"><a href="#cb15-424" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">9. Creating study area overview map..."</span>)</span>
+<span id="cb15-350"><a href="#cb15-350" aria-hidden="true" tabindex="-1"></a><span class="co"># Add annotation for scenarios where shade was not calculated (all zeros)</span></span>
+<span id="cb15-351"><a href="#cb15-351" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, scenario <span class="kw">in</span> <span class="bu">enumerate</span>(box_df[<span class="st">'Scenario'</span>].unique()):</span>
+<span id="cb15-352"><a href="#cb15-352" aria-hidden="true" tabindex="-1"></a>    scenario_vals <span class="op">=</span> box_df.loc[box_df[<span class="st">'Scenario'</span>] <span class="op">==</span> scenario, <span class="st">'Shade'</span>]</span>
+<span id="cb15-353"><a href="#cb15-353" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-354"><a href="#cb15-354" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (scenario_vals <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb15-355"><a href="#cb15-355" aria-hidden="true" tabindex="-1"></a>        ax.text(</span>
+<span id="cb15-356"><a href="#cb15-356" aria-hidden="true" tabindex="-1"></a>            i,</span>
+<span id="cb15-357"><a href="#cb15-357" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.05</span>,  <span class="co"># small height above baseline</span></span>
+<span id="cb15-358"><a href="#cb15-358" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Shade not calculated</span><span class="ch">\n</span><span class="st">(sun below horizon)"</span>,</span>
+<span id="cb15-359"><a href="#cb15-359" aria-hidden="true" tabindex="-1"></a>            ha<span class="op">=</span><span class="st">'center'</span>,</span>
+<span id="cb15-360"><a href="#cb15-360" aria-hidden="true" tabindex="-1"></a>            va<span class="op">=</span><span class="st">'bottom'</span>,</span>
+<span id="cb15-361"><a href="#cb15-361" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">9</span>,</span>
+<span id="cb15-362"><a href="#cb15-362" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'gray'</span>,</span>
+<span id="cb15-363"><a href="#cb15-363" aria-hidden="true" tabindex="-1"></a>            rotation<span class="op">=</span><span class="dv">90</span></span>
+<span id="cb15-364"><a href="#cb15-364" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-365"><a href="#cb15-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-366"><a href="#cb15-366" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-367"><a href="#cb15-367" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'shade_boxplot_comparison.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb15-368"><a href="#cb15-368" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: shade_boxplot_comparison.png"</span>)</span>
+<span id="cb15-369"><a href="#cb15-369" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
+<span id="cb15-370"><a href="#cb15-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-371"><a href="#cb15-371" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-372"><a href="#cb15-372" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 8: Summary Dashboard</span></span>
+<span id="cb15-373"><a href="#cb15-373" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-374"><a href="#cb15-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-375"><a href="#cb15-375" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">8. Creating summary dashboard..."</span>)</span>
+<span id="cb15-376"><a href="#cb15-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-377"><a href="#cb15-377" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">12</span>))</span>
+<span id="cb15-378"><a href="#cb15-378" aria-hidden="true" tabindex="-1"></a>gs <span class="op">=</span> fig.add_gridspec(<span class="dv">3</span>, <span class="dv">3</span>, hspace<span class="op">=</span><span class="fl">0.5</span>, wspace<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-379"><a href="#cb15-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-380"><a href="#cb15-380" aria-hidden="true" tabindex="-1"></a><span class="co"># Title</span></span>
+<span id="cb15-381"><a href="#cb15-381" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'University City Shade Analysis - Complete Dashboard'</span>, </span>
+<span id="cb15-382"><a href="#cb15-382" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">18</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, y<span class="op">=</span><span class="fl">0.98</span>)</span>
+<span id="cb15-383"><a href="#cb15-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-384"><a href="#cb15-384" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Mean shade by scenario (bar chart)</span></span>
+<span id="cb15-385"><a href="#cb15-385" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">0</span>, :<span class="dv">2</span>])</span>
+<span id="cb15-386"><a href="#cb15-386" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> ax1.bar(<span class="bu">range</span>(<span class="bu">len</span>(stats_df)), stats_df[<span class="st">'mean'</span>], </span>
+<span id="cb15-387"><a href="#cb15-387" aria-hidden="true" tabindex="-1"></a>               color<span class="op">=</span>plt.cm.RdYlGn(stats_df[<span class="st">'mean'</span>]))</span>
+<span id="cb15-388"><a href="#cb15-388" aria-hidden="true" tabindex="-1"></a>ax1.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(stats_df)))</span>
+<span id="cb15-389"><a href="#cb15-389" aria-hidden="true" tabindex="-1"></a>ax1.set_xticklabels([s.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)[<span class="dv">0</span>] <span class="cf">for</span> s <span class="kw">in</span> stats_df[<span class="st">'scenario'</span>]], </span>
+<span id="cb15-390"><a href="#cb15-390" aria-hidden="true" tabindex="-1"></a>                     rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb15-391"><a href="#cb15-391" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'Mean Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-392"><a href="#cb15-392" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">'Average Shade by Scenario'</span>, fontsize<span class="op">=</span><span class="dv">11</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-393"><a href="#cb15-393" aria-hidden="true" tabindex="-1"></a>ax1.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-394"><a href="#cb15-394" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bar, val <span class="kw">in</span> <span class="bu">zip</span>(bars, stats_df[<span class="st">'mean'</span>]):</span>
+<span id="cb15-395"><a href="#cb15-395" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> val <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb15-396"><a href="#cb15-396" aria-hidden="true" tabindex="-1"></a>        ax1.text(</span>
+<span id="cb15-397"><a href="#cb15-397" aria-hidden="true" tabindex="-1"></a>            bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="dv">2</span>,</span>
+<span id="cb15-398"><a href="#cb15-398" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.02</span>,</span>
+<span id="cb15-399"><a href="#cb15-399" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Shade not calculated</span><span class="ch">\n</span><span class="st">(sun below horizon)"</span>,</span>
+<span id="cb15-400"><a href="#cb15-400" aria-hidden="true" tabindex="-1"></a>            ha<span class="op">=</span><span class="st">'center'</span>,</span>
+<span id="cb15-401"><a href="#cb15-401" aria-hidden="true" tabindex="-1"></a>            va<span class="op">=</span><span class="st">'bottom'</span>,</span>
+<span id="cb15-402"><a href="#cb15-402" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb15-403"><a href="#cb15-403" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'gray'</span>,</span>
+<span id="cb15-404"><a href="#cb15-404" aria-hidden="true" tabindex="-1"></a>            rotation<span class="op">=</span><span class="dv">90</span></span>
+<span id="cb15-405"><a href="#cb15-405" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-406"><a href="#cb15-406" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb15-407"><a href="#cb15-407" aria-hidden="true" tabindex="-1"></a>        ax1.text(</span>
+<span id="cb15-408"><a href="#cb15-408" aria-hidden="true" tabindex="-1"></a>            bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="dv">2</span>,</span>
+<span id="cb15-409"><a href="#cb15-409" aria-hidden="true" tabindex="-1"></a>            bar.get_height() <span class="op">+</span> <span class="fl">0.02</span>,</span>
+<span id="cb15-410"><a href="#cb15-410" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f'</span><span class="sc">{</span>val<span class="sc">:.1%}</span><span class="ss">'</span>,</span>
+<span id="cb15-411"><a href="#cb15-411" aria-hidden="true" tabindex="-1"></a>            ha<span class="op">=</span><span class="st">'center'</span>,</span>
+<span id="cb15-412"><a href="#cb15-412" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">8</span></span>
+<span id="cb15-413"><a href="#cb15-413" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-414"><a href="#cb15-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-415"><a href="#cb15-415" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Key statistics</span></span>
+<span id="cb15-416"><a href="#cb15-416" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">0</span>, <span class="dv">2</span>])</span>
+<span id="cb15-417"><a href="#cb15-417" aria-hidden="true" tabindex="-1"></a>ax2.axis(<span class="st">'off'</span>)</span>
+<span id="cb15-418"><a href="#cb15-418" aria-hidden="true" tabindex="-1"></a>worst_nonzero <span class="op">=</span> stats_df[stats_df[<span class="st">'mean'</span>] <span class="op">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb15-419"><a href="#cb15-419" aria-hidden="true" tabindex="-1"></a>stats_text <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb15-420"><a href="#cb15-420" aria-hidden="true" tabindex="-1"></a><span class="ss">KEY STATISTICS</span></span>
+<span id="cb15-421"><a href="#cb15-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-422"><a href="#cb15-422" aria-hidden="true" tabindex="-1"></a><span class="ss">Network Size:</span></span>
+<span id="cb15-423"><a href="#cb15-423" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span><span class="bu">len</span>(edges)<span class="sc">:,}</span><span class="ss"> segments</span></span>
+<span id="cb15-424"><a href="#cb15-424" aria-hidden="true" tabindex="-1"></a><span class="ss">• 1.24 sq mi</span></span>
 <span id="cb15-425"><a href="#cb15-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-426"><a href="#cb15-426" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>))</span>
-<span id="cb15-427"><a href="#cb15-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-428"><a href="#cb15-428" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot network</span></span>
-<span id="cb15-429"><a href="#cb15-429" aria-hidden="true" tabindex="-1"></a>edges.plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'gray'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb15-430"><a href="#cb15-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-431"><a href="#cb15-431" aria-hidden="true" tabindex="-1"></a><span class="co"># Add basemap</span></span>
-<span id="cb15-432"><a href="#cb15-432" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb15-433"><a href="#cb15-433" aria-hidden="true" tabindex="-1"></a>    cx.add_basemap(ax, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron)</span>
-<span id="cb15-434"><a href="#cb15-434" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>:</span>
-<span id="cb15-435"><a href="#cb15-435" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
-<span id="cb15-436"><a href="#cb15-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-437"><a href="#cb15-437" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Study Area: University City, Philadelphia</span><span class="ch">\n</span><span class="st">Pedestrian Network Coverage'</span>,</span>
-<span id="cb15-438"><a href="#cb15-438" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, pad<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb15-439"><a href="#cb15-439" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb15-426"><a href="#cb15-426" aria-hidden="true" tabindex="-1"></a><span class="ss">Best Scenario:</span></span>
+<span id="cb15-427"><a href="#cb15-427" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df<span class="sc">.</span>iloc[stats_df[<span class="st">'mean'</span>].idxmax()][<span class="st">'scenario'</span>]<span class="sc">.</span>split(<span class="bu">chr</span>(<span class="dv">10</span>))[<span class="dv">0</span>]<span class="sc">}</span></span>
+<span id="cb15-428"><a href="#cb15-428" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.1%}</span><span class="ss"> mean shade</span></span>
+<span id="cb15-429"><a href="#cb15-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-430"><a href="#cb15-430" aria-hidden="true" tabindex="-1"></a><span class="ss">Worst Scenario:</span></span>
+<span id="cb15-431"><a href="#cb15-431" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>worst_nonzero<span class="sc">.</span>iloc[worst_nonzero[<span class="st">'mean'</span>].idxmin()][<span class="st">'scenario'</span>]<span class="sc">.</span>split(<span class="bu">chr</span>(<span class="dv">10</span>))[<span class="dv">0</span>]<span class="sc">}</span></span>
+<span id="cb15-432"><a href="#cb15-432" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>worst_nonzero[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.1%}</span><span class="ss"> mean shade</span></span>
+<span id="cb15-433"><a href="#cb15-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-434"><a href="#cb15-434" aria-hidden="true" tabindex="-1"></a><span class="ss">Variation:</span></span>
+<span id="cb15-435"><a href="#cb15-435" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">max</span>() <span class="op">-</span> stats_df[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.1%}</span><span class="ss"> range</span></span>
+<span id="cb15-436"><a href="#cb15-436" aria-hidden="true" tabindex="-1"></a><span class="ss">• </span><span class="sc">{</span>stats_df[<span class="st">'mean'</span>]<span class="sc">.</span>std()<span class="sc">:.1%}</span><span class="ss"> std dev</span></span>
+<span id="cb15-437"><a href="#cb15-437" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
+<span id="cb15-438"><a href="#cb15-438" aria-hidden="true" tabindex="-1"></a>ax2.text(<span class="fl">0.1</span>, <span class="fl">0.5</span>, stats_text, fontsize<span class="op">=</span><span class="dv">10</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>,</span>
+<span id="cb15-439"><a href="#cb15-439" aria-hidden="true" tabindex="-1"></a>         family<span class="op">=</span><span class="st">'monospace'</span>, bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">'round'</span>, facecolor<span class="op">=</span><span class="st">'wheat'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>))</span>
 <span id="cb15-440"><a href="#cb15-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-441"><a href="#cb15-441" aria-hidden="true" tabindex="-1"></a><span class="co"># Add scale bar and north arrow (simple text)</span></span>
-<span id="cb15-442"><a href="#cb15-442" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.05</span>, <span class="fl">0.05</span>, <span class="ss">f'</span><span class="sc">{</span><span class="bu">len</span>(edges)<span class="sc">:,}</span><span class="ss"> segments</span><span class="ch">\n</span><span class="sc">{</span>edges<span class="sc">.</span>geometry<span class="sc">.</span>length<span class="sc">.</span><span class="bu">sum</span>()<span class="op">/</span><span class="dv">5280</span><span class="sc">:.1f}</span><span class="ss"> miles'</span>,</span>
-<span id="cb15-443"><a href="#cb15-443" aria-hidden="true" tabindex="-1"></a>        transform<span class="op">=</span>ax.transAxes, fontsize<span class="op">=</span><span class="dv">11</span>, verticalalignment<span class="op">=</span><span class="st">'bottom'</span>,</span>
-<span id="cb15-444"><a href="#cb15-444" aria-hidden="true" tabindex="-1"></a>        bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">'round'</span>, facecolor<span class="op">=</span><span class="st">'white'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>))</span>
-<span id="cb15-445"><a href="#cb15-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-446"><a href="#cb15-446" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb15-447"><a href="#cb15-447" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'study_area_overview.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb15-448"><a href="#cb15-448" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: study_area_overview.png"</span>)</span>
-<span id="cb15-449"><a href="#cb15-449" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
-<span id="cb15-450"><a href="#cb15-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-451"><a href="#cb15-451" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-452"><a href="#cb15-452" aria-hidden="true" tabindex="-1"></a><span class="co"># SUMMARY</span></span>
-<span id="cb15-453"><a href="#cb15-453" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
-<span id="cb15-454"><a href="#cb15-454" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-455"><a href="#cb15-455" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
-<span id="cb15-456"><a href="#cb15-456" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ VISUALIZATION GENERATION COMPLETE!"</span>)</span>
-<span id="cb15-457"><a href="#cb15-457" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
-<span id="cb15-458"><a href="#cb15-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-459"><a href="#cb15-459" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Generated </span><span class="sc">{</span><span class="bu">len</span>(<span class="bu">list</span>(output_dir.glob(<span class="st">'*.png'</span>)))<span class="sc">}</span><span class="ss"> visualization files in: </span><span class="sc">{</span>output_dir<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb15-460"><a href="#cb15-460" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Files created:"</span>)</span>
-<span id="cb15-461"><a href="#cb15-461" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="bu">sorted</span>(output_dir.glob(<span class="st">'*.png'</span>)):</span>
-<span id="cb15-462"><a href="#cb15-462" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  ✓ </span><span class="sc">{</span>f<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-441"><a href="#cb15-441" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Building vs Tree contribution</span></span>
+<span id="cb15-442"><a href="#cb15-442" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">1</span>, :])</span>
+<span id="cb15-443"><a href="#cb15-443" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(contrib_df) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb15-444"><a href="#cb15-444" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.arange(<span class="bu">len</span>(contrib_df))</span>
+<span id="cb15-445"><a href="#cb15-445" aria-hidden="true" tabindex="-1"></a>    width <span class="op">=</span> <span class="fl">0.35</span></span>
+<span id="cb15-446"><a href="#cb15-446" aria-hidden="true" tabindex="-1"></a>    ax3.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, contrib_df[<span class="st">'building'</span>], width, label<span class="op">=</span><span class="st">'Buildings'</span>, </span>
+<span id="cb15-447"><a href="#cb15-447" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'#1976d2'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb15-448"><a href="#cb15-448" aria-hidden="true" tabindex="-1"></a>    ax3.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, contrib_df[<span class="st">'tree'</span>], width, label<span class="op">=</span><span class="st">'Trees'</span>,</span>
+<span id="cb15-449"><a href="#cb15-449" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'#388e3c'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb15-450"><a href="#cb15-450" aria-hidden="true" tabindex="-1"></a>    ax3.set_xticks(x)</span>
+<span id="cb15-451"><a href="#cb15-451" aria-hidden="true" tabindex="-1"></a>    ax3.set_xticklabels([s.split()[<span class="dv">0</span>] <span class="cf">for</span> s <span class="kw">in</span> contrib_df[<span class="st">'scenario'</span>]], </span>
+<span id="cb15-452"><a href="#cb15-452" aria-hidden="true" tabindex="-1"></a>                         rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb15-453"><a href="#cb15-453" aria-hidden="true" tabindex="-1"></a>    ax3.set_ylabel(<span class="st">'Mean Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-454"><a href="#cb15-454" aria-hidden="true" tabindex="-1"></a>    ax3.set_title(<span class="st">'Shade Source Contribution'</span>, fontsize<span class="op">=</span><span class="dv">11</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-455"><a href="#cb15-455" aria-hidden="true" tabindex="-1"></a>    ax3.legend()</span>
+<span id="cb15-456"><a href="#cb15-456" aria-hidden="true" tabindex="-1"></a>    ax3.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-457"><a href="#cb15-457" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (b_val, t_val) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(contrib_df[<span class="st">'building'</span>], contrib_df[<span class="st">'tree'</span>])):</span>
+<span id="cb15-458"><a href="#cb15-458" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> b_val <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> t_val <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb15-459"><a href="#cb15-459" aria-hidden="true" tabindex="-1"></a>        ax3.text(</span>
+<span id="cb15-460"><a href="#cb15-460" aria-hidden="true" tabindex="-1"></a>            x[i],</span>
+<span id="cb15-461"><a href="#cb15-461" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.02</span>,</span>
+<span id="cb15-462"><a href="#cb15-462" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Shade not calculated</span><span class="ch">\n</span><span class="st">(sun below horizon)"</span>,</span>
+<span id="cb15-463"><a href="#cb15-463" aria-hidden="true" tabindex="-1"></a>            ha<span class="op">=</span><span class="st">'center'</span>,</span>
+<span id="cb15-464"><a href="#cb15-464" aria-hidden="true" tabindex="-1"></a>            va<span class="op">=</span><span class="st">'bottom'</span>,</span>
+<span id="cb15-465"><a href="#cb15-465" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">9</span>,</span>
+<span id="cb15-466"><a href="#cb15-466" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'gray'</span>,</span>
+<span id="cb15-467"><a href="#cb15-467" aria-hidden="true" tabindex="-1"></a>            rotation<span class="op">=</span><span class="dv">90</span></span>
+<span id="cb15-468"><a href="#cb15-468" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-469"><a href="#cb15-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-470"><a href="#cb15-470" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Shade distribution histogram (summer midday)</span></span>
+<span id="cb15-471"><a href="#cb15-471" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">2</span>, <span class="dv">0</span>])</span>
+<span id="cb15-472"><a href="#cb15-472" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_summer_midday'</span> <span class="kw">in</span> edges.columns:</span>
+<span id="cb15-473"><a href="#cb15-473" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> edges[<span class="st">'shade_summer_midday'</span>].dropna()</span>
+<span id="cb15-474"><a href="#cb15-474" aria-hidden="true" tabindex="-1"></a>    ax4.hist(data, bins<span class="op">=</span><span class="dv">30</span>, color<span class="op">=</span><span class="st">'coral'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb15-475"><a href="#cb15-475" aria-hidden="true" tabindex="-1"></a>    ax4.axvline(data.mean(), color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb15-476"><a href="#cb15-476" aria-hidden="true" tabindex="-1"></a>    ax4.set_xlabel(<span class="st">'Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb15-477"><a href="#cb15-477" aria-hidden="true" tabindex="-1"></a>    ax4.set_ylabel(<span class="st">'Frequency'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb15-478"><a href="#cb15-478" aria-hidden="true" tabindex="-1"></a>    ax4.set_title(<span class="st">'Summer Midday Distribution'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-479"><a href="#cb15-479" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-480"><a href="#cb15-480" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Shade distribution histogram (winter morning)</span></span>
+<span id="cb15-481"><a href="#cb15-481" aria-hidden="true" tabindex="-1"></a>ax5 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">2</span>, <span class="dv">1</span>])</span>
+<span id="cb15-482"><a href="#cb15-482" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_winter_morning'</span> <span class="kw">in</span> edges.columns:</span>
+<span id="cb15-483"><a href="#cb15-483" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> edges[<span class="st">'shade_winter_morning'</span>].dropna()</span>
+<span id="cb15-484"><a href="#cb15-484" aria-hidden="true" tabindex="-1"></a>    ax5.hist(data, bins<span class="op">=</span><span class="dv">30</span>, color<span class="op">=</span><span class="st">'lightgreen'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb15-485"><a href="#cb15-485" aria-hidden="true" tabindex="-1"></a>    ax5.axvline(data.mean(), color<span class="op">=</span><span class="st">'green'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb15-486"><a href="#cb15-486" aria-hidden="true" tabindex="-1"></a>    ax5.set_xlabel(<span class="st">'Shade Coverage'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb15-487"><a href="#cb15-487" aria-hidden="true" tabindex="-1"></a>    ax5.set_ylabel(<span class="st">'Frequency'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb15-488"><a href="#cb15-488" aria-hidden="true" tabindex="-1"></a>    ax5.set_title(<span class="st">'Winter Morning Distribution'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-489"><a href="#cb15-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-490"><a href="#cb15-490" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. High shade percentage</span></span>
+<span id="cb15-491"><a href="#cb15-491" aria-hidden="true" tabindex="-1"></a>ax6 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">2</span>, <span class="dv">2</span>])</span>
+<span id="cb15-492"><a href="#cb15-492" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> ax6.barh(<span class="bu">range</span>(<span class="bu">len</span>(stats_df)), stats_df[<span class="st">'high_shade_pct'</span>],</span>
+<span id="cb15-493"><a href="#cb15-493" aria-hidden="true" tabindex="-1"></a>                color<span class="op">=</span>plt.cm.RdYlGn(stats_df[<span class="st">'mean'</span>]))</span>
+<span id="cb15-494"><a href="#cb15-494" aria-hidden="true" tabindex="-1"></a>ax6.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(stats_df)))</span>
+<span id="cb15-495"><a href="#cb15-495" aria-hidden="true" tabindex="-1"></a>ax6.set_yticklabels([s.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)[<span class="dv">0</span>] <span class="cf">for</span> s <span class="kw">in</span> stats_df[<span class="st">'scenario'</span>]], fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb15-496"><a href="#cb15-496" aria-hidden="true" tabindex="-1"></a>ax6.set_xlabel(<span class="st">'% Segments &gt;50% Shade'</span>, fontsize<span class="op">=</span><span class="dv">9</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-497"><a href="#cb15-497" aria-hidden="true" tabindex="-1"></a>ax6.set_title(<span class="st">'High-Shade Segments'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-498"><a href="#cb15-498" aria-hidden="true" tabindex="-1"></a>ax6.grid(axis<span class="op">=</span><span class="st">'x'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-499"><a href="#cb15-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-500"><a href="#cb15-500" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'dashboard_summary.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb15-501"><a href="#cb15-501" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: dashboard_summary.png"</span>)</span>
+<span id="cb15-502"><a href="#cb15-502" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
+<span id="cb15-503"><a href="#cb15-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-504"><a href="#cb15-504" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-505"><a href="#cb15-505" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZATION 9: Study Area Overview Map</span></span>
+<span id="cb15-506"><a href="#cb15-506" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-507"><a href="#cb15-507" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-508"><a href="#cb15-508" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">9. Creating study area overview map..."</span>)</span>
+<span id="cb15-509"><a href="#cb15-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-510"><a href="#cb15-510" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>))</span>
+<span id="cb15-511"><a href="#cb15-511" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-512"><a href="#cb15-512" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot network</span></span>
+<span id="cb15-513"><a href="#cb15-513" aria-hidden="true" tabindex="-1"></a>edges.plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'gray'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb15-514"><a href="#cb15-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-515"><a href="#cb15-515" aria-hidden="true" tabindex="-1"></a><span class="co"># Add basemap</span></span>
+<span id="cb15-516"><a href="#cb15-516" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb15-517"><a href="#cb15-517" aria-hidden="true" tabindex="-1"></a>    cx.add_basemap(ax, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron)</span>
+<span id="cb15-518"><a href="#cb15-518" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb15-519"><a href="#cb15-519" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb15-520"><a href="#cb15-520" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-521"><a href="#cb15-521" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Study Area: University City, Philadelphia</span><span class="ch">\n</span><span class="st">Pedestrian Network Coverage'</span>,</span>
+<span id="cb15-522"><a href="#cb15-522" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, pad<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb15-523"><a href="#cb15-523" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb15-524"><a href="#cb15-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-525"><a href="#cb15-525" aria-hidden="true" tabindex="-1"></a><span class="co"># Add scale bar and north arrow (simple text)</span></span>
+<span id="cb15-526"><a href="#cb15-526" aria-hidden="true" tabindex="-1"></a>ax.text(</span>
+<span id="cb15-527"><a href="#cb15-527" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.05</span>, <span class="fl">0.05</span>,</span>
+<span id="cb15-528"><a href="#cb15-528" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f'Study Area: 1.24 sq mi</span><span class="ch">\n</span><span class="sc">{</span><span class="bu">len</span>(edges)<span class="sc">:,}</span><span class="ss"> segments'</span>,</span>
+<span id="cb15-529"><a href="#cb15-529" aria-hidden="true" tabindex="-1"></a>    transform<span class="op">=</span>ax.transAxes,</span>
+<span id="cb15-530"><a href="#cb15-530" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">11</span>,</span>
+<span id="cb15-531"><a href="#cb15-531" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">'bottom'</span>,</span>
+<span id="cb15-532"><a href="#cb15-532" aria-hidden="true" tabindex="-1"></a>    bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">'round'</span>, facecolor<span class="op">=</span><span class="st">'white'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb15-533"><a href="#cb15-533" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-534"><a href="#cb15-534" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-535"><a href="#cb15-535" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-536"><a href="#cb15-536" aria-hidden="true" tabindex="-1"></a>plt.savefig(output_dir <span class="op">/</span> <span class="st">'study_area_overview.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb15-537"><a href="#cb15-537" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  ✓ Saved: study_area_overview.png"</span>)</span>
+<span id="cb15-538"><a href="#cb15-538" aria-hidden="true" tabindex="-1"></a>plt.close()</span>
+<span id="cb15-539"><a href="#cb15-539" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-540"><a href="#cb15-540" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-541"><a href="#cb15-541" aria-hidden="true" tabindex="-1"></a><span class="co"># SUMMARY</span></span>
+<span id="cb15-542"><a href="#cb15-542" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-543"><a href="#cb15-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-544"><a href="#cb15-544" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
+<span id="cb15-545"><a href="#cb15-545" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ VISUALIZATION GENERATION COMPLETE!"</span>)</span>
+<span id="cb15-546"><a href="#cb15-546" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">70</span>)</span>
+<span id="cb15-547"><a href="#cb15-547" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-548"><a href="#cb15-548" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Generated </span><span class="sc">{</span><span class="bu">len</span>(<span class="bu">list</span>(output_dir.glob(<span class="st">'*.png'</span>)))<span class="sc">}</span><span class="ss"> visualization files in: </span><span class="sc">{</span>output_dir<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-549"><a href="#cb15-549" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Files created:"</span>)</span>
+<span id="cb15-550"><a href="#cb15-550" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="bu">sorted</span>(output_dir.glob(<span class="st">'*.png'</span>)):</span>
+<span id="cb15-551"><a href="#cb15-551" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  ✓ </span><span class="sc">{</span>f<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>🎨 Generating comprehensive visualizations...
 
@@ -1068,6 +1157,51 @@ Files created:
 3. Render website with 'quarto render'
 
 🎨 Your website will be super visual!</code></pre>
+</div>
+</div>
+<div id="cell-16" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">6. Creating shade corridors map..."</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'shade_summer_midday'</span> <span class="kw">in</span> edges.columns:</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Classify segments</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    edges[<span class="st">'shade_class'</span>] <span class="op">=</span> pd.cut(edges[<span class="st">'shade_summer_midday'</span>], </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                                   bins<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">1.0</span>],</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                                   labels<span class="op">=</span>[<span class="st">'Very Low (0-20%)'</span>, <span class="st">'Low (20-40%)'</span>, </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">'Moderate (40-60%)'</span>, <span class="st">'High (60-80%)'</span>, </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">'Very High (80-100%)'</span>])</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">10</span>))</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    colors <span class="op">=</span> [<span class="st">'#d32f2f'</span>, <span class="st">'#f57c00'</span>, <span class="st">'#fbc02d'</span>, <span class="st">'#689f38'</span>, <span class="st">'#388e3c'</span>]</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    edges.plot(column<span class="op">=</span><span class="st">'shade_class'</span>, ax<span class="op">=</span>ax, legend<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>               categorical<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'RdYlGn'</span>, linewidth<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>               legend_kwds<span class="op">=</span>{<span class="st">'title'</span>: <span class="st">'Shade Category'</span>, <span class="st">'loc'</span>: <span class="st">'upper left'</span>})</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="st">'Shade Corridors - Summer Midday</span><span class="ch">\n</span><span class="st">Identifying Shade Deserts and Shaded Routes'</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>                 fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, pad<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>        cx.add_basemap(ax, crs<span class="op">=</span>edges.crs, source<span class="op">=</span>cx.providers.CartoDB.Positron, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    legend <span class="op">=</span> ax.get_legend()</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    legend.set_frame_on(<span class="va">True</span>)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    legend.get_frame().set_facecolor(<span class="st">"white"</span>)</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    legend.get_frame().set_alpha(<span class="dv">1</span>)</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    legend.get_frame().set_edgecolor(<span class="st">"gray"</span>)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    legend.set_zorder(<span class="dv">10</span>)</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>    plt.savefig(output_dir <span class="op">/</span> <span class="st">'shade_corridors_map.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  ✓ Saved: shade_corridors_map.png"</span>)</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    plt.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+6. Creating shade corridors map...
+  ✓ Saved: shade_corridors_map.png</code></pre>
 </div>
 </div>
 
