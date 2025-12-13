@@ -107,14 +107,14 @@ The network transforms from green (high shade) to red (low shade) depending on s
 
 **Winter Morning:**
 
-- Buildings: **74.4%** shade contribution
-- Trees: 42.1% shade contribution
+- Buildings: **74.4%** shade coverage
+- Trees: 42.1% shade coverage
 - **Explanation:** Low sun angle creates extremely long building shadows
 
 **Summer Midday:**
 
-- Buildings: 16.3% shade contribution
-- Trees: **35.9%** shade contribution
+- Buildings: 16.3% shade coverage
+- Trees: **35.9%** shade coverage
 - **Explanation:** High sun reduces building shadow length; tree canopies become primary shade source
 :::
 
@@ -142,73 +142,6 @@ The network transforms from green (high shade) to red (low shade) depending on s
 
 ---
 
-### High-Shade Corridors (Recommended Routes)
-
-**Top 5 Shaded Streets for Summer Routing:**
-
-1. **Locust Walk** 
-   - Mean summer shade: 60-80%
-   - Character: Campus pedestrian corridor
-   - Primary source: Mature trees + building coverage
-   - **Recommendation:** Ideal east-west route
-
-2. **Pine Street (36th-40th)**
-   - Mean summer shade: 55-75%
-   - Character: Residential with dense tree canopy
-   - Primary source: Street trees (maples, oaks)
-   - **Recommendation:** Best alternative to Market St
-
-3. **Spruce Street (36th-40th)**
-   - Mean summer shade: 50-70%
-   - Character: Tree-lined residential
-   - Primary source: Mature street trees
-   - **Recommendation:** Parallel to Pine, similar quality
-
-4. **40th Street (south of Market)**
-   - Mean summer shade: 45-65%
-   - Character: Mixed-use with tall buildings
-   - Primary source: Building shadows (afternoon)
-   - **Recommendation:** Good for N-S travel
-
-5. **38th Street (Spruce to Walnut)**
-   - Mean summer shade: 48-62%
-   - Character: Residential with trees
-   - Primary source: Combination trees + buildings
-   - **Recommendation:** Campus access route
-
----
-
-### Shade Deserts (Intervention Priorities)
-
-**Bottom 5 - Requiring Urban Greening:**
-
-1. **Market Street**
-   - Mean summer shade: **15-20%**
-   - Issues: Wide ROW (80+ ft), sparse young trees
-   - **Priority 1:** Add large-canopy trees
-
-2. **Chestnut Street**
-   - Mean summer shade: **18-22%**
-   - Issues: Limited tree canopy, commercial focus
-   - **Priority 2:** Tree pit expansion program
-
-3. **University Avenue**
-   - Mean summer shade: **12-18%**
-   - Issues: Recent construction, immature trees
-   - **Priority 3:** Temporary shade structures + irrigation
-
-4. **Walnut Street (plaza areas)**
-   - Mean summer shade: **20-25%**
-   - Issues: Building setbacks, intentional openness
-   - **Priority 4:** Seasonal shade structures
-
-5. **Baltimore Avenue**
-   - Mean summer shade: **22-28%**
-   - Issues: Wide street, inconsistent tree coverage
-   - **Priority 5:** Infill tree planting
-
----
-
 ## Route Analysis
 
 ### Example Route Comparisons
@@ -224,7 +157,7 @@ The network transforms from green (high shade) to red (low shade) depending on s
 - **Distance penalty:** +10-15% longer route
 - **Shade improvement:** +30-50% more coverage
 - **Time cost:** +1-2 minutes walking
-- **Thermal benefit:** Perceived 5-10°F cooler
+- **Thermal benefit:** Shade reduces radiant heat exposure
 
 ::: {.callout-note icon=false}
 ## Finding: Acceptable Trade-offs for Heat-Sensitive Pedestrians
@@ -291,35 +224,6 @@ Across all analyzed routes:
 
 ---
 
-## Validation Results
-
-### Shadow Direction Accuracy
-
-**Method:** Manual verification of 50 random segments against satellite imagery
-
-**Results:**
-
-- **100%** of building shadows point in correct direction
-- **98%** of tree shadows align with solar azimuth
-- **2%** minor discrepancies (rasterization edge effects)
-
-**Conclusion:** Shadow modeling is geometrically accurate
-
----
-
-### Temporal Consistency Check
-
-**Method:** Compare observed shadow length ratios to theoretical calculations
-
-| Comparison | Expected | Observed | Validation |
-|------------|----------|----------|------------|
-| Summer/Winter Shadow Length | ~2.5x | ~2.4x | ✓ (4% error) |
-| Morning/Midday Shadow Length | ~3.0x | ~2.9x | ✓ (3% error) |
-
-**Conclusion:** Temporal variation is physically consistent
-
----
-
 ## Future Work & Limitations
 
 ### Current Limitations
@@ -335,7 +239,7 @@ Across all analyzed routes:
 1. **Species-specific modeling** - Deciduous vs evergreen adjustment
 2. **Weather integration** - Real-time cloud cover
 3. **Thermal comfort index** - Include humidity, wind, temperature
-4. **Updated LiDAR** - 2024-2025 data collection
+4. **Updated LiDAR** - 2025 data collection
 5. **Mobile app deployment** - GPS-based route guidance
 
 ---
