@@ -1,0 +1,243 @@
+---
+title: "Technical Appendix"
+---
+
+## Code Notebooks
+
+Complete implementation available as Jupyter notebooks:
+
+### Notebook 1: Data Acquisition
+
+[View Full Notebook →](notebooks/01-data-acquisition.html)
+
+**Covers:**
+- Downloading LiDAR tiles from USGS
+- Processing building footprints
+- Extracting pedestrian network from OSM
+- Loading SEPTA transit stops
+
+**Key outputs:**
+- `data/raw/lidar/` - 18 LAS files
+- `data/processed/buildings_with_heights.geojson`
+- `data/processed/edges.geojson`
+- `data/processed/septa_stops.geojson`
+
+---
+
+### Notebook 2: Network Shade Calculation
+
+[View Full Notebook →](notebooks/02-network-shade.html)
+
+**Covers:**
+- LiDAR rasterization (buildings and trees)
+- Solar position modeling
+- Geometric shadow calculation
+- Pedestrian buffer creation
+- Shade score computation
+
+**Key outputs:**
+- `data/processed/buildings_heights.tif`
+- `data/processed/tree_heights.tif`
+- `data/processed/network_edges_with_shade.geojson`
+
+**Runtime:** ~2 hours for 8 scenarios
+
+---
+
+### Notebook 3: Routing Analysis
+
+[View Full Notebook →](notebooks/03-routing.html)
+
+**Covers:**
+- Network graph construction
+- Dijkstra's algorithm implementation
+- Test route calculation
+- Shortest vs. shadiest comparison
+
+**Key outputs:**
+- Route geometries for visualization
+- Comparison metrics (CSV)
+- Trade-off analysis data
+
+**Runtime:** ~15 minutes
+
+---
+
+### Notebook 4: Visualization
+
+[View Full Notebook →](notebooks/04-visualizations.html)
+
+**Covers:**
+- Static map creation (matplotlib)
+- Route comparison figures
+- Shade heatmaps
+- Chart generation
+
+**Key outputs:**
+- `outputs/figures/penn_to_40th_comparison.png`
+- `outputs/figures/powelton_to_34th_comparison.png`
+- `outputs/figures/spruce_hill_to_46th_comparison.png`
+- Additional analysis charts
+
+**Runtime:** ~10 minutes
+
+---
+
+## Data Dictionary
+
+### Network Edges (`network_edges_with_shade.geojson`)
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `u` | int | Start node ID |
+| `v` | int | End node ID |
+| `key` | int | Edge key (for multi-edges) |
+| `osmid` | int/list | OpenStreetMap ID(s) |
+| `name` | str | Street name |
+| `highway` | str | OSM highway type |
+| `length` | float | Segment length (feet) |
+| `geometry` | LineString | Segment geometry (WGS84) |
+| `building_shadow_summer_midday` | float | Building shade score (0-1) |
+| `tree_shadow_summer_midday` | float | Tree shade score (0-1) |
+| `shade_summer_midday` | float | Combined shade score (0-1) |
+| *(repeat for all 8 scenarios)* | | |
+
+### Shade Score Interpretation
+
+- **0.0** = No shade (full sun exposure)
+- **0.5** = 50% of pedestrian zone shaded
+- **1.0** = Complete shade coverage
+
+---
+
+## Software Environment
+
+### Python Packages
+
+```python
+# Core geospatial
+geopandas==0.14.1
+shapely==2.0.2
+rasterio==1.3.9
+fiona==1.9.5
+
+# Network analysis
+osmnx==1.8.1
+networkx==3.2.1
+
+# LiDAR processing
+laspy==2.5.1
+pdal==3.3.0
+
+# Solar modeling
+pvlib==0.10.3
+
+# Visualization
+matplotlib==3.8.2
+contextily==1.4.0
+
+# General
+numpy==1.26.2
+pandas==2.1.4
+```
+
+### System Requirements
+
+- **OS:** Windows 10/11, macOS 12+, or Linux
+- **RAM:** 16GB minimum (32GB recommended for LiDAR processing)
+- **Storage:** ~20GB for LiDAR tiles + intermediate files
+- **Python:** 3.10 or 3.11
+
+---
+
+## Reproducibility
+
+### Running the Pipeline
+
+1. **Clone repository**
+```bash
+git clone https://github.com/YOUR-USERNAME/shade-routing-analysis.git
+cd shade-routing-analysis
+```
+
+2. **Set up environment**
+```bash
+conda env create -f environment.yml
+conda activate shade-routing
+```
+
+3. **Run notebooks in order**
+```bash
+jupyter notebook
+# Open and run: 01 → 02 → 03 → 04 → 05
+```
+
+4. **Build website**
+```bash
+quarto render
+```
+
+### Expected Runtime
+
+- Notebook 1: ~30 minutes
+- Notebook 2: ~2 hours ⚠️ (longest step)
+- Notebook 3: ~15 minutes
+- Notebook 4: ~10 minutes
+- Notebook 5: ~10 minutes
+- **Total:** ~3 hours
+
+---
+
+## References
+
+### Data Sources
+
+1. **USGS 3DEP LiDAR** - U.S. Geological Survey 3D Elevation Program. [https://www.usgs.gov/3d-elevation-program](https://www.usgs.gov/3d-elevation-program)
+
+2. **PASDA** - Pennsylvania Spatial Data Access. Building Footprints. [https://www.pasda.psu.edu](https://www.pasda.psu.edu)
+
+3. **OpenStreetMap** - Collaborative mapping project. [https://www.openstreetmap.org](https://www.openstreetmap.org)
+
+4. **SEPTA** - Southeastern Pennsylvania Transportation Authority. General Transit Feed Specification (GTFS). [https://www.septa.org/developer/](https://www.septa.org/developer/)
+
+### Academic References
+
+1. Labdaoui, K., et al. (2021). "Utilizing Thermal Comfort and Walking Facilities to Propose a Comfort Walkability Index at the Neighbourhood Level." *Building and Environment*, 193, 107627.
+
+2. Middel, A., et al. (2014). "Impact of Urban Form and Design on Mid-Afternoon Microclimate in Phoenix Local Climate Zones." *Landscape and Urban Planning*, 122, 16-28.
+
+3. Klemm, W., et al. (2015). "Street Greenery and Its Physical and Psychological Impact on Thermal Comfort." *Landscape and Urban Planning*, 138, 87-98.
+
+4. Boeing, G. (2017). "OSMnx: New Methods for Acquiring, Constructing, Analyzing, and Visualizing Complex Street Networks." *Computers, Environment and Urban Systems*, 65, 126-139.
+
+### Software References
+
+1. **pvlib python** - Holmgren, W.F., et al. (2018). "pvlib python: A python package for modeling solar energy systems." *Journal of Open Source Software*, 3(29), 884.
+
+2. **OSMnx** - Boeing, G. (2017). "OSMnx: New methods for acquiring, constructing, analyzing, and visualizing complex street networks." *Computers, Environment and Urban Systems*, 65, 126-139.
+
+3. **GeoPandas** - Jordahl, K., et al. (2020). geopandas/geopandas: v0.8.1.
+
+---
+
+## Acknowledgments
+
+This project was developed as part of **MUSA 5500: Geospatial Data Science with Python** at the University of Pennsylvania, Fall 2024.
+
+**Special Thanks:**
+- USGS for providing open LiDAR data
+- OpenStreetMap contributors
+
+---
+
+## Contact
+
+**Kavana Raju**  
+Master of Urban Spatial Analytics  
+University of Pennsylvania  
+
+**Project Repository:** [https://github.com/kavanaraju/Pedestrian-Shade-Routing](https://github.com/kavanaraju/Pedestrian-Shade-Routing)
+
+---
+
+*Last updated: December 2025*

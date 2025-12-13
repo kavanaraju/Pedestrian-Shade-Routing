@@ -1,53 +1,28 @@
 project:
   type: website
-  output-dir: _site
+  output-dir: docs
 
 website:
-  title: "Shade-Optimized Routing"
+  title: "Shade-Optimized Pedestrian Routing"
   navbar:
-    background: primary
-    search: true
     left:
       - text: "Home"
         href: index.qmd
-      - text: "Introduction"
-        href: index.qmd#introduction
       - text: "Methodology"
-        href: index.qmd#methodology
+        href: methodology.qmd
       - text: "Results"
-        href: index.qmd#results
-      - text: "Conclusion"
-        href: index.qmd#conclusion
-      - text: "Dashboard"
-        href: index.qmd#dashboard
+        href: results.qmd
+      - text: "Interactive Map"
+        href: interactive.qmd
+      - text: "Technical Appendix"
+        href: appendix.qmd
     right:
       - icon: github
         href: https://github.com/kavanaraju/Pedestrian-Shade-Routing
-        text: "GitHub"
-      - icon: envelope
-        href: mailto:kavana@upenn.edu
-        text: "Contact"
 
 format:
   html:
-    theme: 
-      light: [cosmo, styles.css]
-      dark: [darkly, styles.css]
+    theme: cosmo
+    css: styles.css
     toc: true
     toc-depth: 3
-    toc-location: left
-    code-fold: true
-    code-tools: true
-    smooth-scroll: true
-    number-sections: false
-    fig-width: 10
-    fig-height: 6
-    df-print: paged
-
-execute:
-  echo: false
-  warning: false
-  message: false
-  cache: false
-
-editor: visual

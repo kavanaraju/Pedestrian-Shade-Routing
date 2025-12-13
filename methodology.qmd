@@ -1,0 +1,208 @@
+---
+title: "Methodology"
+---
+
+## Overview
+
+This analysis implements a four-stage pipeline to calculate shade-optimized pedestrian routes:
+
+1. Data Acquisition & Processing
+2. Shade Calculation from LiDAR
+3. Route Optimization
+4. Visualization & Validation
+
+---
+
+## 1. Data Acquisition
+
+### Data Sources
+
+| Dataset | Source | Specifications |
+|---------|--------|----------------|
+| **LiDAR Point Clouds** | USGS 3DEP Program (2018-2020) | 18 tiles, ~8-15 pts/m², Class 5 (vegetation) & 6 (buildings) |
+| **Building Footprints** | PASDA Pennsylvania Statewide | Vector polygons with attribute data |
+| **Street Network** | OpenStreetMap | Pedestrian-accessible paths only |
+| **Transit Stops** | SEPTA GTFS | Market-Frankford Line stations |
+
+### Processing Steps
+
+**See complete implementation:** [Data Acquisition Notebook](notebooks/01-data-acquisition.html)
+
+Key processing steps included:
+
+```python
+# Example: Loading and filtering street network
+import osmnx as ox
+
+# Download pedestrian network for University City
+network = ox.graph_from_place(
+    "University City, Philadelphia, PA",
+    network_type='walk'
+)
+
+# Convert to GeoDataFrame
+edges = ox.graph_to_gdfs(network, nodes=False)
+```
+
+**Outputs:**
+- 23,486 pedestrian network segments
+- 99.7% of buildings with LiDAR heights
+- 2.1M+ tree points with individual heights
+
+---
+
+## 2. Shade Calculation
+
+### Solar Position Modeling
+
+Used `pvlib` library to calculate sun position for Philadelphia (40.0°N, 75.2°W) across 8 temporal scenarios:
+
+| Season | Time | Sun Altitude | Shadow Character |
+|--------|------|--------------|------------------|
+| Summer Morning | 7:00 AM | 36.9° | Long shadows |
+| Summer Midday | 12:00 PM | 68.9° | Short shadows |
+| Summer Evening | 5:00 PM | 26.5° | Long shadows |
+| Winter Morning | 8:00 AM | 14.2° | Very long shadows |
+| Winter Midday | 12:00 PM | 26.6° | Moderate shadows |
+| Winter Evening | 4:00 PM | Below horizon | No shadows |
+| Spring Midday | 12:00 PM | 47.8° | Moderate shadows |
+| Fall Midday | 12:00 PM | 48.6° | Moderate shadows |
+
+### Shadow Projection Algorithm
+
+**Geometric shadow calculation:**
+
+For each building/tree with height $h$ and sun altitude $\alpha$:
+
+$$
+\text{shadow\_length} = \frac{h}{\tan(\alpha)}
+$$
+
+Shadow direction = $(azimuth + 180°) \mod 360°$
+
+**See complete implementation:** [Shade Calculation Notebook](notebooks/02-network-shade__2_.html)
+
+### Pedestrian Zone Analysis
+
+- Buffered each street segment by 16.4 feet (5 meters) per side
+- Total pedestrian zone width: ~33 feet (10 meters)
+- Captures sidewalks, tree pits, street furniture, building setbacks
+- Shade measured as **area coverage** on pedestrian buffer
+
+### Combined Shade Score
+
+$$
+\text{shade}_{combined} = 0.6 \times \text{shade}_{buildings} + 0.4 \times \text{shade}_{trees}
+$$
+
+**Rationale:**
+- Buildings provide solid, consistent shade (60% weight)
+- Trees provide dappled but significant shade (40% weight)
+
+---
+
+## 3. Route Optimization
+
+### Network Structure
+
+- Graph type: Undirected, planar
+- Nodes: Street intersections
+- Edges: Pedestrian segments with attributes:
+  - `length`: Segment length (feet)
+  - `shade_summer_midday`, `shade_winter_morning`, etc.: Shade scores (0-1)
+
+### Routing Algorithm
+
+**Dijkstra's shortest path with shade-weighted cost function:**
+
+**Shortest Route (distance-only):**
+$$
+\text{cost} = \text{length}
+$$
+
+**Shadiest Route (shade-weighted):**
+$$
+\text{cost} = \text{length} \times (1 - w \times \text{shade})
+$$
+
+where $w = 0.3$ (30% preference for shade)
+
+**Interpretation:**
+- A segment with 100% shade has effective cost = $\text{length} \times 0.7$
+- A segment with 0% shade has effective cost = $\text{length} \times 1.0$
+- Algorithm balances shade benefit against distance penalty
+
+**See complete implementation:** [Routing Analysis Notebook](notebooks/03-routing__1_.html)
+
+### Test Routes
+
+Three representative routes to SEPTA stations:
+
+1. **Spruce St & 38th → 40th St Station** (~780m)
+2. **Lancaster Ave & 36th → 34th St Station** (~470m)
+3. **Spruce Hill → 46th St Station** (~580m)
+
+---
+
+## 4. Visualization
+
+**See complete implementation:** [Visualization Notebook](notebooks/04-visualizations.html)
+
+### Static Maps
+
+Created comparison visualizations showing:
+- Shortest path (blue) vs. shadiest path (green)
+- Shade coverage heatmap
+- Route metrics (distance, shade, detour %)
+
+### Interactive Application
+
+Developed web-based routing calculator with:
+- Click-to-select origin/destination
+- Real-time Dijkstra algorithm (runs in browser)
+- Scenario switching (8 temporal options)
+- Trade-off metrics display
+
+---
+
+## Technical Specifications
+
+### Coordinate Systems
+
+- **Analysis CRS:** Pennsylvania State Plane South (EPSG:2272), US Survey Feet
+- **Output CRS:** WGS84 (EPSG:4326), Decimal Degrees
+
+### LiDAR Specifications
+
+- **Point Density:** 8-15 points per square meter
+- **Vertical Accuracy:** ~10cm RMSE
+- **Classification:** ASPRS LAS 1.4 standard
+- **Processing:** Rasterized to 3-foot grid cells
+
+### Computational Performance
+
+- **LiDAR Processing:** ~30 minutes (18 tiles)
+- **Shade Calculation:** ~2 hours (8 scenarios × 23k segments)
+- **Route Optimization:** <1 second per route pair
+- **Total Pipeline:** ~2.5 hours
+
+---
+
+## Validation Approaches
+
+1. **Visual Inspection:** Manually verified shadow directions match sun position
+2. **Temporal Consistency:** Confirmed winter shadows longer than summer
+3. **Spatial Consistency:** Verified building shadows fall correctly relative to structures
+4. **Route Logic:** Checked that shadiest routes actually traverse high-shade segments
+
+---
+
+## Limitations
+
+1. **Static Tree Canopy:** Does not account for seasonal leaf coverage variation
+2. **No Cloud Cover:** Assumes clear sky conditions
+3. **Simplified Shadows:** Does not model light diffusion or partial shade
+4. **No Real-Time Data:** Uses historical LiDAR (2018-2020)
+5. **Network Completeness:** Limited to OSM-mapped pedestrian paths
+
+Despite these limitations, the approach provides a robust foundation for shade-aware routing in urban environments.

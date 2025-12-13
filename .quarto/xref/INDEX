@@ -1,0 +1,32 @@
+{
+  "index.qmd": {
+    "index.html": "3a10e0f3"
+  },
+  "appendix.qmd": {
+    "appendix.html": "2992126a"
+  },
+  "interactive.qmd": {
+    "interactive.html": "2e63cd29"
+  },
+  "methodology.qmd": {
+    "methodology.html": "b0ee3c9d"
+  },
+  "notebooks/01-data-acquisition.ipynb": {
+    "01-data-acquisition.html": "dc8451e4"
+  },
+  "notebooks/02-network-shade.ipynb": {
+    "02-network-shade.html": "6604669d"
+  },
+  "notebooks/03-routing.ipynb": {
+    "03-routing.html": "8833e1e3"
+  },
+  "notebooks/04-visualizations.ipynb": {
+    "04-visualizations.html": "27fd91d9"
+  },
+  "notebooks/05-web-data-preparation.ipynb": {
+    "05-web-data-preparation.html": "7a38b523"
+  },
+  "results.qmd": {
+    "results.html": "04ccdf23"
+  }
+}

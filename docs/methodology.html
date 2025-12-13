@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Methodology – Shade-Optimized Pedestrian Routing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Shade-Optimized Pedestrian Routing</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./methodology.html" aria-current="page"> 
+<span class="menu-text">Methodology</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./results.html"> 
+<span class="menu-text">Results</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./interactive.html"> 
+<span class="menu-text">Interactive Map</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./appendix.html"> 
+<span class="menu-text">Technical Appendix</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kavanaraju/Pedestrian-Shade-Routing"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#data-acquisition" id="toc-data-acquisition" class="nav-link" data-scroll-target="#data-acquisition">1. Data Acquisition</a>
+  <ul class="collapse">
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources">Data Sources</a></li>
+  <li><a href="#processing-steps" id="toc-processing-steps" class="nav-link" data-scroll-target="#processing-steps">Processing Steps</a></li>
+  </ul></li>
+  <li><a href="#shade-calculation" id="toc-shade-calculation" class="nav-link" data-scroll-target="#shade-calculation">2. Shade Calculation</a>
+  <ul class="collapse">
+  <li><a href="#solar-position-modeling" id="toc-solar-position-modeling" class="nav-link" data-scroll-target="#solar-position-modeling">Solar Position Modeling</a></li>
+  <li><a href="#shadow-projection-algorithm" id="toc-shadow-projection-algorithm" class="nav-link" data-scroll-target="#shadow-projection-algorithm">Shadow Projection Algorithm</a></li>
+  <li><a href="#pedestrian-zone-analysis" id="toc-pedestrian-zone-analysis" class="nav-link" data-scroll-target="#pedestrian-zone-analysis">Pedestrian Zone Analysis</a></li>
+  <li><a href="#combined-shade-score" id="toc-combined-shade-score" class="nav-link" data-scroll-target="#combined-shade-score">Combined Shade Score</a></li>
+  </ul></li>
+  <li><a href="#route-optimization" id="toc-route-optimization" class="nav-link" data-scroll-target="#route-optimization">3. Route Optimization</a>
+  <ul class="collapse">
+  <li><a href="#network-structure" id="toc-network-structure" class="nav-link" data-scroll-target="#network-structure">Network Structure</a></li>
+  <li><a href="#routing-algorithm" id="toc-routing-algorithm" class="nav-link" data-scroll-target="#routing-algorithm">Routing Algorithm</a></li>
+  <li><a href="#test-routes" id="toc-test-routes" class="nav-link" data-scroll-target="#test-routes">Test Routes</a></li>
+  </ul></li>
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">4. Visualization</a>
+  <ul class="collapse">
+  <li><a href="#static-maps" id="toc-static-maps" class="nav-link" data-scroll-target="#static-maps">Static Maps</a></li>
+  <li><a href="#interactive-application" id="toc-interactive-application" class="nav-link" data-scroll-target="#interactive-application">Interactive Application</a></li>
+  </ul></li>
+  <li><a href="#technical-specifications" id="toc-technical-specifications" class="nav-link" data-scroll-target="#technical-specifications">Technical Specifications</a>
+  <ul class="collapse">
+  <li><a href="#coordinate-systems" id="toc-coordinate-systems" class="nav-link" data-scroll-target="#coordinate-systems">Coordinate Systems</a></li>
+  <li><a href="#lidar-specifications" id="toc-lidar-specifications" class="nav-link" data-scroll-target="#lidar-specifications">LiDAR Specifications</a></li>
+  <li><a href="#computational-performance" id="toc-computational-performance" class="nav-link" data-scroll-target="#computational-performance">Computational Performance</a></li>
+  </ul></li>
+  <li><a href="#validation-approaches" id="toc-validation-approaches" class="nav-link" data-scroll-target="#validation-approaches">Validation Approaches</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Methodology</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This analysis implements a four-stage pipeline to calculate shade-optimized pedestrian routes:</p>
+<ol type="1">
+<li>Data Acquisition &amp; Processing</li>
+<li>Shade Calculation from LiDAR</li>
+<li>Route Optimization</li>
+<li>Visualization &amp; Validation</li>
+</ol>
+<hr>
+</section>
+<section id="data-acquisition" class="level2">
+<h2 class="anchored" data-anchor-id="data-acquisition">1. Data Acquisition</h2>
+<section id="data-sources" class="level3">
+<h3 class="anchored" data-anchor-id="data-sources">Data Sources</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 24%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Source</th>
+<th>Specifications</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>LiDAR Point Clouds</strong></td>
+<td>USGS 3DEP Program (2018-2020)</td>
+<td>18 tiles, ~8-15 pts/m², Class 5 (vegetation) &amp; 6 (buildings)</td>
+</tr>
+<tr class="even">
+<td><strong>Building Footprints</strong></td>
+<td>PASDA Pennsylvania Statewide</td>
+<td>Vector polygons with attribute data</td>
+</tr>
+<tr class="odd">
+<td><strong>Street Network</strong></td>
+<td>OpenStreetMap</td>
+<td>Pedestrian-accessible paths only</td>
+</tr>
+<tr class="even">
+<td><strong>Transit Stops</strong></td>
+<td>SEPTA GTFS</td>
+<td>Market-Frankford Line stations</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="processing-steps" class="level3">
+<h3 class="anchored" data-anchor-id="processing-steps">Processing Steps</h3>
+<p><strong>See complete implementation:</strong> <a href="notebooks/01-data-acquisition.html">Data Acquisition Notebook</a></p>
+<p>Key processing steps included:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Loading and filtering street network</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> osmnx <span class="im">as</span> ox</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Download pedestrian network for University City</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>network <span class="op">=</span> ox.graph_from_place(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"University City, Philadelphia, PA"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    network_type<span class="op">=</span><span class="st">'walk'</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to GeoDataFrame</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>edges <span class="op">=</span> ox.graph_to_gdfs(network, nodes<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Outputs:</strong> - 23,486 pedestrian network segments - 99.7% of buildings with LiDAR heights - 2.1M+ tree points with individual heights</p>
+<hr>
+</section>
+</section>
+<section id="shade-calculation" class="level2">
+<h2 class="anchored" data-anchor-id="shade-calculation">2. Shade Calculation</h2>
+<section id="solar-position-modeling" class="level3">
+<h3 class="anchored" data-anchor-id="solar-position-modeling">Solar Position Modeling</h3>
+<p>Used <code>pvlib</code> library to calculate sun position for Philadelphia (40.0°N, 75.2°W) across 8 temporal scenarios:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Season</th>
+<th>Time</th>
+<th>Sun Altitude</th>
+<th>Shadow Character</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Summer Morning</td>
+<td>7:00 AM</td>
+<td>36.9°</td>
+<td>Long shadows</td>
+</tr>
+<tr class="even">
+<td>Summer Midday</td>
+<td>12:00 PM</td>
+<td>68.9°</td>
+<td>Short shadows</td>
+</tr>
+<tr class="odd">
+<td>Summer Evening</td>
+<td>5:00 PM</td>
+<td>26.5°</td>
+<td>Long shadows</td>
+</tr>
+<tr class="even">
+<td>Winter Morning</td>
+<td>8:00 AM</td>
+<td>14.2°</td>
+<td>Very long shadows</td>
+</tr>
+<tr class="odd">
+<td>Winter Midday</td>
+<td>12:00 PM</td>
+<td>26.6°</td>
+<td>Moderate shadows</td>
+</tr>
+<tr class="even">
+<td>Winter Evening</td>
+<td>4:00 PM</td>
+<td>Below horizon</td>
+<td>No shadows</td>
+</tr>
+<tr class="odd">
+<td>Spring Midday</td>
+<td>12:00 PM</td>
+<td>47.8°</td>
+<td>Moderate shadows</td>
+</tr>
+<tr class="even">
+<td>Fall Midday</td>
+<td>12:00 PM</td>
+<td>48.6°</td>
+<td>Moderate shadows</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="shadow-projection-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="shadow-projection-algorithm">Shadow Projection Algorithm</h3>
+<p><strong>Geometric shadow calculation:</strong></p>
+<p>For each building/tree with height <span class="math inline">\(h\)</span> and sun altitude <span class="math inline">\(\alpha\)</span>:</p>
+<p><span class="math display">\[
+\text{shadow\_length} = \frac{h}{\tan(\alpha)}
+\]</span></p>
+<p>Shadow direction = <span class="math inline">\((azimuth + 180°) \mod 360°\)</span></p>
+<p><strong>See complete implementation:</strong> <a href="notebooks/02-network-shade__2_.html">Shade Calculation Notebook</a></p>
+</section>
+<section id="pedestrian-zone-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="pedestrian-zone-analysis">Pedestrian Zone Analysis</h3>
+<ul>
+<li>Buffered each street segment by 16.4 feet (5 meters) per side</li>
+<li>Total pedestrian zone width: ~33 feet (10 meters)</li>
+<li>Captures sidewalks, tree pits, street furniture, building setbacks</li>
+<li>Shade measured as <strong>area coverage</strong> on pedestrian buffer</li>
+</ul>
+</section>
+<section id="combined-shade-score" class="level3">
+<h3 class="anchored" data-anchor-id="combined-shade-score">Combined Shade Score</h3>
+<p><span class="math display">\[
+\text{shade}_{combined} = 0.6 \times \text{shade}_{buildings} + 0.4 \times \text{shade}_{trees}
+\]</span></p>
+<p><strong>Rationale:</strong> - Buildings provide solid, consistent shade (60% weight) - Trees provide dappled but significant shade (40% weight)</p>
+<hr>
+</section>
+</section>
+<section id="route-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="route-optimization">3. Route Optimization</h2>
+<section id="network-structure" class="level3">
+<h3 class="anchored" data-anchor-id="network-structure">Network Structure</h3>
+<ul>
+<li>Graph type: Undirected, planar</li>
+<li>Nodes: Street intersections</li>
+<li>Edges: Pedestrian segments with attributes:
+<ul>
+<li><code>length</code>: Segment length (feet)</li>
+<li><code>shade_summer_midday</code>, <code>shade_winter_morning</code>, etc.: Shade scores (0-1)</li>
+</ul></li>
+</ul>
+</section>
+<section id="routing-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="routing-algorithm">Routing Algorithm</h3>
+<p><strong>Dijkstra’s shortest path with shade-weighted cost function:</strong></p>
+<p><strong>Shortest Route (distance-only):</strong> <span class="math display">\[
+\text{cost} = \text{length}
+\]</span></p>
+<p><strong>Shadiest Route (shade-weighted):</strong> <span class="math display">\[
+\text{cost} = \text{length} \times (1 - w \times \text{shade})
+\]</span></p>
+<p>where <span class="math inline">\(w = 0.3\)</span> (30% preference for shade)</p>
+<p><strong>Interpretation:</strong> - A segment with 100% shade has effective cost = <span class="math inline">\(\text{length} \times 0.7\)</span> - A segment with 0% shade has effective cost = <span class="math inline">\(\text{length} \times 1.0\)</span> - Algorithm balances shade benefit against distance penalty</p>
+<p><strong>See complete implementation:</strong> <a href="notebooks/03-routing__1_.html">Routing Analysis Notebook</a></p>
+</section>
+<section id="test-routes" class="level3">
+<h3 class="anchored" data-anchor-id="test-routes">Test Routes</h3>
+<p>Three representative routes to SEPTA stations:</p>
+<ol type="1">
+<li><strong>Spruce St &amp; 38th → 40th St Station</strong> (~780m)</li>
+<li><strong>Lancaster Ave &amp; 36th → 34th St Station</strong> (~470m)</li>
+<li><strong>Spruce Hill → 46th St Station</strong> (~580m)</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="visualization" class="level2">
+<h2 class="anchored" data-anchor-id="visualization">4. Visualization</h2>
+<p><strong>See complete implementation:</strong> <a href="notebooks/04-visualizations.html">Visualization Notebook</a></p>
+<section id="static-maps" class="level3">
+<h3 class="anchored" data-anchor-id="static-maps">Static Maps</h3>
+<p>Created comparison visualizations showing: - Shortest path (blue) vs.&nbsp;shadiest path (green) - Shade coverage heatmap - Route metrics (distance, shade, detour %)</p>
+</section>
+<section id="interactive-application" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-application">Interactive Application</h3>
+<p>Developed web-based routing calculator with: - Click-to-select origin/destination - Real-time Dijkstra algorithm (runs in browser) - Scenario switching (8 temporal options) - Trade-off metrics display</p>
+<hr>
+</section>
+</section>
+<section id="technical-specifications" class="level2">
+<h2 class="anchored" data-anchor-id="technical-specifications">Technical Specifications</h2>
+<section id="coordinate-systems" class="level3">
+<h3 class="anchored" data-anchor-id="coordinate-systems">Coordinate Systems</h3>
+<ul>
+<li><strong>Analysis CRS:</strong> Pennsylvania State Plane South (EPSG:2272), US Survey Feet</li>
+<li><strong>Output CRS:</strong> WGS84 (EPSG:4326), Decimal Degrees</li>
+</ul>
+</section>
+<section id="lidar-specifications" class="level3">
+<h3 class="anchored" data-anchor-id="lidar-specifications">LiDAR Specifications</h3>
+<ul>
+<li><strong>Point Density:</strong> 8-15 points per square meter</li>
+<li><strong>Vertical Accuracy:</strong> ~10cm RMSE</li>
+<li><strong>Classification:</strong> ASPRS LAS 1.4 standard</li>
+<li><strong>Processing:</strong> Rasterized to 3-foot grid cells</li>
+</ul>
+</section>
+<section id="computational-performance" class="level3">
+<h3 class="anchored" data-anchor-id="computational-performance">Computational Performance</h3>
+<ul>
+<li><strong>LiDAR Processing:</strong> ~30 minutes (18 tiles)</li>
+<li><strong>Shade Calculation:</strong> ~2 hours (8 scenarios × 23k segments)</li>
+<li><strong>Route Optimization:</strong> &lt;1 second per route pair</li>
+<li><strong>Total Pipeline:</strong> ~2.5 hours</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="validation-approaches" class="level2">
+<h2 class="anchored" data-anchor-id="validation-approaches">Validation Approaches</h2>
+<ol type="1">
+<li><strong>Visual Inspection:</strong> Manually verified shadow directions match sun position</li>
+<li><strong>Temporal Consistency:</strong> Confirmed winter shadows longer than summer</li>
+<li><strong>Spatial Consistency:</strong> Verified building shadows fall correctly relative to structures</li>
+<li><strong>Route Logic:</strong> Checked that shadiest routes actually traverse high-shade segments</li>
+</ol>
+<hr>
+</section>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<ol type="1">
+<li><strong>Static Tree Canopy:</strong> Does not account for seasonal leaf coverage variation</li>
+<li><strong>No Cloud Cover:</strong> Assumes clear sky conditions</li>
+<li><strong>Simplified Shadows:</strong> Does not model light diffusion or partial shade</li>
+<li><strong>No Real-Time Data:</strong> Uses historical LiDAR (2018-2020)</li>
+<li><strong>Network Completeness:</strong> Limited to OSM-mapped pedestrian paths</li>
+</ol>
+<p>Despite these limitations, the approach provides a robust foundation for shade-aware routing in urban environments.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

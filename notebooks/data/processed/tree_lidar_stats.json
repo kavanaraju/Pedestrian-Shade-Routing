@@ -1,0 +1,14 @@
+{
+  "total_points": 31794824,
+  "mean_height_ft": 113.06610479083025,
+  "median_height_ft": 115.32000000000001,
+  "max_height_ft": 208.22,
+  "min_height_ft": -0.84,
+  "coverage_pct": 16.503668819735495,
+  "mean_canopy_height_ft": 116.35872650146484,
+  "resolution_ft": 3,
+  "raster_dims": [
+    2563,
+    4741
+  ]
+}
