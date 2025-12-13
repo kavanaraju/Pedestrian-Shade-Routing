@@ -1,0 +1,272 @@
+{
+  "penn_to_40th": {
+    "summer_morning": {
+      "shortest_length_m": 1097.049,
+      "shortest_shade": 0.39462129008021224,
+      "shadiest_length_m": 1124.769,
+      "shadiest_shade": 0.628896538616953,
+      "detour_m": 27.720000000000027,
+      "detour_pct": 2.5267786580180127,
+      "shade_improvement": 0.2342752485367408,
+      "shade_improvement_pct": 59.36710826958199,
+      "efficiency": 9.271696505482781
+    },
+    "summer_midday": {
+      "shortest_length_m": 1097.049,
+      "shortest_shade": 0.37505080529428375,
+      "shadiest_length_m": 1119.5349999999999,
+      "shadiest_shade": 0.5320169423691654,
+      "detour_m": 22.485999999999876,
+      "detour_pct": 2.0496805520993027,
+      "shade_improvement": 0.15696613707488166,
+      "shade_improvement_pct": 41.85196641604812,
+      "efficiency": 7.658078080221595
+    },
+    "summer_evening": {
+      "shortest_length_m": 1097.049,
+      "shortest_shade": 0.48216972467649893,
+      "shadiest_length_m": 1122.45,
+      "shadiest_shade": 0.6424709846450083,
+      "detour_m": 25.401000000000067,
+      "detour_pct": 2.3153933871686743,
+      "shade_improvement": 0.16030125996850936,
+      "shade_improvement_pct": 33.24581610263065,
+      "efficiency": 6.923284002487805
+    },
+    "winter_morning": {
+      "shortest_length_m": 1097.049,
+      "shortest_shade": 0.8057184077785757,
+      "shadiest_length_m": 1115.8579999999997,
+      "shadiest_shade": 0.8840101965966237,
+      "detour_m": 18.80899999999974,
+      "detour_pct": 1.7145086500238134,
+      "shade_improvement": 0.07829178881804799,
+      "shade_improvement_pct": 9.71701627543848,
+      "efficiency": 4.566427169496087
+    },
+    "winter_midday": {
+      "shortest_length_m": 1097.049,
+      "shortest_shade": 0.6391604342299361,
+      "shadiest_length_m": 1119.322,
+      "shadiest_shade": 0.7447326393478492,
+      "detour_m": 22.27299999999991,
+      "detour_pct": 2.0302648286448384,
+      "shade_improvement": 0.1055722051179131,
+      "shade_improvement_pct": 16.517324831770456,
+      "efficiency": 5.199922868603326
+    },
+    "winter_evening": {
+      "shortest_length_m": 1097.049,
+      "shortest_shade": 0.0,
+      "shadiest_length_m": 1097.049,
+      "shadiest_shade": 0.0,
+      "detour_m": 0.0,
+      "detour_pct": 0.0,
+      "shade_improvement": 0.0,
+      "shade_improvement_pct": 0.0,
+      "efficiency": 0
+    },
+    "spring_midday": {
+      "shortest_length_m": 1097.049,
+      "shortest_shade": 0.5457368152970263,
+      "shadiest_length_m": 1119.5349999999999,
+      "shadiest_shade": 0.7118268675442785,
+      "detour_m": 22.485999999999876,
+      "detour_pct": 2.0496805520993027,
+      "shade_improvement": 0.16609005224725215,
+      "shade_improvement_pct": 30.434093429605785,
+      "efficiency": 8.10321647815515
+    },
+    "fall_midday": {
+      "shortest_length_m": 1097.049,
+      "shortest_shade": 0.535189769886235,
+      "shadiest_length_m": 1119.5349999999999,
+      "shadiest_shade": 0.7047061087774826,
+      "detour_m": 22.485999999999876,
+      "detour_pct": 2.0496805520993027,
+      "shade_improvement": 0.16951633889124762,
+      "shade_improvement_pct": 31.6740618803834,
+      "efficiency": 8.27037846056681
+    }
+  },
+  "powelton_to_34th": {
+    "summer_morning": {
+      "shortest_length_m": 620.5430000000001,
+      "shortest_shade": 0.49656343087452154,
+      "shadiest_length_m": 621.1690000000001,
+      "shadiest_shade": 0.5187938586212644,
+      "detour_m": 0.6259999999999764,
+      "detour_pct": 0.1008793911139077,
+      "shade_improvement": 0.02223042774674283,
+      "shade_improvement_pct": 4.476855596794907,
+      "efficiency": 22.036639497200575
+    },
+    "summer_midday": {
+      "shortest_length_m": 620.5430000000001,
+      "shortest_shade": 0.3039227881455686,
+      "shadiest_length_m": 620.586,
+      "shadiest_shade": 0.3527165077482433,
+      "detour_m": 0.04299999999989268,
+      "detour_pct": 0.006929415044548512,
+      "shade_improvement": 0.0487937196026747,
+      "shade_improvement_pct": 16.054643319244683,
+      "efficiency": 704.1535149646079
+    },
+    "summer_evening": {
+      "shortest_length_m": 620.5430000000001,
+      "shortest_shade": 0.4766122516527476,
+      "shadiest_length_m": 668.2510000000001,
+      "shadiest_shade": 0.7069944964974703,
+      "detour_m": 47.70799999999997,
+      "detour_pct": 7.688105417352216,
+      "shade_improvement": 0.23038224484472264,
+      "shade_improvement_pct": 48.337457555030625,
+      "efficiency": 2.996606216204386
+    },
+    "winter_morning": {
+      "shortest_length_m": 620.5430000000001,
+      "shortest_shade": 0.7356871523411761,
+      "shadiest_length_m": 621.9900000000002,
+      "shadiest_shade": 0.7518153313953544,
+      "detour_m": 1.4470000000001164,
+      "detour_pct": 0.2331828737090123,
+      "shade_improvement": 0.016128179054178293,
+      "shade_improvement_pct": 2.192260528521344,
+      "efficiency": 6.916536706852908
+    },
+    "winter_midday": {
+      "shortest_length_m": 620.5430000000001,
+      "shortest_shade": 0.5756847612570747,
+      "shadiest_length_m": 621.9900000000002,
+      "shadiest_shade": 0.6344975376025708,
+      "detour_m": 1.4470000000001164,
+      "detour_pct": 0.2331828737090123,
+      "shade_improvement": 0.05881277634549609,
+      "shade_improvement_pct": 10.21614263630525,
+      "efficiency": 25.221739234112125
+    },
+    "winter_evening": {
+      "shortest_length_m": 620.5430000000001,
+      "shortest_shade": 0.0,
+      "shadiest_length_m": 620.5430000000001,
+      "shadiest_shade": 0.0,
+      "detour_m": 0.0,
+      "detour_pct": 0.0,
+      "shade_improvement": 0.0,
+      "shade_improvement_pct": 0.0,
+      "efficiency": 0
+    },
+    "spring_midday": {
+      "shortest_length_m": 620.5430000000001,
+      "shortest_shade": 0.48878578367971587,
+      "shadiest_length_m": 621.1690000000001,
+      "shadiest_shade": 0.5490165294431535,
+      "detour_m": 0.6259999999999764,
+      "detour_pct": 0.1008793911139077,
+      "shade_improvement": 0.06023074576343762,
+      "shade_improvement_pct": 12.322524053380553,
+      "efficiency": 59.70569915061069
+    },
+    "fall_midday": {
+      "shortest_length_m": 620.5430000000001,
+      "shortest_shade": 0.4794440219116461,
+      "shadiest_length_m": 620.586,
+      "shadiest_shade": 0.5354452854740321,
+      "detour_m": 0.04299999999989268,
+      "detour_pct": 0.006929415044548512,
+      "shade_improvement": 0.05600126356238605,
+      "shade_improvement_pct": 11.680459240913468,
+      "efficiency": 808.1672580204759
+    }
+  },
+  "spruce_hill_to_46th": {
+    "summer_morning": {
+      "shortest_length_m": 731.2870000000001,
+      "shortest_shade": 0.3876176207561615,
+      "shadiest_length_m": 759.3629999999999,
+      "shadiest_shade": 0.5931604120808643,
+      "detour_m": 28.075999999999794,
+      "detour_pct": 3.839258731523983,
+      "shade_improvement": 0.20554279132470282,
+      "shade_improvement_pct": 53.027205245141204,
+      "efficiency": 5.353710330512505
+    },
+    "summer_midday": {
+      "shortest_length_m": 731.2870000000001,
+      "shortest_shade": 0.35988419223723606,
+      "shadiest_length_m": 731.475,
+      "shadiest_shade": 0.38103460208061096,
+      "detour_m": 0.1879999999998745,
+      "detour_pct": 0.025708100923423287,
+      "shade_improvement": 0.021150409843374907,
+      "shade_improvement_pct": 5.877004408527211,
+      "efficiency": 82.27138171884273
+    },
+    "summer_evening": {
+      "shortest_length_m": 731.2870000000001,
+      "shortest_shade": 0.6063584431409118,
+      "shadiest_length_m": 735.4350000000001,
+      "shadiest_shade": 0.7245154608460743,
+      "detour_m": 4.147999999999911,
+      "detour_pct": 0.5672191629278122,
+      "shade_improvement": 0.11815701770516251,
+      "shade_improvement_pct": 19.486331730306915,
+      "efficiency": 20.83092840080932
+    },
+    "winter_morning": {
+      "shortest_length_m": 731.2870000000001,
+      "shortest_shade": 0.7643410217451272,
+      "shadiest_length_m": 735.4350000000001,
+      "shadiest_shade": 0.7916612983105367,
+      "detour_m": 4.147999999999911,
+      "detour_pct": 0.5672191629278122,
+      "shade_improvement": 0.027320276565409474,
+      "shade_improvement_pct": 3.574356967395574,
+      "efficiency": 4.816529192065823
+    },
+    "winter_midday": {
+      "shortest_length_m": 731.2870000000001,
+      "shortest_shade": 0.5287359128137157,
+      "shadiest_length_m": 731.475,
+      "shadiest_shade": 0.5318990039089886,
+      "detour_m": 0.1879999999998745,
+      "detour_pct": 0.025708100923423287,
+      "shade_improvement": 0.0031630910952729074,
+      "shade_improvement_pct": 0.5982364765881389,
+      "efficiency": 12.30386913718289
+    },
+    "winter_evening": {
+      "shortest_length_m": 731.2870000000001,
+      "shortest_shade": 0.0,
+      "shadiest_length_m": 731.2870000000001,
+      "shadiest_shade": 0.0,
+      "detour_m": 0.0,
+      "detour_pct": 0.0,
+      "shade_improvement": 0.0,
+      "shade_improvement_pct": 0.0,
+      "efficiency": 0
+    },
+    "spring_midday": {
+      "shortest_length_m": 731.2870000000001,
+      "shortest_shade": 0.4103025169154097,
+      "shadiest_length_m": 749.6220000000002,
+      "shadiest_shade": 0.5234984705075849,
+      "detour_m": 18.335000000000036,
+      "detour_pct": 2.5072235661238382,
+      "shade_improvement": 0.11319595359217521,
+      "shade_improvement_pct": 27.58841316479478,
+      "efficiency": 4.514792981432282
+    },
+    "fall_midday": {
+      "shortest_length_m": 731.2870000000001,
+      "shortest_shade": 0.4101237572009772,
+      "shadiest_length_m": 749.6220000000002,
+      "shadiest_shade": 0.525618293332799,
+      "detour_m": 18.335000000000036,
+      "detour_pct": 2.5072235661238382,
+      "shade_improvement": 0.11549453613182176,
+      "shade_improvement_pct": 28.160898778469146,
+      "efficiency": 4.606471385013983
+    }
+  }
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map Data Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .test {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #666;
+        }
+        .success {
+            border-left-color: #4CAF50;
+        }
+        .error {
+            border-left-color: #f44336;
+        }
+        .warning {
+            border-left-color: #ff9800;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            overflow-x: auto;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Interactive Map Data Diagnostic</h1>
+    <p>This page tests if your map data files are accessible and correctly formatted.</p>
+    
+    <div id="tests"></div>
+    
+    <script>
+        const testsDiv = document.getElementById('tests');
+        
+        function addTest(title, status, message, data = null) {
+            const div = document.createElement('div');
+            div.className = `test ${status}`;
+            
+            let html = `<h3>${status === 'success' ? '✓' : status === 'error' ? '✗' : '⚠'} ${title}</h3>`;
+            html += `<p>${message}</p>`;
+            
+            if (data) {
+                html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+            
+            div.innerHTML = html;
+            testsDiv.appendChild(div);
+        }
+        
+        async function runTests() {
+            // Test 1: Check if files exist
+            addTest('Starting tests...', 'warning', 'Attempting to load map data files...');
+            
+            // Test nodes.json
+            try {
+                const nodesResponse = await fetch('map_data/nodes.json');
+                if (!nodesResponse.ok) {
+                    throw new Error(`HTTP ${nodesResponse.status}: ${nodesResponse.statusText}`);
+                }
+                const nodes = await nodesResponse.json();
+                addTest(
+                    'Nodes Data',
+                    'success',
+                    `Successfully loaded ${nodes.length.toLocaleString()} nodes`,
+                    { sample: nodes[0], total: nodes.length }
+                );
+            } catch (error) {
+                addTest(
+                    'Nodes Data',
+                    'error',
+                    `Failed to load nodes.json: ${error.message}`,
+                    { error: error.toString() }
+                );
+                return; // Stop if nodes fail
+            }
+            
+            // Test edges.json
+            try {
+                const edgesResponse = await fetch('map_data/edges.json');
+                if (!edgesResponse.ok) {
+                    throw new Error(`HTTP ${edgesResponse.status}: ${edgesResponse.statusText}`);
+                }
+                const edges = await edgesResponse.json();
+                
+                // Check structure
+                const firstEdge = edges[0];
+                const requiredFields = ['id', 'source', 'target', 'length', 'geometry', 'shade'];
+                const missingFields = requiredFields.filter(f => !(f in firstEdge));
+                
+                if (missingFields.length > 0) {
+                    addTest(
+                        'Edges Data Structure',
+                        'error',
+                        `Missing required fields: ${missingFields.join(', ')}`,
+                        { sample: firstEdge }
+                    );
+                } else {
+                    addTest(
+                        'Edges Data',
+                        'success',
+                        `Successfully loaded ${edges.length.toLocaleString()} edges with all required fields`,
+                        { 
+                            sample: firstEdge,
+                            total: edges.length,
+                            scenarios: Object.keys(firstEdge.shade)
+                        }
+                    );
+                }
+            } catch (error) {
+                addTest(
+                    'Edges Data',
+                    'error',
+                    `Failed to load edges.json: ${error.message}`,
+                    { error: error.toString() }
+                );
+                return;
+            }
+            
+            // Test scenarios.json
+            try {
+                const scenariosResponse = await fetch('map_data/scenarios.json');
+                if (!scenariosResponse.ok) {
+                    throw new Error(`HTTP ${scenariosResponse.status}`);
+                }
+                const scenarios = await scenariosResponse.json();
+                addTest(
+                    'Scenarios Data',
+                    'success',
+                    `Successfully loaded ${scenarios.length} scenarios`,
+                    { scenarios: scenarios.map(s => s.name) }
+                );
+            } catch (error) {
+                addTest(
+                    'Scenarios Data',
+                    'error',
+                    `Failed to load scenarios.json: ${error.message}`
+                );
+            }
+            
+            // Test metadata.json
+            try {
+                const metadataResponse = await fetch('map_data/metadata.json');
+                if (!metadataResponse.ok) {
+                    throw new Error(`HTTP ${metadataResponse.status}`);
+                }
+                const metadata = await metadataResponse.json();
+                addTest(
+                    'Metadata',
+                    'success',
+                    `Metadata loaded successfully`,
+                    { metadata }
+                );
+            } catch (error) {
+                addTest(
+                    'Metadata',
+                    'error',
+                    `Failed to load metadata.json: ${error.message}`
+                );
+            }
+            
+            // Final result
+            addTest(
+                'Diagnostic Complete',
+                'success',
+                'All tests passed! Your map data is correctly formatted. If the map is still blank, try opening it from a local web server (not file://) or check browser console for errors.',
+                null
+            );
+        }
+        
+        runTests();
+    </script>
+</body>
+</html>
