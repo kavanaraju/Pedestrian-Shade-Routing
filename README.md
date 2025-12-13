@@ -1,7 +1,7 @@
 # Shade-Optimized Pedestrian Routing to Transit
 **University City, Philadelphia**
 
-**Website:** [https://github.com/kavanaraju/Pedestrian-Shade-Routing](https://github.com/kavanaraju/Pedestrian-Shade-Routing)
+**Website:** [https://kavanaraju.github.io/Pedestrian-Shade-Routing/](https://kavanaraju.github.io/Pedestrian-Shade-Routing/)
 
 **Author:** Kavana Raju  
 **Course:** MUSA 5500 - Geospatial Data Science with Python  
