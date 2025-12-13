@@ -1,382 +1,517 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shade-Optimized Routing Calculator</title>
-    
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        
-        #controls {
-            background: #fff;
-            padding: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-        
-        #controls h2 {
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-        
-        .control-row {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-            align-items: center;
-        }
-        
-        select, button {
-            padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        button {
-            background: #667eea;
-            color: white;
-            cursor: pointer;
-            border: none;
-        }
-        
-        button:hover {
-            background: #5568d3;
-        }
-        
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        
-        #map {
-            flex: 1;
-        }
-        
-        #instructions {
-            background: #f8f9fa;
-            padding: 0.75rem;
-            border-radius: 4px;
-            margin-top: 0.5rem;
-            font-size: 14px;
-        }
-        
-        #results {
-            background: #e3f2fd;
-            padding: 1rem;
-            margin-top: 0.5rem;
-            border-radius: 4px;
-            display: none;
-        }
-        
-        .metric {
-            display: inline-block;
-            margin-right: 1.5rem;
-        }
-        
-        .metric strong {
-            color: #333;
-        }
-        
-        .route-shortest {
-            color: #2196F3;
-            font-weight: bold;
-        }
-        
-        .route-shadiest {
-            color: #4CAF50;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shade-Optimized Routing Calculator</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: #fafafa; }
+    .wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    .card { background: white; border: 1px solid #e6e6e6; border-radius: 14px; padding: 18px; box-shadow: 0 1px 10px rgba(0,0,0,0.04); }
+    h1 { margin: 0 0 10px; font-size: 34px; font-weight: 800; color: #333; }
+    .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    label { font-weight: 700; color: #444; }
+    select, button { font-size: 16px; padding: 10px 12px; border-radius: 10px; border: 1px solid #d8d8d8; }
+    button { background: #4c6ef5; border-color: #4c6ef5; color: white; font-weight: 700; cursor: pointer; }
+    button:hover { filter: brightness(0.98); }
+    .hint { margin-top: 12px; background: #f5f7ff; border: 1px solid #e1e6ff; border-radius: 12px; padding: 12px 14px; color: #2b3a67; }
+    #map { height: 560px; border-radius: 12px; overflow: hidden; margin-top: 14px; border: 1px solid #e6e6e6; }
+    .results { margin-top: 14px; display: none; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pill { background: #f6f6f6; border: 1px solid #e6e6e6; border-radius: 12px; padding: 12px; }
+    .pill h3 { margin: 0 0 6px; font-size: 14px; color: #444; }
+    .pill .big { font-size: 22px; font-weight: 800; }
+    .error { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: #fff2f2; border: 1px solid #ffd0d0; color: #7a1c1c; display:none; white-space: pre-wrap; }
+    .note { font-size: 13px; color: #666; margin-top: 10px; }
+  </style>
 </head>
+
 <body>
-    <div id="controls">
-        <h2>🌳 Shade-Optimized Routing Calculator</h2>
-        
-        <div class="control-row">
-            <label>Scenario:</label>
-            <select id="scenario">
-                <option value="summer_midday">Summer Midday</option>
-                <option value="summer_morning">Summer Morning</option>
-                <option value="summer_evening">Summer Evening</option>
-                <option value="winter_midday">Winter Midday</option>
-                <option value="winter_morning">Winter Morning</option>
-                <option value="spring_midday">Spring Midday</option>
-                <option value="fall_midday">Fall Midday</option>
-            </select>
-            
-            <button id="reset">Reset</button>
+  <div class="wrap">
+    <div class="card">
+      <h1>🌳 Shade-Optimized Routing Calculator</h1>
+
+      <div class="row">
+        <label for="scenario">Scenario:</label>
+        <select id="scenario"></select>
+        <button onclick="resetAll()">Reset</button>
+      </div>
+
+      <div class="hint">
+        <b>How to use:</b>
+        Click once to set <b>origin</b>, click again to set <b>destination</b>.
+        Routes compute automatically: <b>Shortest</b> (blue) vs <b>Shadiest</b> (green).
+      </div>
+
+      <div id="error" class="error"></div>
+
+      <div id="map"></div>
+
+      <div class="results" id="results">
+        <div class="grid">
+          <div class="pill">
+            <h3>Shortest Route</h3>
+            <div class="big"><span id="shortest-dist">–</span></div>
+            <div>Mean shade: <b><span id="shortest-shade">–</span></b></div>
+          </div>
+          <div class="pill">
+            <h3>Shadiest Route</h3>
+            <div class="big"><span id="shadiest-dist">–</span></div>
+            <div>Mean shade: <b><span id="shadiest-shade">–</span></b></div>
+            <div>Detour vs shortest: <b><span id="detour">–</span></b></div>
+          </div>
         </div>
-        
-        <div id="instructions">
-            <strong>How to use:</strong> Click anywhere on the map to set origin, then click again for destination. Routes will calculate automatically.
-        </div>
-        
-        <div id="results">
-            <div class="metric">
-                <span class="route-shortest">Shortest:</span>
-                <span id="shortest-dist">-</span> | 
-                <span id="shortest-shade">-</span> shade
-            </div>
-            <div class="metric">
-                <span class="route-shadiest">Shadiest:</span>
-                <span id="shadiest-dist">-</span> | 
-                <span id="shadiest-shade">-</span> shade | 
-                <span id="detour">-</span> detour
-            </div>
-        </div>
+      </div>
+
+      <div class="note">
+        If you still see only the basemap, open DevTools → Console. This file prints clear load/parse messages.
+      </div>
     </div>
-    
-    <div id="map"></div>
-    
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <script>
-        // App state
-        let map, networkLayer, routeLayer;
-        let nodes = [], edges = [], scenarios = [], metadata = {};
-        let origin = null, destination = null;
-        let currentScenario = 'summer_midday';
-        
-        // Initialize map
-        async function init() {
-            // Load data
-            console.log('Loading network data...');
-            nodes = await fetch('map_data/nodes.json').then(r => r.json());
-            edges = await fetch('map_data/edges.json').then(r => r.json());
-            scenarios = await fetch('map_data/scenarios.json').then(r => r.json());
-            metadata = await fetch('map_data/metadata.json').then(r => r.json());
-            
-            console.log(`Loaded ${nodes.length} nodes, ${edges.length} edges`);
-            
-            // Create map
-            const bounds = metadata.bounds;
-            map = L.map('map').fitBounds([
-                [bounds.south, bounds.west],
-                [bounds.north, bounds.east]
-            ]);
-            
-            // Add base map
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '© OpenStreetMap contributors © CARTO',
-                maxZoom: 19
-            }).addTo(map);
-            
-            // Add network layer
-            networkLayer = L.layerGroup().addTo(map);
-            routeLayer = L.layerGroup().addTo(map);
-            
-            drawNetwork();
-            
-            // Click handler
-            map.on('click', handleMapClick);
-            
-            // Controls
-            document.getElementById('scenario').addEventListener('change', e => {
-                currentScenario = e.target.value;
-                drawNetwork();
-                if (origin && destination) {
-                    calculateRoutes();
-                }
-            });
-            
-            document.getElementById('reset').addEventListener('click', reset);
+  </div>
+
+  <script>
+    // ----------------------------
+    // Globals
+    // ----------------------------
+    let map, networkLayer, routeLayer;
+    let origin = null, destination = null;
+    let nodes = [];     // normalized: [{id, lat, lon}]
+    let edges = [];     // normalized: [{source, target, length, geometry:[[lat,lng],...], shade:{scenario:0-1}}]
+    let currentScenario = null;
+
+    // ----------------------------
+    // Helpers
+    // ----------------------------
+    function showError(msg) {
+      const el = document.getElementById('error');
+      el.style.display = 'block';
+      el.textContent = msg;
+      console.error(msg);
+    }
+
+    function hideError() {
+      const el = document.getElementById('error');
+      el.style.display = 'none';
+      el.textContent = '';
+    }
+
+    function urlHere(relPath) {
+      // robust for GH Pages + subfolders
+      return new URL(relPath, window.location.href).toString();
+    }
+
+    function isFeatureCollection(obj) {
+      return obj && obj.type === "FeatureCollection" && Array.isArray(obj.features);
+    }
+
+    function toShadeDictFromProps(props) {
+      const shade = {};
+      for (const [k, v] of Object.entries(props || {})) {
+        // Accept: shade_summer_midday OR summer_midday already
+        if (k.startsWith("shade_")) {
+          shade[k.replace("shade_", "")] = Number(v) || 0;
         }
-        
-        function drawNetwork() {
-            networkLayer.clearLayers();
-            
-            edges.forEach(edge => {
-                const shade = edge.shade[currentScenario] || 0;
-                const color = getShadeColor(shade);
-                
-                L.polyline(edge.geometry, {
-                    color: color,
-                    weight: 2,
-                    opacity: 0.6
-                }).addTo(networkLayer);
-            });
+      }
+      return shade;
+    }
+
+    // ----------------------------
+    // Normalize nodes + edges
+    // ----------------------------
+    function normalizeNodes(raw) {
+      // Case A: already an array of {id, lat, lon}
+      if (Array.isArray(raw)) {
+        return raw
+          .map(n => ({
+            id: n.id ?? n.node ?? n.osmid ?? n.properties?.id ?? n.properties?.osmid,
+            lat: Number(n.lat ?? n.y ?? n.properties?.lat ?? n.geometry?.coordinates?.[1]),
+            lon: Number(n.lon ?? n.x ?? n.properties?.lon ?? n.geometry?.coordinates?.[0]),
+          }))
+          .filter(n => n.id != null && Number.isFinite(n.lat) && Number.isFinite(n.lon));
+      }
+
+      // Case B: GeoJSON FeatureCollection (points)
+      if (isFeatureCollection(raw)) {
+        return raw.features
+          .map(f => ({
+            id: f.properties?.id ?? f.properties?.osmid ?? f.id,
+            lat: Number(f.geometry?.coordinates?.[1]),
+            lon: Number(f.geometry?.coordinates?.[0]),
+          }))
+          .filter(n => n.id != null && Number.isFinite(n.lat) && Number.isFinite(n.lon));
+      }
+
+      throw new Error("nodes.json format not recognized (expected array or GeoJSON FeatureCollection).");
+    }
+
+    function normalizeEdges(raw) {
+      // Case A: already an array in the format this app expects
+      if (Array.isArray(raw)) {
+        return raw
+          .map(e => ({
+            source: e.source ?? e.u ?? e.from,
+            target: e.target ?? e.v ?? e.to,
+            length: Number(e.length ?? e.properties?.length ?? e.properties?.length_ft ?? 1),
+            geometry: e.geometry,   // [[lat,lng],...]
+            shade: e.shade ?? {},
+          }))
+          .filter(e => e.source != null && e.target != null && Array.isArray(e.geometry) && e.geometry.length >= 2);
+      }
+
+      // Case B: GeoJSON FeatureCollection (LineStrings)
+      if (isFeatureCollection(raw)) {
+        return raw.features
+          .map(f => {
+            const coords = f.geometry?.coordinates || [];
+            // GeoJSON is [lng,lat] -> convert to [lat,lng] for Leaflet
+            const latlng = coords.map(c => [Number(c[1]), Number(c[0])]).filter(p => Number.isFinite(p[0]) && Number.isFinite(p[1]));
+
+            const props = f.properties || {};
+            const source = props.u ?? props.source ?? props.from ?? props.U ?? props.SOURCE ?? props.start ?? null;
+            const target = props.v ?? props.target ?? props.to   ?? props.V ?? props.TARGET ?? props.end   ?? null;
+
+            const length =
+              Number(props.length) ||
+              Number(props.length_ft) ||
+              Number(props.len_ft) ||
+              Number(props.shape_len) ||
+              1;
+
+            const shade = toShadeDictFromProps(props);
+
+            return { source, target, length, geometry: latlng, shade };
+          })
+          .filter(e => e.source != null && e.target != null && Array.isArray(e.geometry) && e.geometry.length >= 2);
+      }
+
+      throw new Error("edges.json format not recognized (expected array or GeoJSON FeatureCollection).");
+    }
+
+    // ----------------------------
+    // Map init + drawing
+    // ----------------------------
+    function initMap() {
+      map = L.map('map').setView([39.9526, -75.1950], 14);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        maxZoom: 19
+      }).addTo(map);
+
+      networkLayer = L.layerGroup().addTo(map);
+      routeLayer = L.layerGroup().addTo(map);
+
+      map.on('click', onMapClick);
+    }
+
+    function drawNetwork() {
+      networkLayer.clearLayers();
+
+      const styleFn = (edge) => {
+        const shadeVal = edge.shade?.[currentScenario] ?? 0;
+        // darker green for higher shade
+        const opacity = 0.25 + 0.55 * shadeVal;
+        return { color: '#2f2f2f', weight: 2, opacity };
+      };
+
+      // For performance, draw as Leaflet polylines (23k edges is okay-ish)
+      edges.forEach(e => {
+        L.polyline(e.geometry, styleFn(e)).addTo(networkLayer);
+      });
+
+      // fit bounds
+      const all = edges[0]?.geometry;
+      if (all) {
+        const b = networkLayer.getBounds();
+        if (b.isValid()) map.fitBounds(b.pad(0.05));
+      }
+
+      console.log(`✅ Drew network: ${edges.length.toLocaleString()} edges`);
+    }
+
+    // ----------------------------
+    // Scenarios
+    // ----------------------------
+    function populateScenarios(rawScenarios) {
+      const sel = document.getElementById('scenario');
+      sel.innerHTML = '';
+
+      let options = [];
+
+      // If scenarios.json is something like {summer_midday:"Summer Midday", ...}
+      if (rawScenarios && !Array.isArray(rawScenarios) && typeof rawScenarios === 'object') {
+        options = Object.entries(rawScenarios).map(([key, label]) => ({ key, label: String(label) }));
+      }
+
+      // If it's an array like [{key,label}, ...] or ["summer_midday", ...]
+      if (Array.isArray(rawScenarios)) {
+        options = rawScenarios.map(s => {
+          if (typeof s === 'string') return { key: s, label: s.replaceAll('_',' ').replace(/\b\w/g, c => c.toUpperCase()) };
+          return { key: s.key ?? s.id ?? s.name, label: s.label ?? s.title ?? s.name ?? String(s.key) };
+        }).filter(o => o.key);
+      }
+
+      // Fallback: infer from first edge shade keys
+      if (!options.length) {
+        const inferred = Object.keys(edges[0]?.shade || {});
+        options = inferred.map(k => ({ key: k, label: k.replaceAll('_',' ').replace(/\b\w/g, c => c.toUpperCase()) }));
+      }
+
+      if (!options.length) throw new Error("No scenarios found. Check scenarios.json or edge shade properties (shade_* columns).");
+
+      options.forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o.key;
+        opt.textContent = o.label;
+        sel.appendChild(opt);
+      });
+
+      currentScenario = options[0].key;
+      sel.value = currentScenario;
+
+      sel.addEventListener('change', () => {
+        currentScenario = sel.value;
+        routeLayer.clearLayers();
+        document.getElementById('results').style.display = 'none';
+        drawNetwork();
+        if (origin && destination) calculateRoutes();
+      });
+
+      console.log(`✅ Scenarios loaded: ${options.length}`);
+    }
+
+    // ----------------------------
+    // Click routing
+    // ----------------------------
+    function onMapClick(e) {
+      hideError();
+
+      if (!origin) {
+        origin = e.latlng;
+        L.marker(origin, { title: "Origin" }).addTo(routeLayer);
+        return;
+      }
+      if (!destination) {
+        destination = e.latlng;
+        L.marker(destination, { title: "Destination" }).addTo(routeLayer);
+        calculateRoutes();
+        return;
+      }
+
+      // third click acts like reset start
+      resetAll();
+      origin = e.latlng;
+      L.marker(origin, { title: "Origin" }).addTo(routeLayer);
+    }
+
+    function findNearestNode(latlng) {
+      let nearest = null;
+      let minDist = Infinity;
+
+      // 7k nodes -> linear scan is fine
+      for (const n of nodes) {
+        const dLat = n.lat - latlng.lat;
+        const dLon = n.lon - latlng.lng;
+        const dist = dLat*dLat + dLon*dLon;
+        if (dist < minDist) { minDist = dist; nearest = n.id; }
+      }
+      return nearest;
+    }
+
+    function buildAdjacency() {
+      const graph = new Map();
+      for (const e of edges) {
+        if (!graph.has(e.source)) graph.set(e.source, []);
+        if (!graph.has(e.target)) graph.set(e.target, []);
+
+        const shade = e.shade?.[currentScenario] ?? 0;
+        const shadeCostFactor = (1 - 0.3 * shade); // keep your same formula
+        const base = e.length || 1;
+
+        graph.get(e.source).push({ node: e.target, costBase: base, costShade: base * shadeCostFactor, edge: e });
+        graph.get(e.target).push({ node: e.source, costBase: base, costShade: base * shadeCostFactor, edge: e });
+      }
+      return graph;
+    }
+
+    function dijkstra(graph, start, end, useShade) {
+      const dist = new Map();
+      const prev = new Map();
+      const visited = new Set();
+
+      // tiny priority queue (array) is OK for your size in-browser
+      const pq = [{ node: start, cost: 0 }];
+
+      dist.set(start, 0);
+
+      while (pq.length) {
+        pq.sort((a,b) => a.cost - b.cost);
+        const { node: u } = pq.shift();
+        if (visited.has(u)) continue;
+        visited.add(u);
+
+        if (u === end) break;
+
+        const neighbors = graph.get(u) || [];
+        for (const item of neighbors) {
+          const cost = useShade ? item.costShade : item.costBase;
+          const alt = (dist.get(u) ?? Infinity) + cost;
+
+          if (alt < (dist.get(item.node) ?? Infinity)) {
+            dist.set(item.node, alt);
+            prev.set(item.node, { node: u, edge: item.edge });
+            pq.push({ node: item.node, cost: alt });
+          }
         }
-        
-        function getShadeColor(shade) {
-            // Color scale: red (no shade) to green (full shade)
-            if (shade < 0.2) return '#d32f2f';
-            if (shade < 0.4) return '#f57c00';
-            if (shade < 0.6) return '#fbc02d';
-            if (shade < 0.8) return '#689f38';
-            return '#388e3c';
-        }
-        
-        function handleMapClick(e) {
-            if (!origin) {
-                origin = e.latlng;
-                L.marker(origin, {
-                    icon: L.divIcon({
-                        className: 'origin-marker',
-                        html: '<div style="background:#2196F3;width:12px;height:12px;border-radius:50%;border:2px solid white;"></div>'
-                    })
-                }).addTo(routeLayer);
-            } else if (!destination) {
-                destination = e.latlng;
-                L.marker(destination, {
-                    icon: L.divIcon({
-                        className: 'dest-marker',
-                        html: '<div style="background:#f44336;width:12px;height:12px;border-radius:50%;border:2px solid white;"></div>'
-                    })
-                }).addTo(routeLayer);
-                
-                calculateRoutes();
-            }
-        }
-        
-        function calculateRoutes() {
-            console.log('Calculating routes...');
-            
-            // Find nearest nodes
-            const originNode = findNearestNode(origin);
-            const destNode = findNearestNode(destination);
-            
-            // Calculate shortest path
-            const shortestPath = dijkstra(originNode, destNode, false);
-            
-            // Calculate shadiest path
-            const shadiestPath = dijkstra(originNode, destNode, true);
-            
-            // Draw routes
-            drawRoute(shortestPath, '#2196F3', 4);
-            drawRoute(shadiestPath, '#4CAF50', 4);
-            
-            // Show results
-            displayResults(shortestPath, shadiestPath);
-        }
-        
-        function findNearestNode(latlng) {
-            let nearest = null;
-            let minDist = Infinity;
-            
-            nodes.forEach(node => {
-                const dist = Math.sqrt(
-                    Math.pow(node.lat - latlng.lat, 2) +
-                    Math.pow(node.lon - latlng.lng, 2)
-                );
-                if (dist < minDist) {
-                    minDist = dist;
-                    nearest = node.id;
-                }
-            });
-            
-            return nearest;
-        }
-        
-        function dijkstra(start, end, useShade) {
-            // Build adjacency list
-            const graph = {};
-            edges.forEach(edge => {
-                if (!graph[edge.source]) graph[edge.source] = [];
-                if (!graph[edge.target]) graph[edge.target] = [];
-                
-                const shade = edge.shade[currentScenario] || 0;
-                const cost = useShade ? edge.length * (1 - 0.3 * shade) : edge.length;
-                
-                graph[edge.source].push({node: edge.target, cost, edge});
-                graph[edge.target].push({node: edge.source, cost, edge});
-            });
-            
-            // Dijkstra's algorithm
-            const dist = {};
-            const prev = {};
-            const pq = [{node: start, cost: 0}];
-            
-            nodes.forEach(n => {
-                dist[n.id] = Infinity;
-                prev[n.id] = null;
-            });
-            dist[start] = 0;
-            
-            while (pq.length > 0) {
-                pq.sort((a, b) => a.cost - b.cost);
-                const {node: u} = pq.shift();
-                
-                if (u === end) break;
-                
-                if (!graph[u]) continue;
-                
-                graph[u].forEach(({node: v, cost, edge}) => {
-                    const alt = dist[u] + cost;
-                    if (alt < dist[v]) {
-                        dist[v] = alt;
-                        prev[v] = {node: u, edge};
-                        pq.push({node: v, cost: alt});
-                    }
-                });
-            }
-            
-            // Reconstruct path
-            const path = [];
-            let u = end;
-            while (prev[u]) {
-                path.unshift(prev[u].edge);
-                u = prev[u].node;
-            }
-            
-            return path;
-        }
-        
-        function drawRoute(path, color, weight) {
-            path.forEach(edge => {
-                L.polyline(edge.geometry, {
-                    color: color,
-                    weight: weight,
-                    opacity: 0.8
-                }).addTo(routeLayer);
-            });
-        }
-        
-        function displayResults(shortestPath, shadiestPath) {
-            const shortestDist = shortestPath.reduce((sum, e) => sum + e.length, 0);
-            const shadiestDist = shadiestPath.reduce((sum, e) => sum + e.length, 0);
-            
-            const shortestShade = shortestPath.reduce((sum, e) => 
-                sum + e.shade[currentScenario] * e.length, 0) / shortestDist;
-            const shadiestShade = shadiestPath.reduce((sum, e) => 
-                sum + e.shade[currentScenario] * e.length, 0) / shadiestDist;
-            
-            const detour = ((shadiestDist - shortestDist) / shortestDist * 100).toFixed(1);
-            
-            document.getElementById('shortest-dist').textContent = `${(shortestDist * 0.3048).toFixed(0)}m`;
-            document.getElementById('shortest-shade').textContent = `${(shortestShade * 100).toFixed(0)}%`;
-            document.getElementById('shadiest-dist').textContent = `${(shadiestDist * 0.3048).toFixed(0)}m`;
-            document.getElementById('shadiest-shade').textContent = `${(shadiestShade * 100).toFixed(0)}%`;
-            document.getElementById('detour').textContent = `+${detour}%`;
-            
-            document.getElementById('results').style.display = 'block';
-        }
-        
-        function reset() {
-            origin = null;
-            destination = null;
-            routeLayer.clearLayers();
-            document.getElementById('results').style.display = 'none';
-        }
-        
-        // Initialize on load
-        init();
-    </script>
+      }
+
+      // reconstruct path
+      const path = [];
+      let u = end;
+      while (prev.has(u)) {
+        const step = prev.get(u);
+        path.unshift(step.edge);
+        u = step.node;
+      }
+      return path;
+    }
+
+    function drawRoute(path, color) {
+      path.forEach(e => {
+        L.polyline(e.geometry, { color, weight: 5, opacity: 0.85 }).addTo(routeLayer);
+      });
+    }
+
+    function displayResults(shortestPath, shadiestPath) {
+      const sumLen = (arr) => arr.reduce((s,e) => s + (e.length || 0), 0);
+
+      const shortestDist = sumLen(shortestPath);
+      const shadiestDist = sumLen(shadiestPath);
+
+      const wAvgShade = (arr) => {
+        const L = sumLen(arr) || 1;
+        const S = arr.reduce((s,e) => s + ((e.shade?.[currentScenario] ?? 0) * (e.length || 0)), 0);
+        return S / L;
+      };
+
+      const shortestShade = wAvgShade(shortestPath);
+      const shadiestShade = wAvgShade(shadiestPath);
+
+      const detour = shortestDist > 0 ? ((shadiestDist - shortestDist) / shortestDist * 100) : 0;
+
+      document.getElementById('shortest-dist').textContent = `${(shortestDist * 0.3048).toFixed(0)} m`;
+      document.getElementById('shortest-shade').textContent = `${(shortestShade * 100).toFixed(0)}%`;
+      document.getElementById('shadiest-dist').textContent = `${(shadiestDist * 0.3048).toFixed(0)} m`;
+      document.getElementById('shadiest-shade').textContent = `${(shadiestShade * 100).toFixed(0)}%`;
+      document.getElementById('detour').textContent = `+${detour.toFixed(1)}%`;
+
+      document.getElementById('results').style.display = 'block';
+    }
+
+    function calculateRoutes() {
+      if (!origin || !destination) return;
+
+      const start = findNearestNode(origin);
+      const end = findNearestNode(destination);
+
+      if (start == null || end == null) {
+        showError("Could not find nearest network nodes. Check nodes.json format/content.");
+        return;
+      }
+
+      const graph = buildAdjacency();
+
+      const shortestPath = dijkstra(graph, start, end, false);
+      const shadiestPath = dijkstra(graph, start, end, true);
+
+      if (!shortestPath.length || !shadiestPath.length) {
+        showError("Routing returned an empty path. This usually means node IDs in edges.json don't match nodes.json.");
+        return;
+      }
+
+      // clear old route drawing but keep origin/destination markers
+      const keep = [];
+      routeLayer.eachLayer(l => keep.push(l));
+      routeLayer.clearLayers();
+      keep.forEach(l => routeLayer.addLayer(l));
+
+      drawRoute(shortestPath, '#2196F3'); // blue
+      drawRoute(shadiestPath, '#2E7D32'); // green
+
+      displayResults(shortestPath, shadiestPath);
+    }
+
+    function resetAll() {
+      origin = null;
+      destination = null;
+      routeLayer.clearLayers();
+      document.getElementById('results').style.display = 'none';
+      hideError();
+    }
+
+    // ----------------------------
+    // Load data
+    // ----------------------------
+    async function loadAll() {
+      hideError();
+
+      // IMPORTANT: these paths assume:
+      // - map.html is in the SAME folder level as "map_data/"
+      const nodesUrl = urlHere("map_data/nodes.json");
+      const edgesUrl = urlHere("map_data/edges.json");
+      const scenariosUrl = urlHere("map_data/scenarios.json");
+
+      console.log("Loading:", { nodesUrl, edgesUrl, scenariosUrl });
+
+      const [rawNodes, rawEdges, rawScenarios] = await Promise.all([
+        fetch(nodesUrl).then(r => { if (!r.ok) throw new Error(`nodes.json HTTP ${r.status}`); return r.json(); }),
+        fetch(edgesUrl).then(r => { if (!r.ok) throw new Error(`edges.json HTTP ${r.status}`); return r.json(); }),
+        fetch(scenariosUrl).then(r => { if (!r.ok) return null; return r.json(); }).catch(() => null)
+      ]);
+
+      nodes = normalizeNodes(rawNodes);
+      edges = normalizeEdges(rawEdges);
+
+      console.log(`✅ Parsed nodes: ${nodes.length.toLocaleString()}`);
+      console.log(`✅ Parsed edges: ${edges.length.toLocaleString()}`);
+
+      if (!nodes.length) throw new Error("nodes.json parsed to 0 nodes.");
+      if (!edges.length) throw new Error("edges.json parsed to 0 edges.");
+
+      populateScenarios(rawScenarios);
+      drawNetwork();
+    }
+
+    async function init() {
+      initMap();
+      try {
+        await loadAll();
+      } catch (e) {
+        showError(
+          "Interactive map failed to load the network.\n\n" +
+          "Most common causes:\n" +
+          "1) map.html is not in the same folder level as map_data/\n" +
+          "2) nodes.json / edges.json are GeoJSON but old map.html expected plain JSON\n" +
+          "3) edge u/v IDs don’t match node IDs\n\n" +
+          "Technical error:\n" + (e?.message || String(e))
+        );
+      }
+    }
+
+    init();
+  </script>
 </body>
 </html>
