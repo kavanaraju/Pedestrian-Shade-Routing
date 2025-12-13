@@ -180,11 +180,11 @@ quarto render
 ### Expected Runtime
 
 - Notebook 1: ~30 minutes
-- Notebook 2: ~2 hours ⚠️ (longest step)
+- Notebook 2: ~4 hours (longest step)
 - Notebook 3: ~15 minutes
 - Notebook 4: ~10 minutes
 - Notebook 5: ~10 minutes
-- **Total:** ~3 hours
+- **Total:** ~5 hours
 
 ---
 

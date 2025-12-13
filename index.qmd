@@ -2,14 +2,14 @@
 title: "Shade-Optimized Pedestrian Routing"
 subtitle: "LiDAR-Based Shadow Modeling for Heat-Resilient Urban Mobility"
 author: "Kavana Raju | MUSA 5500 Final Project"
-date: "December 2024"
+date: "December 2025"
 format:
   html:
     toc: false
 ---
 
 ::: {.hero}
-# 🌳 Shade-Optimized Pedestrian Routing
+# Shade-Optimized Pedestrian Routing
 
 **University City, Philadelphia**
 
