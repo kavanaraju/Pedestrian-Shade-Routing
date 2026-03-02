@@ -1,0 +1,28 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Shade-Optimized Pedestrian Routing"
+  navbar:
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Methodology"
+        href: methodology.qmd
+      - text: "Results"
+        href: results.qmd
+      - text: "Interactive Map"
+        href: interactive.qmd
+      - text: "Technical Appendix"
+        href: appendix.qmd
+    right:
+      - icon: github
+        href: https://github.com/kavanaraju/Pedestrian-Shade-Routing
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-depth: 3
